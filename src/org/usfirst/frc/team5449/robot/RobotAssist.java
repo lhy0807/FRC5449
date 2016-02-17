@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
@@ -29,7 +30,10 @@ public class RobotAssist extends SampleRobot{
     static CameraServer server; //define camera server
     static boolean reverse_mode = false; //define default reverse_mode status
     static int reverse_mode_Bot = 2; //define reverse_mode bottom
-    
+    static double proportion = 1.25; //define proportion of speed
+    static Encoder Enc_l;
+    static double Autopower=0.5;
+	
     public void init(){
     myRobot = new RobotDrive(0, 1);
     myRobot.setExpiration(0.1);
@@ -45,30 +49,46 @@ public class RobotAssist extends SampleRobot{
     server = CameraServer.getInstance();     
     server.setQuality(50);
     server.startAutomaticCapture("cam0");
+    Enc_l = new Encoder(3,4);
         
     }
+    public void AutoGO(double position){
+    	while(Enc_l.getDistance()<position){
+    		mot_l1.set(-Autopower*(proportion));
+        	mot_l2.set(-Autopower*(proportion));
+        	mot_r1.set(Autopower);
+        	mot_r2.set(Autopower);
+        	Timer.delay(0.25);
+    	}
+    	mot_l1.set(0);
+    	mot_l2.set(0);
+    	mot_r1.set(0);
+    	mot_r2.set(0);
+    	Timer.delay(0.25);
+    }
+
 
     
     
     public void Accelerate(){
     	//Make the accelerate smoothly
-    	mot_l1.set(Tank.getRawAxis(1)*(-0.3)*(1.25));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.3)*(1.25));
+    	mot_l1.set(Tank.getRawAxis(1)*(-0.3)*(proportion));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.3)*(proportion));
     	mot_r1.set(Tank.getRawAxis(5)*0.3);
     	mot_r2.set(Tank.getRawAxis(5)*0.3);
     	Timer.delay(0.25);
-		mot_l1.set(Tank.getRawAxis(1)*(-0.35)*(1.25));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.35)*(1.25));
+		mot_l1.set(Tank.getRawAxis(1)*(-0.35)*(proportion));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.35)*(proportion));
     	mot_r1.set(Tank.getRawAxis(5)*0.35);
     	mot_r2.set(Tank.getRawAxis(5)*0.35);
     	Timer.delay(0.25);
-		mot_l1.set(Tank.getRawAxis(1)*(-0.4)*(1.25));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.4)*(1.25));
+		mot_l1.set(Tank.getRawAxis(1)*(-0.4)*(proportion));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.4)*(proportion));
     	mot_r1.set(Tank.getRawAxis(5)*0.4);
     	mot_r2.set(Tank.getRawAxis(5)*0.4);
     	Timer.delay(0.25);
-		mot_l1.set(Tank.getRawAxis(1)*(-0.45)*(1.25));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.45)*(1.25));
+		mot_l1.set(Tank.getRawAxis(1)*(-0.45)*(proportion));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.45)*(proportion));
     	mot_r1.set(Tank.getRawAxis(5)*0.45);
     	mot_r2.set(Tank.getRawAxis(5)*0.45);
     	Timer.delay(0.25);
@@ -76,31 +96,31 @@ public class RobotAssist extends SampleRobot{
     
     public void Decelerate(){
     	//Make the decelerate smoothly
-    	mot_l1.set(Tank.getRawAxis(1)*(-0.45)*(1.25));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.45)*(1.25));
+    	mot_l1.set(Tank.getRawAxis(1)*(-0.45)*(proportion));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.45)*(proportion));
     	mot_r1.set(Tank.getRawAxis(5)*0.45);
     	mot_r2.set(Tank.getRawAxis(5)*0.45);
     	Timer.delay(0.25);
-		mot_l1.set(Tank.getRawAxis(1)*(-0.4)*(1.25));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.4)*(1.25));
+		mot_l1.set(Tank.getRawAxis(1)*(-0.4)*(proportion));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.4)*(proportion));
     	mot_r1.set(Tank.getRawAxis(5)*0.4);
     	mot_r2.set(Tank.getRawAxis(5)*0.4);
     	Timer.delay(0.25);
-		mot_l1.set(Tank.getRawAxis(1)*(-0.35)*(1.25));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.35)*(1.25));
+		mot_l1.set(Tank.getRawAxis(1)*(-0.35)*(proportion));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.35)*(proportion));
     	mot_r1.set(Tank.getRawAxis(5)*0.35);
     	mot_r2.set(Tank.getRawAxis(5)*0.35);
     	Timer.delay(0.25);
-		mot_l1.set(Tank.getRawAxis(1)*(-0.3)*(1.25));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.3)*(1.25));
+		mot_l1.set(Tank.getRawAxis(1)*(-0.3)*(proportion));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.3)*(proportion));
     	mot_r1.set(Tank.getRawAxis(5)*0.3);
     	mot_r2.set(Tank.getRawAxis(5)*0.3);
     	Timer.delay(0.25);
     }
     
     public void NormalDirection(){
-    	mot_l1.set(Tank.getRawAxis(1)*(-TankPower)*(1.25));
-    	mot_l2.set(Tank.getRawAxis(1)*(-TankPower)*(1.25));
+    	mot_l1.set(Tank.getRawAxis(1)*(-TankPower)*(proportion));
+    	mot_l2.set(Tank.getRawAxis(1)*(-TankPower)*(proportion));
     	mot_r1.set(Tank.getRawAxis(5)*TankPower);
     	mot_r2.set(Tank.getRawAxis(5)*TankPower);
     }
