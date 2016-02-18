@@ -132,6 +132,4 @@ public class RobotAssist extends SampleRobot{
     	mot_r2.set(Tank.getRawAxis(1)*-(TankPower)*(1.5));
     }
 
-	
-
 }
