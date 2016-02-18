@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotAssist extends SampleRobot{
     static RobotDrive myRobot;  // class that handles basic drive operations
@@ -29,7 +30,10 @@ public class RobotAssist extends SampleRobot{
     static boolean reverse_mode = false; //define default reverse_mode status
     static int reverse_mode_Bot = 2; //define reverse_mode bottom
     static double proportion = 1.25; //define proportion of speed
+    
     static Encoder Enc_l;
+    static Encoder Enc_r;
+    
     static double Autopower=0.5;
     static int intake_bot = 5;
     static int intake_axis = 2;
@@ -50,7 +54,9 @@ public class RobotAssist extends SampleRobot{
     arm_l = new CANTalon(0);
     intake_r = new CANTalon(2);
     intake_l = new CANTalon(5);
-    Enc_l = new Encoder(3,4);
+    
+    Enc_r = new Encoder(0,1);
+    Enc_l = new Encoder(2,3);
     }
     public void AutoGO(double position){
     	while(Enc_l.getDistance()<position){
@@ -130,6 +136,24 @@ public class RobotAssist extends SampleRobot{
     	mot_l2.set(Tank.getRawAxis(5)*(TankPower)*(1.5));
     	mot_r1.set(Tank.getRawAxis(1)*-(TankPower)*(1.5));
     	mot_r2.set(Tank.getRawAxis(1)*-(TankPower)*(1.5));
+    }
+    
+    public void EncoderTest(){
+		SmartDashboard.getNumber("Right Encoder Rate", Enc_r.getRate());
+		SmartDashboard.getNumber("Right Encoder Distance", Enc_r.getDistance());
+		SmartDashboard.getNumber("Right Encoder Period", Enc_r.getPeriod());
+		SmartDashboard.getNumber("Right Encoder pidGet", Enc_r.pidGet());
+		SmartDashboard.getNumber("Right Encoder Get", Enc_r.get());
+		SmartDashboard.getNumber("Right Encoder Get", Enc_r.getRaw());
+		SmartDashboard.getNumber("Right Encoder EncodingScale", Enc_r.getEncodingScale());
+		SmartDashboard.getNumber("Right Encoder FPGAIndex", Enc_r.getFPGAIndex());
+		SmartDashboard.getNumber("Right Encoder SamplesToAverage", Enc_r.getSamplesToAverage());
+
+		
+
+
+
+		
     }
 
 }
