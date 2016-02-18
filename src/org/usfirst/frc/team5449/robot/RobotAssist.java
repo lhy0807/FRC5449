@@ -39,6 +39,24 @@ public class RobotAssist extends SampleRobot{
     static int intake_axis = 2;
     static int shooter_start = 3;
     static int shooter_end = 4;
+    
+    double kp_l = 0.05;
+	double ki_l = 0;
+	double kd_l = 0;
+	double f_error_1_l = 0;
+	double f_error_2_l = 0;
+	double f_error_3_l = 0;
+	double f_control_output_l = 0;
+	double f_control_change_l = 0;
+	
+	double kp_r = 0.05;
+	double ki_r = 0;
+	double kd_r = 0;
+	double f_error_1_r = 0;
+	double f_error_2_r = 0;
+	double f_error_3_r = 0;
+	double f_control_output_r = 0;
+	double f_control_change_r = 0;
 	
     public void init(){
     myRobot = new RobotDrive(0, 1);
@@ -55,7 +73,7 @@ public class RobotAssist extends SampleRobot{
     intake_r = new CANTalon(2);
     intake_l = new CANTalon(5);
     
-    Enc_r = new Encoder(0,1);
+    Enc_r = new Encoder(1,0);
     Enc_l = new Encoder(2,3);
     }
     public void AutoGO(double position){
@@ -73,7 +91,95 @@ public class RobotAssist extends SampleRobot{
     	Timer.delay(0.25);
     }
 
+    public void PID_l(double pid_rate) {
+    	f_error_2_l = f_error_1_l;
+    	f_error_3_l = f_error_2_l;
+    	f_error_1_l = pid_rate - Enc_l.getRate();
+    	f_control_change_l = f_error_1_l * kp_l/1000 + //proportional term
+    			(f_error_1_l - f_error_2_l) * ki_l + //integral term
+    			((f_error_1_l - f_error_2_l) - (f_error_2_l - f_error_3_l)) * kd_l; //differential term
+    			//add the change to control output
+    			f_control_output_l += f_control_change_l;
+    		f_control_output_l = f_control_output_l > 1? 1:f_control_output_l;
+    		f_control_output_l = f_control_output_l < -1? -1:f_control_output_l;	
+    		mot_l1.set(f_control_output_l);
+    		mot_l2.set(f_control_output_l);
+    		Timer.delay(0.005);
+    }
 
+    public void PID_r(double pid_rate) {
+    	f_error_2_r = f_error_1_r;
+    	f_error_3_r = f_error_2_r;
+    	f_error_1_r = -pid_rate - Enc_r.getRate();
+    	f_control_change_r = f_error_1_r * kp_r/1000 + //proportional term
+    			(f_error_1_r - f_error_2_r) * ki_r + //integral term
+    			((f_error_1_r - f_error_2_r) - (f_error_2_r - f_error_3_r)) * kd_r; //differential term
+    			//add the change to control output
+    			f_control_output_r += f_control_change_r;
+    		f_control_output_r = f_control_output_r > 1? 1:f_control_output_r;
+    		f_control_output_r = f_control_output_r < -1? -1:f_control_output_r;	
+    		mot_r1.set(f_control_output_r);
+    		mot_r2.set(f_control_output_r);
+    		Timer.delay(0.005);
+    }
+    
+    public void AutoPID(double r_pid,double r_distance,double l_pid,double l_distance){
+    	r_distance+= Enc_r.getDistance();
+    	boolean a = true;
+    	boolean b = true;
+    	boolean c = true;
+    	while(a){
+    		if(r_distance>0){
+    			if(r_distance>Enc_r.getDistance()){
+    				PID_r(r_pid);
+    			}
+    			else{
+    				mot_r1.set(0);
+        			mot_r2.set(0);
+    				b = false;}
+    		}
+    		if(r_distance<0){
+    			if(r_distance<Enc_r.getDistance()){
+    				PID_r(r_pid);
+    			}
+    			else{
+    				mot_r1.set(0);
+        			mot_r2.set(0);
+    				b = false;}
+    		}
+    		if(r_distance==0){
+    			mot_r1.set(0);
+    			mot_r2.set(0);
+    			b=false;
+    		}
+    		if(l_distance>0){
+    			if(l_distance<Enc_l.getDistance()){
+    				PID_l(l_pid);
+    			}
+    			else{
+    				mot_l1.set(0);
+        			mot_l2.set(0);
+    				c = false;}
+    		}
+    		if(l_distance<0){
+    			if(l_distance>Enc_l.getDistance()){
+    				PID_l(l_pid);
+    			}
+    			else{
+    				mot_l1.set(0);
+        			mot_l2.set(0);
+    				c = false;}
+    		}
+    		if(l_distance==0){
+    			mot_l1.set(0);
+    			mot_l2.set(0);
+    			c = false;}
+    		if(b==false && c==false){
+    			a=false;
+    		}
+    	}
+    }
+    
     
     
     public void Accelerate(){
@@ -139,21 +245,10 @@ public class RobotAssist extends SampleRobot{
     }
     
     public void EncoderTest(){
-		SmartDashboard.getNumber("Right Encoder Rate", Enc_r.getRate());
-		SmartDashboard.getNumber("Right Encoder Distance", Enc_r.getDistance());
-		SmartDashboard.getNumber("Right Encoder Period", Enc_r.getPeriod());
-		SmartDashboard.getNumber("Right Encoder pidGet", Enc_r.pidGet());
-		SmartDashboard.getNumber("Right Encoder Get", Enc_r.get());
-		SmartDashboard.getNumber("Right Encoder Get", Enc_r.getRaw());
-		SmartDashboard.getNumber("Right Encoder EncodingScale", Enc_r.getEncodingScale());
-		SmartDashboard.getNumber("Right Encoder FPGAIndex", Enc_r.getFPGAIndex());
-		SmartDashboard.getNumber("Right Encoder SamplesToAverage", Enc_r.getSamplesToAverage());
-
-		
-
-
-
-		
+		SmartDashboard.putNumber("Left Encoder Rate", Enc_l.getRate());
+		SmartDashboard.putNumber("left Encoder Distance", Enc_l.getDistance());
+		SmartDashboard.putNumber("Right Encoder Rate", Enc_r.getRate());
+		SmartDashboard.putNumber("Right Encoder Distance", Enc_r.getDistance());
     }
 
 }

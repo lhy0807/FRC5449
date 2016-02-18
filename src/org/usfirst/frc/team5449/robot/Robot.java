@@ -1,6 +1,6 @@
 package org.usfirst.frc.team5449.robot;
 
-
+import edu.wpi.first.wpilibj.Timer;
 
 public class Robot extends TankAssist {
 
@@ -10,7 +10,6 @@ public class Robot extends TankAssist {
         	intake();//intake module
         	shooter();//shooter module
         	go();//Tank module
-        	EncoderTest();
         }
     }
     
@@ -25,8 +24,8 @@ public class Robot extends TankAssist {
     public void test() {
     	init();
     	while (isTest() && isEnabled()){
-    		init();
-    		
+    		PID_l(50.00);
+        	EncoderTest();
     	}
     }
 
