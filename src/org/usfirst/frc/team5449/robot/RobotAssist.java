@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class RobotAssist extends SampleRobot{
     static RobotDrive myRobot;  // class that handles basic drive operations
@@ -17,6 +18,8 @@ public class RobotAssist extends SampleRobot{
     static CANTalon mot_r2; //define right motor 2
     static CANTalon shooter_r;
     static CANTalon shooter_l;
+    static boolean shooter_status;
+    static boolean shooter_mode;
     static CANTalon arm_r;
     static CANTalon arm_l;
     static CANTalon intake_r;
@@ -30,6 +33,7 @@ public class RobotAssist extends SampleRobot{
     static boolean reverse_mode = false; //define default reverse_mode status
     static int reverse_mode_Bot = 2; //define reverse_mode bottom
     static double proportion = 1.25; //define proportion of speed
+    static Ultrasonic ultra;
     
     static Encoder Enc_l;
     static Encoder Enc_r;
@@ -37,8 +41,9 @@ public class RobotAssist extends SampleRobot{
     static double Autopower=0.5;
     static int intake_bot = 5;
     static int intake_axis = 2;
-    static int shooter_start = 3;
-    static int shooter_end = 4;
+    static int shooter_bot = 3;
+    static int arm_up = 6;
+    static int arm_down = 3;
     
     double kp_l = 0.05;
 	double ki_l = 0;
@@ -72,7 +77,8 @@ public class RobotAssist extends SampleRobot{
     arm_l = new CANTalon(0);
     intake_r = new CANTalon(2);
     intake_l = new CANTalon(5);
-    
+    ultra = new Ultrasonic(9,8);
+    ultra.setAutomaticMode(true);
     Enc_r = new Encoder(1,0);
     Enc_l = new Encoder(2,3);
     }
@@ -90,7 +96,7 @@ public class RobotAssist extends SampleRobot{
     	mot_r2.set(0);
     	Timer.delay(0.25);
     }
-
+    
     public void PID_l(double pid_rate) {
     	f_error_2_l = f_error_1_l;
     	f_error_3_l = f_error_2_l;

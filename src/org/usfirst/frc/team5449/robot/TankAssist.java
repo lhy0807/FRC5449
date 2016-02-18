@@ -5,12 +5,26 @@ import edu.wpi.first.wpilibj.Timer;
 public class TankAssist extends RobotAssist{
 	
 	public void shooter() {
-		if(Tank.getRawButton(shooter_start)) {
+		if(Tank.getRawButton(shooter_bot)) {
+			if (shooter_status==false) {
+				if (shooter_mode==true) {
+					shooter_mode=false;
+				}
+				else {
+					shooter_mode=true;
+				}
+			}
+			shooter_status=true;
+			}
+	else {
+		shooter_status=false;
+	}
+		if(shooter_mode==true) {
 			shooter_r.set(-1);
 			shooter_l.set(1);
 			Timer.delay(0.05);
 		}
-		if(Tank.getRawButton(shooter_end)) {
+		else {
 			shooter_r.set(0);
 			shooter_l.set(0);
 		}
@@ -25,6 +39,24 @@ public class TankAssist extends RobotAssist{
 			Timer.delay(0.5);
 			intake_r.set(0);
 			intake_l.set(0);
+		}
+	}
+	
+	public void arm() {
+		if(Tank.getRawButton(arm_up)) {
+			arm_r.set(1);
+			arm_l.set(1);
+			Timer.delay(0.05);
+		}
+		else if(Tank.getRawAxis(arm_down)>0.5) {
+			arm_r.set(-1);
+			arm_l.set(-1);
+			Timer.delay(0.05);
+		}
+		else {
+			arm_r.set(0);
+			arm_l.set(0);
+			Timer.delay(0.05);
 		}
 	}
 	

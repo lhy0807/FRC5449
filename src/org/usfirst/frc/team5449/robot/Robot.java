@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5449.robot;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TankAssist {
 
@@ -10,6 +11,9 @@ public class Robot extends TankAssist {
         	intake();//intake module
         	shooter();//shooter module
         	go();//Tank module
+        	arm();
+        	double range = ultra.getRangeInches();
+        	SmartDashboard.putNumber("ultra data", range);
         }
     }
     
@@ -24,8 +28,11 @@ public class Robot extends TankAssist {
     public void test() {
     	init();
     	while (isTest() && isEnabled()){
-    		PID_l(50.00);
-        	EncoderTest();
+    		arm_l.set(0.1);
+    		arm_r.set(0.1);
+    		Timer.delay(1);
+    		arm_l.set(0);
+    		arm_r.set(0);
     	}
     }
 
