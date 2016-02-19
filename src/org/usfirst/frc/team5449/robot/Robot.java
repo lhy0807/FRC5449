@@ -8,11 +8,10 @@ public class Robot extends TankAssist {
     public void operatorControl() {    	
     	init();
         while (isOperatorControl() && isEnabled()) { 
+        	EncoderTest();
         	intake();//intake module
         	shooter();//shooter module
         	go();//Tank module
-        	//NormalDirection1();
-    		EncoderTest();
         	arm();
         	double range = ultra.getRangeInches();
         	SmartDashboard.putNumber("ultra data", range);
@@ -22,14 +21,8 @@ public class Robot extends TankAssist {
     public void autonomous() {
     	init();
     	while (isAutonomous() && isEnabled()){
-    		//AutoPID(600,10000,600,10000);
-    		PID_r(1000);
-    		PID_l(1000);
-    		EncoderTest();
-
-
-    		
-    		
+        	pid_init();
+    		AutoPID(-300,-500,300,500);    		
     	}
     }
     

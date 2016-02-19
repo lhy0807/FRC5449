@@ -38,13 +38,12 @@ public class RobotAssist extends SampleRobot{
     static Encoder Enc_l;
     static Encoder Enc_r;
     
-    static double Autopower=0.5;
     static int intake_bot = 5;
     static int intake_axis = 2;
     static int shooter_bot = 3;
     static int arm_up = 6;
     static int arm_down = 3;
-    
+
     static double kp_l = 0.01;
     static double ki_l = 0.001;
     static double kd_l = 0;
@@ -63,6 +62,25 @@ public class RobotAssist extends SampleRobot{
     static double f_control_output_r = 0;
     static double f_control_change_r = 0;
 	
+    public void pid_init() {
+    	double kp_l = 0.01;
+        double ki_l = 0.001;
+        double kd_l = 0;
+        double f_error_1_l = 0;
+        double f_error_2_l = 0;
+        double f_error_3_l = 0;
+        double f_control_output_l = 0;
+        double f_control_change_l = 0;
+   	
+        double kp_r = 0.01;
+        double ki_r = 0.001;
+        double kd_r = 0;
+        double f_error_1_r = 0;
+        double f_error_2_r = 0;
+        double f_error_3_r = 0;
+        double f_control_output_r = 0;
+        double f_control_change_r = 0;
+    }
     public void init(){
     myRobot = new RobotDrive(0, 1);
     myRobot.setExpiration(0.1);
@@ -82,84 +100,7 @@ public class RobotAssist extends SampleRobot{
     Enc_r = new Encoder(1,0);
     Enc_l = new Encoder(2,3);
     }
-    public void AutoGO(double position){
-    	while(Enc_l.getDistance()<position){
-    		mot_l1.set(-Autopower*(proportion));
-        	mot_l2.set(-Autopower*(proportion));
-        	mot_r1.set(Autopower);
-        	mot_r2.set(Autopower);
-        	Timer.delay(0.25);
-    	}
-    	mot_l1.set(0);
-    	mot_l2.set(0);
-    	mot_r1.set(0);
-    	mot_r2.set(0);
-    	Timer.delay(0.25);
-    }
-    
-    public void AutoDIS(double r_power,double r_distance,double l_power,double l_distance){
-    	r_distance+= Enc_r.getDistance();
-    	l_distance+= Enc_l.getDistance();
-    	boolean a = true;
-    	boolean b = true;
-    	boolean c = true;
-    	while(a){
-    		if(r_distance>0){
-    			if(r_distance>Enc_r.getDistance()){
-    				mot_r1.set(r_power);
-    				mot_r2.set(r_power);
-    			}
-    			else{
-    				mot_r1.set(0);
-        			mot_r2.set(0);
-    				b = false;}
-    		}
-    		if(r_distance<0){
-    			if(r_distance<Enc_r.getDistance()){
-    				mot_r1.set(r_power);
-    				mot_r2.set(r_power);
-    			}
-    			else{
-    				mot_r1.set(0);
-        			mot_r2.set(0);
-    				b = false;}
-    		}
-    		if(r_distance==0){
-    			mot_r1.set(0);
-    			mot_r2.set(0);
-    			b=false;
-    		}
-    		if(l_distance>0){
-    			if(l_distance<Enc_l.getDistance()){
-    				mot_l1.set(-l_power);
-    				mot_l2.set(-l_power);
-    			}
-    			else{
-    				mot_l1.set(0);
-        			mot_l2.set(0);
-    				c = false;}
-    		}
-    		if(l_distance<0){
-    			if(l_distance>Enc_l.getDistance()){
-    				mot_l1.set(-l_power);
-    				mot_l2.set(-l_power);
-    			}
-    			else{
-    				mot_l1.set(0);
-        			mot_l2.set(0);
-    				c = false;}
-    		}
-    		if(l_distance==0){
-    			mot_l1.set(0);
-    			mot_l2.set(0);
-    			c = false;}
-    		if(b==false && c==false){
-    			a=false;
-    		}
-    	}
-    }
-        
-    
+
     public void PID_l(double pid_rate) {
     	f_error_2_l = f_error_1_l;
     	f_error_3_l = f_error_2_l;
@@ -204,65 +145,86 @@ public class RobotAssist extends SampleRobot{
     		Timer.delay(0.005);
     }
     
-    public void AutoPID(double r_pid,double r_distance,double l_pid,double l_distance){
-    	r_distance+= Enc_r.getDistance();
-    	l_distance+= Enc_l.getDistance();
+    public void AutoPID(double l_pid,double l_distance,double r_pid,double r_distance){
     	boolean a = true;
     	boolean b = true;
     	boolean c = true;
     	while(a){
+    		EncoderTest();
     		if(r_distance>0){
-    			if(r_distance>Enc_r.getDistance()){
+    			if(r_distance>(-Enc_r.getDistance())){
     				PID_r(r_pid);
+    	    		SmartDashboard.putString("running_status_r", "running");
     			}
     			else{
     				mot_r1.set(0);
         			mot_r2.set(0);
-    				b = false;}
+    				b = false;
+    	    		SmartDashboard.putString("running_status_r", "stopping");
+    			}
     		}
     		if(r_distance<0){
-    			if(r_distance<Enc_r.getDistance()){
+    			if(r_distance<(-Enc_r.getDistance())){
     				PID_r(r_pid);
+    	    		SmartDashboard.putString("running_status_r", "running");
     			}
     			else{
     				mot_r1.set(0);
         			mot_r2.set(0);
-    				b = false;}
+    				b = false;
+    	    		SmartDashboard.putString("running_status_r", "stopping");	
+    			}
     		}
     		if(r_distance==0){
     			mot_r1.set(0);
     			mot_r2.set(0);
     			b=false;
+	    		SmartDashboard.putString("running_status_r", "stopping");	
     		}
     		if(l_distance>0){
-    			if(l_distance<Enc_l.getDistance()){
+    			if(l_distance>(-Enc_l.getDistance())){
     				PID_l(l_pid);
+    	    		SmartDashboard.putString("running_status_l", "running");
     			}
     			else{
     				mot_l1.set(0);
         			mot_l2.set(0);
-    				c = false;}
+    				c = false;
+    	    		SmartDashboard.putString("running_status_l", "stopping");	
+    			}
     		}
     		if(l_distance<0){
-    			if(l_distance>Enc_l.getDistance()){
+    			if(l_distance<(-Enc_l.getDistance())){
     				PID_l(l_pid);
+    	    		SmartDashboard.putString("running_status_l", "running");
     			}
     			else{
     				mot_l1.set(0);
         			mot_l2.set(0);
-    				c = false;}
+    				c = false;
+    	    		SmartDashboard.putString("running_status_l", "stopping");		
+    			}
     		}
     		if(l_distance==0){
     			mot_l1.set(0);
     			mot_l2.set(0);
-    			c = false;}
+    			c = false;
+	    		SmartDashboard.putString("running_status_l", "stopping");			
+    		}
     		if(b==false && c==false){
     			a=false;
+	    		SmartDashboard.putString("running_status", "stopping");		
+	    		mot_l1.set(0);
+    			mot_l2.set(0);
+    			mot_r1.set(0);
+    			mot_r2.set(0);
+    			break;
+    		}
+    		else{
+    			SmartDashboard.putString("running_status", "running");	
     		}
     	}
     }
-    
-    
     
     public void Accelerate(){
     	//Make the accelerate smoothly
