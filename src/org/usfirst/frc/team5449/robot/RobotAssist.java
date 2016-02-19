@@ -45,8 +45,8 @@ public class RobotAssist extends SampleRobot{
     static int arm_up = 6;
     static int arm_down = 3;
     
-    static double kp_l = 0.05;
-    static double ki_l = 0;
+    static double kp_l = 0.01;
+    static double ki_l = 0.001;
     static double kd_l = 0;
     static double f_error_1_l = 0;
     static double f_error_2_l = 0;
@@ -54,8 +54,8 @@ public class RobotAssist extends SampleRobot{
     static double f_control_output_l = 0;
     static double f_control_change_l = 0;
 	
-    static double kp_r = 0.0005;
-    static double ki_r = 0;
+    static double kp_r = 0.01;
+    static double ki_r = 0.001;
     static double kd_r = 0;
     static double f_error_1_r = 0;
     static double f_error_2_r = 0;
@@ -165,8 +165,8 @@ public class RobotAssist extends SampleRobot{
     	f_error_3_l = f_error_2_l;
     	f_error_1_l = pid_rate + Enc_l.getRate();
     	f_control_change_l = f_error_1_l * kp_l/1000 + //proportional term
-    			(f_error_1_l - f_error_2_l) * ki_l + //integral term
-    			((f_error_1_l - f_error_2_l) - (f_error_2_l - f_error_3_l)) * kd_l; //differential term
+    			(f_error_1_l - f_error_2_l) * ki_l/1000 + //integral term
+    			((f_error_1_l - f_error_2_l) - (f_error_2_l - f_error_3_l)) * kd_l/1000; //differential term
     			//add the change to control output
     	f_control_output_l += f_control_change_l;
     	
@@ -187,8 +187,8 @@ public class RobotAssist extends SampleRobot{
     	f_error_3_r = f_error_2_r;
     	f_error_1_r = -pid_rate - Enc_r.getRate();
     	f_control_change_r = f_error_1_r * kp_r/1000 + //proportional term
-    			(f_error_1_r - f_error_2_r) * ki_r + //integral term
-    			((f_error_1_r - f_error_2_r) - (f_error_2_r - f_error_3_r)) * kd_r; //differential term
+    			(f_error_1_r - f_error_2_r) * ki_r/1000 + //integral term
+    			((f_error_1_r - f_error_2_r) - (f_error_2_r - f_error_3_r)) * kd_r/1000; //differential term
     			//add the change to control output
     			f_control_output_r += f_control_change_r;
     		f_control_output_r = f_control_output_r > 1? 1:f_control_output_r;

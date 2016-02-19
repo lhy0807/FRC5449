@@ -22,7 +22,9 @@ public class Robot extends TankAssist {
     public void autonomous() {
     	init();
     	while (isAutonomous() && isEnabled()){
-    		PID_r(500);
+    		//AutoPID(600,10000,600,10000);
+    		PID_r(1000);
+    		PID_l(1000);
     		EncoderTest();
 
 
