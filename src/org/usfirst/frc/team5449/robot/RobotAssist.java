@@ -45,23 +45,23 @@ public class RobotAssist extends SampleRobot{
     static int arm_up = 6;
     static int arm_down = 3;
     
-    double kp_l = 0.05;
-	double ki_l = 0;
-	double kd_l = 0;
-	double f_error_1_l = 0;
-	double f_error_2_l = 0;
-	double f_error_3_l = 0;
-	double f_control_output_l = 0;
-	double f_control_change_l = 0;
-	
-	double kp_r = 0.05;
-	double ki_r = 0;
-	double kd_r = 0;
-	double f_error_1_r = 0;
-	double f_error_2_r = 0;
-	double f_error_3_r = 0;
-	double f_control_output_r = 0;
-	double f_control_change_r = 0;
+    static double kp_l = 0.05;
+    static double ki_l = 0;
+    static double kd_l = 0;
+    static double f_error_1_l = 0;
+    static double f_error_2_l = 0;
+    static double f_error_3_l = 0;
+    static double f_control_output_l = 0;
+    static double f_control_change_l = 0;
+    
+    static double kp_r = 0.05;
+    static double ki_r = 0;
+    static double kd_r = 0;
+    static double f_error_1_r = 0;
+    static double f_error_2_r = 0;
+    static double f_error_3_r = 0;
+    static double f_control_output_r = 0;
+    static double f_control_change_r = 0;
 	
     public void init(){
     myRobot = new RobotDrive(0, 1);
