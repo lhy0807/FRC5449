@@ -97,64 +97,6 @@ public class RobotAssist extends SampleRobot{
     	Timer.delay(0.25);
     }
     
-    public void AutoDIS(double r_power,double r_distance,double l_power,double l_distance){
-    	r_distance+= Enc_r.getDistance();
-    	l_distance+= Enc_l.getDistance();
-    	boolean a = true;
-    	boolean b = true;
-    	boolean c = true;
-    	while(a){
-    		if(r_distance>0){
-    			if(r_distance>Enc_r.getDistance()){
-    				PID_r(r_power);
-    			}
-    			else{
-    				mot_r1.set(0);
-        			mot_r2.set(0);
-    				b = false;}
-    		}
-    		if(r_distance<0){
-    			if(r_distance<Enc_r.getDistance()){
-    				PID_r(r_power);
-    			}
-    			else{
-    				mot_r1.set(0);
-        			mot_r2.set(0);
-    				b = false;}
-    		}
-    		if(r_distance==0){
-    			mot_r1.set(0);
-    			mot_r2.set(0);
-    			b=false;
-    		}
-    		if(l_distance>0){
-    			if(l_distance<Enc_l.getDistance()){
-    				PID_l(l_power);
-    			}
-    			else{
-    				mot_l1.set(0);
-        			mot_l2.set(0);
-    				c = false;}
-    		}
-    		if(l_distance<0){
-    			if(l_distance>Enc_l.getDistance()){
-    				PID_l(l_power);
-    			}
-    			else{
-    				mot_l1.set(0);
-        			mot_l2.set(0);
-    				c = false;}
-    		}
-    		if(l_distance==0){
-    			mot_l1.set(0);
-    			mot_l2.set(0);
-    			c = false;}
-    		if(b==false && c==false){
-    			a=false;
-    		}
-    	}
-    }
-    
     public void PID_l(double pid_rate) {
     	f_error_2_l = f_error_1_l;
     	f_error_3_l = f_error_2_l;
@@ -187,12 +129,8 @@ public class RobotAssist extends SampleRobot{
     		Timer.delay(0.005);
     }
     
-    
-    
-    
     public void AutoPID(double r_pid,double r_distance,double l_pid,double l_distance){
     	r_distance+= Enc_r.getDistance();
-    	l_distance+= Enc_l.getDistance();
     	boolean a = true;
     	boolean b = true;
     	boolean c = true;
