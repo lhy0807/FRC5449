@@ -11,6 +11,8 @@ public class Robot extends TankAssist {
         	intake();//intake module
         	shooter();//shooter module
         	go();//Tank module
+        	//NormalDirection1();
+    		EncoderTest();
         	arm();
         	double range = ultra.getRangeInches();
         	SmartDashboard.putNumber("ultra data", range);
@@ -20,6 +22,10 @@ public class Robot extends TankAssist {
     public void autonomous() {
     	init();
     	while (isAutonomous() && isEnabled()){
+    		PID_r(500);
+    		EncoderTest();
+
+
     		
     		
     	}

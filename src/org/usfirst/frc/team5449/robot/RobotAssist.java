@@ -32,7 +32,7 @@ public class RobotAssist extends SampleRobot{
     static boolean reverse_button_status = false; //Process value for reverse_mode
     static boolean reverse_mode = false; //define default reverse_mode status
     static int reverse_mode_Bot = 2; //define reverse_mode bottom
-    static double proportion = 1.25; //define proportion of speed
+    static double proportion = 0.95; //define proportion of speed
     static Ultrasonic ultra;
     
     static Encoder Enc_l;
@@ -45,23 +45,23 @@ public class RobotAssist extends SampleRobot{
     static int arm_up = 6;
     static int arm_down = 3;
     
-    double kp_l = 0.05;
-	double ki_l = 0;
-	double kd_l = 0;
-	double f_error_1_l = 0;
-	double f_error_2_l = 0;
-	double f_error_3_l = 0;
-	double f_control_output_l = 0;
-	double f_control_change_l = 0;
+    static double kp_l = 0.05;
+    static double ki_l = 0;
+    static double kd_l = 0;
+    static double f_error_1_l = 0;
+    static double f_error_2_l = 0;
+    static double f_error_3_l = 0;
+    static double f_control_output_l = 0;
+    static double f_control_change_l = 0;
 	
-	double kp_r = 0.05;
-	double ki_r = 0;
-	double kd_r = 0;
-	double f_error_1_r = 0;
-	double f_error_2_r = 0;
-	double f_error_3_r = 0;
-	double f_control_output_r = 0;
-	double f_control_change_r = 0;
+    static double kp_r = 0.0005;
+    static double ki_r = 0;
+    static double kd_r = 0;
+    static double f_error_1_r = 0;
+    static double f_error_2_r = 0;
+    static double f_error_3_r = 0;
+    static double f_control_output_r = 0;
+    static double f_control_change_r = 0;
 	
     public void init(){
     myRobot = new RobotDrive(0, 1);
@@ -97,17 +97,86 @@ public class RobotAssist extends SampleRobot{
     	Timer.delay(0.25);
     }
     
+    public void AutoDIS(double r_power,double r_distance,double l_power,double l_distance){
+    	r_distance+= Enc_r.getDistance();
+    	l_distance+= Enc_l.getDistance();
+    	boolean a = true;
+    	boolean b = true;
+    	boolean c = true;
+    	while(a){
+    		if(r_distance>0){
+    			if(r_distance>Enc_r.getDistance()){
+    				mot_r1.set(r_power);
+    				mot_r2.set(r_power);
+    			}
+    			else{
+    				mot_r1.set(0);
+        			mot_r2.set(0);
+    				b = false;}
+    		}
+    		if(r_distance<0){
+    			if(r_distance<Enc_r.getDistance()){
+    				mot_r1.set(r_power);
+    				mot_r2.set(r_power);
+    			}
+    			else{
+    				mot_r1.set(0);
+        			mot_r2.set(0);
+    				b = false;}
+    		}
+    		if(r_distance==0){
+    			mot_r1.set(0);
+    			mot_r2.set(0);
+    			b=false;
+    		}
+    		if(l_distance>0){
+    			if(l_distance<Enc_l.getDistance()){
+    				mot_l1.set(-l_power);
+    				mot_l2.set(-l_power);
+    			}
+    			else{
+    				mot_l1.set(0);
+        			mot_l2.set(0);
+    				c = false;}
+    		}
+    		if(l_distance<0){
+    			if(l_distance>Enc_l.getDistance()){
+    				mot_l1.set(-l_power);
+    				mot_l2.set(-l_power);
+    			}
+    			else{
+    				mot_l1.set(0);
+        			mot_l2.set(0);
+    				c = false;}
+    		}
+    		if(l_distance==0){
+    			mot_l1.set(0);
+    			mot_l2.set(0);
+    			c = false;}
+    		if(b==false && c==false){
+    			a=false;
+    		}
+    	}
+    }
+        
+    
     public void PID_l(double pid_rate) {
     	f_error_2_l = f_error_1_l;
     	f_error_3_l = f_error_2_l;
-    	f_error_1_l = pid_rate - Enc_l.getRate();
+    	f_error_1_l = pid_rate + Enc_l.getRate();
     	f_control_change_l = f_error_1_l * kp_l/1000 + //proportional term
     			(f_error_1_l - f_error_2_l) * ki_l + //integral term
     			((f_error_1_l - f_error_2_l) - (f_error_2_l - f_error_3_l)) * kd_l; //differential term
     			//add the change to control output
-    			f_control_output_l += f_control_change_l;
-    		f_control_output_l = f_control_output_l > 1? 1:f_control_output_l;
-    		f_control_output_l = f_control_output_l < -1? -1:f_control_output_l;	
+    	f_control_output_l += f_control_change_l;
+    	
+    	
+    	SmartDashboard.putNumber("error1", f_error_1_l);
+		SmartDashboard.putNumber("f_control_change_l", f_control_change_l);
+		SmartDashboard.putNumber("f_control_output_l", f_control_output_l);
+
+   		f_control_output_l = f_control_output_l > 1? 1:f_control_output_l;
+    	f_control_output_l = f_control_output_l < -1? -1:f_control_output_l;	
     		mot_l1.set(f_control_output_l);
     		mot_l2.set(f_control_output_l);
     		Timer.delay(0.005);
@@ -124,6 +193,12 @@ public class RobotAssist extends SampleRobot{
     			f_control_output_r += f_control_change_r;
     		f_control_output_r = f_control_output_r > 1? 1:f_control_output_r;
     		f_control_output_r = f_control_output_r < -1? -1:f_control_output_r;	
+    		
+    		SmartDashboard.putNumber("error1", f_error_1_r);
+    		SmartDashboard.putNumber("f_control_change_r", f_control_change_r);
+    		SmartDashboard.putNumber("f_control_output_r", f_control_output_r);
+    		
+    		
     		mot_r1.set(f_control_output_r);
     		mot_r2.set(f_control_output_r);
     		Timer.delay(0.005);
@@ -131,6 +206,7 @@ public class RobotAssist extends SampleRobot{
     
     public void AutoPID(double r_pid,double r_distance,double l_pid,double l_distance){
     	r_distance+= Enc_r.getDistance();
+    	l_distance+= Enc_l.getDistance();
     	boolean a = true;
     	boolean b = true;
     	boolean c = true;
@@ -190,64 +266,64 @@ public class RobotAssist extends SampleRobot{
     
     public void Accelerate(){
     	//Make the accelerate smoothly
-    	mot_l1.set(Tank.getRawAxis(1)*(-0.5)*(proportion));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.5)*(proportion));
-    	mot_r1.set(Tank.getRawAxis(5)*0.5);
-    	mot_r2.set(Tank.getRawAxis(5)*0.5);
+    	mot_l1.set(Tank.getRawAxis(1)*(-0.5));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.5));
+    	mot_r1.set(Tank.getRawAxis(5)*0.5*(proportion));
+    	mot_r2.set(Tank.getRawAxis(5)*0.5*(proportion));
     	Timer.delay(0.25);
-		mot_l1.set(Tank.getRawAxis(1)*(-0.55)*(proportion));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.55)*(proportion));
-    	mot_r1.set(Tank.getRawAxis(5)*0.55);
-    	mot_r2.set(Tank.getRawAxis(5)*0.55);
+		mot_l1.set(Tank.getRawAxis(1)*(-0.55));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.55));
+    	mot_r1.set(Tank.getRawAxis(5)*0.55*(proportion));
+    	mot_r2.set(Tank.getRawAxis(5)*0.55*(proportion));
     	Timer.delay(0.25);
-		mot_l1.set(Tank.getRawAxis(1)*(-0.6)*(proportion));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.6)*(proportion));
-    	mot_r1.set(Tank.getRawAxis(5)*0.6);
-    	mot_r2.set(Tank.getRawAxis(5)*0.6);
+		mot_l1.set(Tank.getRawAxis(1)*(-0.6));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.6));
+    	mot_r1.set(Tank.getRawAxis(5)*0.6*(proportion));
+    	mot_r2.set(Tank.getRawAxis(5)*0.6*(proportion));
     	Timer.delay(0.25);
-		mot_l1.set(Tank.getRawAxis(1)*(-0.65)*(proportion));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.65)*(proportion));
-    	mot_r1.set(Tank.getRawAxis(5)*0.65);
-    	mot_r2.set(Tank.getRawAxis(5)*0.65);
+		mot_l1.set(Tank.getRawAxis(1)*(-0.65));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.65));
+    	mot_r1.set(Tank.getRawAxis(5)*0.65*(proportion));
+    	mot_r2.set(Tank.getRawAxis(5)*0.65*(proportion));
     	Timer.delay(0.25);
     }
     
     public void Decelerate(){
     	//Make the decelerate smoothly
-    	mot_l1.set(Tank.getRawAxis(1)*(-0.65)*(proportion));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.65)*(proportion));
-    	mot_r1.set(Tank.getRawAxis(5)*0.65);
-    	mot_r2.set(Tank.getRawAxis(5)*0.65);
+    	mot_l1.set(Tank.getRawAxis(1)*(-0.65));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.65));
+    	mot_r1.set(Tank.getRawAxis(5)*0.65*(proportion));
+    	mot_r2.set(Tank.getRawAxis(5)*0.65*(proportion));
     	Timer.delay(0.25);
-		mot_l1.set(Tank.getRawAxis(1)*(-0.6)*(proportion));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.6)*(proportion));
-    	mot_r1.set(Tank.getRawAxis(5)*0.6);
-    	mot_r2.set(Tank.getRawAxis(5)*0.6);
+		mot_l1.set(Tank.getRawAxis(1)*(-0.6));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.6));
+    	mot_r1.set(Tank.getRawAxis(5)*0.6*(proportion));
+    	mot_r2.set(Tank.getRawAxis(5)*0.6*(proportion));
     	Timer.delay(0.25);
-		mot_l1.set(Tank.getRawAxis(1)*(-0.55)*(proportion));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.55)*(proportion));
-    	mot_r1.set(Tank.getRawAxis(5)*0.55);
-    	mot_r2.set(Tank.getRawAxis(5)*0.55);
+		mot_l1.set(Tank.getRawAxis(1)*(-0.55));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.55));
+    	mot_r1.set(Tank.getRawAxis(5)*0.55*(proportion));
+    	mot_r2.set(Tank.getRawAxis(5)*0.55*(proportion));
     	Timer.delay(0.25);
-		mot_l1.set(Tank.getRawAxis(1)*(-0.5)*(proportion));
-    	mot_l2.set(Tank.getRawAxis(1)*(-0.5)*(proportion));
-    	mot_r1.set(Tank.getRawAxis(5)*0.5);
-    	mot_r2.set(Tank.getRawAxis(5)*0.5);
+		mot_l1.set(Tank.getRawAxis(1)*(-0.5));
+    	mot_l2.set(Tank.getRawAxis(1)*(-0.5));
+    	mot_r1.set(Tank.getRawAxis(5)*0.5*(proportion));
+    	mot_r2.set(Tank.getRawAxis(5)*0.5*(proportion));
     	Timer.delay(0.25);
     }
     
     public void NormalDirection(){
-    	mot_l1.set(Tank.getRawAxis(1)*(-TankPower)*(proportion));
-    	mot_l2.set(Tank.getRawAxis(1)*(-TankPower)*(proportion));
-    	mot_r1.set(Tank.getRawAxis(5)*TankPower);
-    	mot_r2.set(Tank.getRawAxis(5)*TankPower);
+    	mot_l1.set(Tank.getRawAxis(1)*(-TankPower));
+    	mot_l2.set(Tank.getRawAxis(1)*(-TankPower));
+    	mot_r1.set(Tank.getRawAxis(5)*TankPower*(proportion));
+    	mot_r2.set(Tank.getRawAxis(5)*TankPower*(proportion));
     }
-    
+        
     public void ReverseDirection(){
     	mot_l1.set(Tank.getRawAxis(5)*(TankPower)*(1.5));
     	mot_l2.set(Tank.getRawAxis(5)*(TankPower)*(1.5));
-    	mot_r1.set(Tank.getRawAxis(1)*-(TankPower)*(1.5));
-    	mot_r2.set(Tank.getRawAxis(1)*-(TankPower)*(1.5));
+    	mot_r1.set(Tank.getRawAxis(1)*-(TankPower)*(1.5)*(proportion));
+    	mot_r2.set(Tank.getRawAxis(1)*-(TankPower)*(1.5)*(proportion));
     }
     
     public void EncoderTest(){
@@ -255,6 +331,8 @@ public class RobotAssist extends SampleRobot{
 		SmartDashboard.putNumber("left Encoder Distance", Enc_l.getDistance());
 		SmartDashboard.putNumber("Right Encoder Rate", Enc_r.getRate());
 		SmartDashboard.putNumber("Right Encoder Distance", Enc_r.getDistance());
+		SmartDashboard.putNumber("k", Enc_l.getRate()/Enc_r.getRate());
+
     }
 
 }
