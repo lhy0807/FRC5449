@@ -13,24 +13,32 @@ public class Robot extends TankAssist {
         	shooter();//shooter module
         	go();//Tank module
         	arm();
+        	Enc_reset();
         	double range = ultra.getRangeInches();
         	SmartDashboard.putNumber("ultra data", range);
+        	SmartDashboard.putNumber("arm_l_distance", Enc_arm_l.getDistance());
+        	SmartDashboard.putNumber("arm_r_distance", Enc_arm_r.getDistance());
         }
     }
     
     public void autonomous() {
     	init();
     	while (isAutonomous() && isEnabled()){
+    		Enc_l.reset();
+    		Enc_r.reset();
         	pid_init();
-        	Timer.delay(1);
-    		AutoPID(300,1500,300,1500);
-    		Timer.delay(0.05);
+    		AutoPID(-600,-1200,-570,-1200);
+    		Timer.delay(0.5);
     		pid_init();
-    		AutoPID(-300,-1500,-300,-1500);
-    		Timer.delay(0.05);
+    		AutoPID(-300,-800,-300,-800);
+    		Timer.delay(0.5);
     		pid_init();
-    		Timer.delay(0.05);
-    		AutoPID(-300,-1000,300,1000);
+    		AutoPID(-300,-300,300,300);
+    		Enc_l.reset();
+    		Enc_r.reset();
+//    		Timer.delay(1);
+    		pid_init();
+    		AutoPID(600,600,600,600);
     		break;
     	}
     }

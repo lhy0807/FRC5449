@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 public class RobotAssist extends SampleRobot{
     static RobotDrive myRobot;  // class that handles basic drive operations
     static Joystick  Tank;  // set to ID 1 in DriverStation
+    static Joystick Shoot;
     static CANTalon mot_l1; //define left motor 1
     static CANTalon mot_l2; //define left motor 2
     static CANTalon mot_r1; //define right motor 1
@@ -37,12 +38,16 @@ public class RobotAssist extends SampleRobot{
     
     static Encoder Enc_l;
     static Encoder Enc_r;
+    static Encoder Enc_arm_l;
+    static Encoder Enc_arm_r;
     
-    static int intake_bot = 5;
-    static int intake_axis = 2;
-    static int shooter_bot = 3;
+    static int intake_bot = 2;
+    static int outake_bot = 3;
+    static int shooter_bot = 1;
     static int arm_up = 6;
-    static int arm_down = 3;
+    static int arm_down = 4;
+    static int Enc_reset = 12;
+    static int shooter_reverse = 5;
 
     static double kp_l = 0.01;
     static double ki_l = 0.001;
@@ -62,6 +67,7 @@ public class RobotAssist extends SampleRobot{
     static double f_control_output_r = 0;
     static double f_control_change_r = 0;
 	
+    
     public void pid_init() {
     	double kp_l = 0.01;
         double ki_l = 0.001;
@@ -85,6 +91,7 @@ public class RobotAssist extends SampleRobot{
     myRobot = new RobotDrive(0, 1);
     myRobot.setExpiration(0.1);
     Tank = new Joystick(0);
+    Shoot = new Joystick(1);
     mot_l1 = new CANTalon(7);
     mot_l2 = new CANTalon(9);
     mot_r1 = new CANTalon(8);
@@ -99,8 +106,18 @@ public class RobotAssist extends SampleRobot{
     ultra.setAutomaticMode(true);
     Enc_r = new Encoder(1,0);
     Enc_l = new Encoder(2,3);
+    Enc_arm_l = new Encoder(6,7);
+    Enc_arm_r = new Encoder(4,5);
     }
 
+    public void Enc_reset() {
+    	if(Shoot.getRawButton(Enc_reset)) {
+    		Enc_l.reset();
+    		Enc_r.reset();
+    		Enc_arm_l.reset();
+    		Enc_arm_r.reset();
+    	}
+    }
     public void PID_l(double pid_rate) {
     	f_error_2_l = f_error_1_l;
     	f_error_3_l = f_error_2_l;
@@ -110,7 +127,6 @@ public class RobotAssist extends SampleRobot{
     			((f_error_1_l - f_error_2_l) - (f_error_2_l - f_error_3_l)) * kd_l/1000; //differential term
     			//add the change to control output
     	f_control_output_l += f_control_change_l;
-    	
     	
     	SmartDashboard.putNumber("error1", f_error_1_l);
 		SmartDashboard.putNumber("f_control_change_l", f_control_change_l);
@@ -154,10 +170,7 @@ public class RobotAssist extends SampleRobot{
     	double r_before = Enc_r.getDistance();
     	
     	double l_before = Enc_l.getDistance();
-    	
-    	
-
-    	
+   	
     	boolean a = true;
     	boolean b = true;
     	boolean c = true;
@@ -258,6 +271,10 @@ public class RobotAssist extends SampleRobot{
 		SmartDashboard.putNumber("Enc_r.change()", Enc_r.getDistance()-r_before);
 		SmartDashboard.putNumber("Enc_l.change()", Enc_l.getDistance()-l_before);
 
+		l_real_distance=0;
+		r_real_distance=0;
+		l_distance=0;
+		r_distance=0;
 
 
     }

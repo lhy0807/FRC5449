@@ -1,25 +1,17 @@
 package org.usfirst.frc.team5449.robot;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TankAssist extends RobotAssist{
 	
 	public void shooter() {
-		if(Tank.getRawButton(shooter_bot)) {
-			if (shooter_status==false) {
-				if (shooter_mode==true) {
-					shooter_mode=false;
-				}
-				else {
-					shooter_mode=true;
-				}
-			}
-			shooter_status=true;
-			}
-	else {
-		shooter_status=false;
-	}
-		if(shooter_mode==true) {
+		if (Shoot.getRawButton(shooter_reverse)) {
+			shooter_r.set(0.2);
+			shooter_l.set(-0.2);
+			Timer.delay(0.05);
+		}
+		else if (Shoot.getRawButton(shooter_bot)) {
 			shooter_r.set(-1);
 			shooter_l.set(1);
 			Timer.delay(0.05);
@@ -31,33 +23,36 @@ public class TankAssist extends RobotAssist{
 	}
 	
 	public void intake() {
-		intake_r.set(Tank.getRawAxis(intake_axis));
-		intake_l.set(Tank.getRawAxis(intake_axis));
-		if (Tank.getRawButton(intake_bot)) {
+		if (Shoot.getRawButton(outake_bot)) {
 			intake_r.set(-1);
 			intake_l.set(-1);
-			Timer.delay(0.5);
+			Timer.delay(0.1);
+		}
+		if (Shoot.getRawButton(intake_bot)) {
+			intake_r.set(1);
+			intake_l.set(1);
+			Timer.delay(0.1);
+		}
+		else {
 			intake_r.set(0);
 			intake_l.set(0);
 		}
 	}
 	
 	public void arm() {
-		if(Tank.getRawButton(arm_up)) {
+		if(Shoot.getRawButton(arm_up)) {
 			arm_r.set(1);
 			arm_l.set(1);
-			Timer.delay(0.05);
 		}
-		else if(Tank.getRawAxis(arm_down)>0.5) {
+		else if(Shoot.getRawButton(arm_down)) {
 			arm_r.set(-1);
 			arm_l.set(-1);
-			Timer.delay(0.05);
 		}
 		else {
 			arm_r.set(0);
 			arm_l.set(0);
-			Timer.delay(0.05);
 		}
+		
 	}
 	
 	public void go(){
