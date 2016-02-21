@@ -26,7 +26,9 @@ public class Robot extends TankAssist {
     	while (isAutonomous() && isEnabled()){
     		Enc_l.reset();
     		Enc_r.reset();
+    		
         	pid_init();
+        	Timer.delay(5);
     		AutoPID(-600,-1200,-570,-1200);
     		Timer.delay(0.5);
     		pid_init();
@@ -36,11 +38,13 @@ public class Robot extends TankAssist {
     		AutoPID(-300,-300,300,300);
     		Enc_l.reset();
     		Enc_r.reset();
-//    		Timer.delay(1);
     		pid_init();
-    		AutoPID(600,600,600,600);
+    		Timer.delay(1);
+    		AutoPID(600,1000,600,1000);
     		break;
     	}
+    	Enc_l.reset();
+		Enc_r.reset();
     }
     
     public void test() {

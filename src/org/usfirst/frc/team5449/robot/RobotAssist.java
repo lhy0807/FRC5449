@@ -69,23 +69,23 @@ public class RobotAssist extends SampleRobot{
 	
     
     public void pid_init() {
-    	double kp_l = 0.01;
-        double ki_l = 0.001;
-        double kd_l = 0;
-        double f_error_1_l = 0;
-        double f_error_2_l = 0;
-        double f_error_3_l = 0;
-        double f_control_output_l = 0;
-        double f_control_change_l = 0;
+        final double kp_l = 0.01;
+        final double ki_l = 0.001;
+        final double kd_l = 0;
+        final double f_error_1_l = 0;
+        final double f_error_2_l = 0;
+        final double f_error_3_l = 0;
+        final double f_control_output_l = 0;
+        final double f_control_change_l = 0;
    	
-        double kp_r = 0.01;
-        double ki_r = 0.001;
-        double kd_r = 0;
-        double f_error_1_r = 0;
-        double f_error_2_r = 0;
-        double f_error_3_r = 0;
-        double f_control_output_r = 0;
-        double f_control_change_r = 0;
+        final double kp_r = 0.01;
+        final double ki_r = 0.001;
+        final double kd_r = 0;
+        final double f_error_1_r = 0;
+        final double f_error_2_r = 0;
+        final double f_error_3_r = 0;
+        final double f_control_output_r = 0;
+        final double f_control_change_r = 0;
     }
     public void init(){
     myRobot = new RobotDrive(0, 1);
@@ -275,7 +275,10 @@ public class RobotAssist extends SampleRobot{
 		r_real_distance=0;
 		l_distance=0;
 		r_distance=0;
-
+		f_control_output_l = 0;
+        f_control_change_l = 0;
+        f_control_output_r = 0;
+        f_control_change_r = 0;
 
     }
     
