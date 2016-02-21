@@ -146,70 +146,99 @@ public class RobotAssist extends SampleRobot{
     }
     
     public void AutoPID(double l_pid,double l_distance,double r_pid,double r_distance){
+    	
+    	double r_real_distance = r_distance - Enc_r.getDistance();
+    	
+    	double l_real_distance = l_distance - Enc_l.getDistance();
+    	
+    	double r_before = Enc_r.getDistance();
+    	
+    	double l_before = Enc_l.getDistance();
+    	
+    	
+
+    	
     	boolean a = true;
     	boolean b = true;
     	boolean c = true;
     	while(a){
+    		SmartDashboard.putNumber("l_pid", l_pid);
+    		SmartDashboard.putNumber("r_pid", r_pid);
+
     		EncoderTest();
     		if(r_distance>0){
-    			if(r_distance>(-Enc_r.getDistance())){
+    			if(r_real_distance>(-Enc_r.getDistance())){
     				PID_r(r_pid);
-    	    		SmartDashboard.putString("running_status_r", "running");
+    	    		SmartDashboard.putString("running_status_r", "Forward running");
+    	    		SmartDashboard.putNumber("r_distance", r_distance);
+    	    		SmartDashboard.putNumber("r_real_distance", r_real_distance);
+    	    		SmartDashboard.putNumber("Enc_r.getDistance()", Enc_r.getDistance());
+
+    	    		
     			}
     			else{
     				mot_r1.set(0);
         			mot_r2.set(0);
     				b = false;
-    	    		SmartDashboard.putString("running_status_r", "stopping");
+    	    		SmartDashboard.putString("running_status_r", "Forward stopping");
     			}
     		}
     		if(r_distance<0){
-    			if(r_distance<(-Enc_r.getDistance())){
+    			if(r_real_distance<(-Enc_r.getDistance())){
     				PID_r(r_pid);
-    	    		SmartDashboard.putString("running_status_r", "running");
+    	    		SmartDashboard.putString("running_status_r", "Backward running");
+    	    		SmartDashboard.putNumber("r_distance", r_distance);
+    	    		SmartDashboard.putNumber("r_real_distance", r_real_distance);
+    	    		SmartDashboard.putNumber("Enc_r.getDistance()", Enc_r.getDistance());
     			}
     			else{
     				mot_r1.set(0);
         			mot_r2.set(0);
     				b = false;
-    	    		SmartDashboard.putString("running_status_r", "stopping");	
+    	    		SmartDashboard.putString("running_status_r", "Backward stopping");	
     			}
     		}
     		if(r_distance==0){
     			mot_r1.set(0);
     			mot_r2.set(0);
     			b=false;
-	    		SmartDashboard.putString("running_status_r", "stopping");	
+	    		SmartDashboard.putString("running_status_r", "Zero stopping");	
     		}
     		if(l_distance>0){
-    			if(l_distance>(-Enc_l.getDistance())){
+    			if(l_real_distance>(-Enc_l.getDistance())){
     				PID_l(l_pid);
-    	    		SmartDashboard.putString("running_status_l", "running");
+    	    		SmartDashboard.putString("running_status_l", "Forward running");
+    	    		SmartDashboard.putNumber("l_distance", l_distance);
+    	    		SmartDashboard.putNumber("l_real_distance", l_real_distance);
+    	    		SmartDashboard.putNumber("Enc_l.getDistance()", Enc_l.getDistance());
     			}
     			else{
     				mot_l1.set(0);
         			mot_l2.set(0);
     				c = false;
-    	    		SmartDashboard.putString("running_status_l", "stopping");	
+    	    		SmartDashboard.putString("running_status_l", "Forward stopping");	
     			}
     		}
     		if(l_distance<0){
-    			if(l_distance<(-Enc_l.getDistance())){
+    			if(l_real_distance<(-Enc_l.getDistance())){
     				PID_l(l_pid);
-    	    		SmartDashboard.putString("running_status_l", "running");
+    	    		SmartDashboard.putString("running_status_l", "Backward running");
+    	    		SmartDashboard.putNumber("l_distance", l_distance);
+    	    		SmartDashboard.putNumber("l_real_distance", l_real_distance);
+    	    		SmartDashboard.putNumber("Enc_l.getDistance()", Enc_l.getDistance());
     			}
     			else{
     				mot_l1.set(0);
         			mot_l2.set(0);
     				c = false;
-    	    		SmartDashboard.putString("running_status_l", "stopping");		
+    	    		SmartDashboard.putString("running_status_l", "Backward stopping");		
     			}
     		}
     		if(l_distance==0){
     			mot_l1.set(0);
     			mot_l2.set(0);
     			c = false;
-	    		SmartDashboard.putString("running_status_l", "stopping");			
+	    		SmartDashboard.putString("running_status_l", "Zero stopping");			
     		}
     		if(b==false && c==false){
     			a=false;
@@ -219,11 +248,18 @@ public class RobotAssist extends SampleRobot{
     			mot_r1.set(0);
     			mot_r2.set(0);
     			break;
+    			
     		}
     		else{
     			SmartDashboard.putString("running_status", "running");	
     		}
     	}
+
+		SmartDashboard.putNumber("Enc_r.change()", Enc_r.getDistance()-r_before);
+		SmartDashboard.putNumber("Enc_l.change()", Enc_l.getDistance()-l_before);
+
+
+
     }
     
     public void Accelerate(){

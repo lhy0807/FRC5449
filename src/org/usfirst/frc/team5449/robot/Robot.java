@@ -22,7 +22,16 @@ public class Robot extends TankAssist {
     	init();
     	while (isAutonomous() && isEnabled()){
         	pid_init();
-    		AutoPID(-300,-500,300,500);    		
+        	Timer.delay(1);
+    		AutoPID(300,1500,300,1500);
+    		Timer.delay(0.05);
+    		pid_init();
+    		AutoPID(-300,-1500,-300,-1500);
+    		Timer.delay(0.05);
+    		pid_init();
+    		Timer.delay(0.05);
+    		AutoPID(-300,-1000,300,1000);
+    		break;
     	}
     }
     
