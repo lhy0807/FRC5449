@@ -1,7 +1,6 @@
 package org.usfirst.frc.team5449.robot;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TankAssist extends RobotAssist{
 	

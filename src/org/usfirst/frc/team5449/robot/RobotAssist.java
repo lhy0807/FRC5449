@@ -69,23 +69,23 @@ public class RobotAssist extends SampleRobot{
 	
     
     public void pid_init() {
-        final double kp_l = 0.01;
-        final double ki_l = 0.001;
-        final double kd_l = 0;
-        final double f_error_1_l = 0;
-        final double f_error_2_l = 0;
-        final double f_error_3_l = 0;
-        final double f_control_output_l = 0;
-        final double f_control_change_l = 0;
+          kp_l = 0.01;
+          ki_l = 0.001;
+          kd_l = 0;
+          f_error_1_l = 0;
+          f_error_2_l = 0;
+          f_error_3_l = 0;
+          f_control_output_l = 0;
+          f_control_change_l = 0;
    	
-        final double kp_r = 0.01;
-        final double ki_r = 0.001;
-        final double kd_r = 0;
-        final double f_error_1_r = 0;
-        final double f_error_2_r = 0;
-        final double f_error_3_r = 0;
-        final double f_control_output_r = 0;
-        final double f_control_change_r = 0;
+          kp_r = 0.01;
+          ki_r = 0.001;
+          kd_r = 0;
+          f_error_1_r = 0;
+          f_error_2_r = 0;
+          f_error_3_r = 0;
+          f_control_output_r = 0;
+          f_control_change_r = 0;
     }
     public void init(){
     myRobot = new RobotDrive(0, 1);
@@ -110,14 +110,6 @@ public class RobotAssist extends SampleRobot{
     Enc_arm_r = new Encoder(4,5);
     }
 
-    public void Enc_reset() {
-    	if(Shoot.getRawButton(Enc_reset)) {
-    		Enc_l.reset();
-    		Enc_r.reset();
-    		Enc_arm_l.reset();
-    		Enc_arm_r.reset();
-    	}
-    }
     public void PID_l(double pid_rate) {
     	f_error_2_l = f_error_1_l;
     	f_error_3_l = f_error_2_l;
