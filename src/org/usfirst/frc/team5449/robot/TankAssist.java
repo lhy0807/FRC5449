@@ -47,6 +47,14 @@ public class TankAssist extends RobotAssist{
 			arm_r.set(-1);
 			arm_l.set(-1);
 		}
+		else if(Shoot.getRawButton(arm_up_slow)) {
+			arm_r.set(0.5);
+			arm_l.set(0.5);
+		}
+		else if(Shoot.getRawButton(arm_down_slow)) {
+			arm_r.set(-0.5);
+			arm_l.set(-0.5);
+		}
 		else {
 			arm_r.set(0);
 			arm_l.set(0);

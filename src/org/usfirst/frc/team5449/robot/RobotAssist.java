@@ -46,6 +46,8 @@ public class RobotAssist extends SampleRobot{
     static int shooter_bot = 1;
     static int arm_up = 6;
     static int arm_down = 4;
+    static int arm_up_slow = 12;
+    static int arm_down_slow = 11;
     static int Enc_reset = 12;
     static int shooter_reverse = 5;
 

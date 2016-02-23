@@ -1,4 +1,4 @@
-package org.usfirst.frc.team5449.robot;
+ package org.usfirst.frc.team5449.robot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,13 +30,15 @@ public class Robot extends TankAssist {
     		AutoPID(-1000,-1000,-900,-1000);
     		
     		pid_init();
-    		AutoPID(-600,-1200,-600,-1200);
+    		AutoPID(-600,-1300,-600,-1300);
     		
     		shooter_r.set(-0.4);
 			shooter_l.set(0.4);
-    		
+			arm_l.set(0.8);
+    		arm_r.set(0.8);
     		Timer.delay(0.2);
-    		
+    		arm_l.set(0);
+    		arm_r.set(0);
     		pid_init();
     		AutoPID(-400,-300,400,300);
     		
@@ -45,14 +47,14 @@ public class Robot extends TankAssist {
     		
     		pid_init();
     		Timer.delay(0.1);
-    		AutoPID(1500,1800,1500,1800);
+    		AutoPID(1500,1780,1500,1780);
     		
     		shooter_r.set(-1);
 			shooter_l.set(1);
     		
     		pid_init();
     		Timer.delay(0.1);
-    		AutoPID(-400,-260,400,260);
+    		AutoPID(-400,-280,400,280);
     		
     		pid_init();
     		
