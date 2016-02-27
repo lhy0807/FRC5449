@@ -23,20 +23,29 @@ public class Robot extends TankAssist {
     public void autonomous() {
     	init();
     	while (isAutonomous() && isEnabled()){
+    		mot_l1.set(0.25);
+	    	mot_l2.set(0.25);
+	    	mot_r1.set(-0.25);
+	    	mot_r2.set(-0.25);
     		Timer.delay(0.1);
-    		Enc_l.reset();
-    		Enc_r.reset();		
-        	pid_init();
-    		AutoPID(-1000,-1000,-900,-1000);
     		
+    		Enc_l.reset();
+    		Enc_r.reset();	
+        	pid_init();
+        	
+        	arm_l.set(0.31);
+    		arm_r.set(0.31);
+    		AutoPID(-1000,-980,-900,-980);
+    		arm_l.set(0);
+    		arm_r.set(0);
     		pid_init();
-    		AutoPID(-600,-1300,-600,-1300);
+    		AutoPID(-600,-1250,-600,-1250);
     		
     		shooter_r.set(-0.4);
 			shooter_l.set(0.4);
-			arm_l.set(0.8);
-    		arm_r.set(0.8);
-    		Timer.delay(0.2);
+			arm_l.set(-0.8);
+    		arm_r.set(-0.8);
+    		Timer.delay(0.65);
     		arm_l.set(0);
     		arm_r.set(0);
     		pid_init();
@@ -47,17 +56,20 @@ public class Robot extends TankAssist {
     		
     		pid_init();
     		Timer.delay(0.1);
-    		AutoPID(1500,1780,1500,1780);
+    		AutoPID(1500,1810,1500,1810);
     		
     		shooter_r.set(-1);
 			shooter_l.set(1);
     		
     		pid_init();
     		Timer.delay(0.1);
-    		AutoPID(-400,-280,400,280);
+    		AutoPID(-400,-255,400,255);
     		
     		pid_init();
-    		
+//    		mot_l1.set(0.1);
+//	    	mot_l2.set(0.1);
+//	    	mot_r1.set(-0.1);
+//	    	mot_r2.set(-0.1);
     		
 			intake_r.set(1);
 			intake_l.set(1);
@@ -66,6 +78,10 @@ public class Robot extends TankAssist {
 			shooter_l.set(0);
 			intake_r.set(0);
 			intake_l.set(0);
+			mot_l1.set(0);
+	    	mot_l2.set(0);
+	    	mot_r1.set(0);
+	    	mot_r2.set(0);
     		break;
     	}
     	Enc_l.reset();
