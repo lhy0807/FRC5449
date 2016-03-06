@@ -108,8 +108,6 @@ public class RobotAssist extends SampleRobot{
     ultra.setAutomaticMode(true);
     Enc_r = new Encoder(1,0);
     Enc_l = new Encoder(2,3);
-    Enc_arm_l = new Encoder(6,7);
-    Enc_arm_r = new Encoder(4,5);
     }
 
     public void PID_l(double pid_rate) {

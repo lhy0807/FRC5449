@@ -8,25 +8,23 @@ public class Robot extends TankAssist {
     public void operatorControl() {    	
     	init();
         while (isOperatorControl() && isEnabled()) { 
-        	pid_init();
+        	EncoderTest();
         	intake();//intake module
         	shooter();//shooter module
         	go();//Tank module
         	arm();
         	double range = ultra.getRangeInches();
         	SmartDashboard.putNumber("ultra data", range);
-        	SmartDashboard.putNumber("arm_l_distance", Enc_arm_l.getDistance());
-        	SmartDashboard.putNumber("arm_r_distance", Enc_arm_r.getDistance());
         }
     }
     
     public void autonomous() {
     	init();
     	while (isAutonomous() && isEnabled()){
-    		mot_l1.set(0.25);
-	    	mot_l2.set(0.25);
-	    	mot_r1.set(-0.25);
-	    	mot_r2.set(-0.25);
+    		mot_l1.set(-0.25);
+	    	mot_l2.set(-0.25);
+	    	mot_r1.set(0.25);
+	    	mot_r2.set(0.25);
     		Timer.delay(0.1);
     		
     		Enc_l.reset();
@@ -35,11 +33,11 @@ public class Robot extends TankAssist {
         	
         	arm_l.set(0.31);
     		arm_r.set(0.31);
-    		AutoPID(-1000,-980,-900,-980);
+    		AutoPID(-900,-1000,-900,-1050);
     		arm_l.set(0);
     		arm_r.set(0);
     		pid_init();
-    		AutoPID(-600,-1250,-600,-1250);
+    		AutoPID(-600,-1500,-600,-1500);
     		
     		shooter_r.set(-0.4);
 			shooter_l.set(0.4);
@@ -49,23 +47,23 @@ public class Robot extends TankAssist {
     		arm_l.set(0);
     		arm_r.set(0);
     		pid_init();
-    		AutoPID(-400,-300,400,300);
+    		AutoPID(-400,-310,400,310);
     		
     		shooter_r.set(-0.8);
 			shooter_l.set(0.8);
     		
     		pid_init();
     		Timer.delay(0.1);
-    		AutoPID(1500,1810,1500,1810);
+    		AutoPID(1500,1700,1500,1700);
     		
     		shooter_r.set(-1);
 			shooter_l.set(1);
     		
     		pid_init();
     		Timer.delay(0.1);
-    		AutoPID(-400,-255,400,255);
-    		
+    		AutoPID(-400,-320,400,320);
     		pid_init();
+    		AutoPID(-300,-100,-300,-100);
 //    		mot_l1.set(0.1);
 //	    	mot_l2.set(0.1);
 //	    	mot_r1.set(-0.1);
