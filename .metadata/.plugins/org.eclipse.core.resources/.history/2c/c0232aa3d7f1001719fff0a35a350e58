@@ -1,0 +1,53 @@
+package org.usfirst.frc.team5449.robot.subsystems;
+
+import org.usfirst.frc.team5449.robot.OI;
+import org.usfirst.frc.team5449.robot.command.Drive;
+
+import com.ctre.CANTalon;
+
+import edu.wpi.first.wpilibj.command.Subsystem;
+
+/**
+ *
+ */
+public class Chasis extends Subsystem {
+	
+	private CANTalon LeftRear;
+	private CANTalon LeftFront;
+	private CANTalon RightRear;
+	private CANTalon RightFront;
+	
+    public Chasis(){
+    	//define motors
+    	LeftFront = new CANTalon(OI.leftfront);
+    	LeftRear = new CANTalon(OI.leftrear);
+    	RightFront = new CANTalon(OI.rightfront);
+    	RightRear = new CANTalon(OI.rightrear);
+    	//set inverted motors (default: RIGHT ???)
+    	RightFront.setInverted(true);
+    	RightRear.setInverted(true);
+    }	
+	
+	public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        setDefaultCommand(new Drive());
+    }
+	
+	public void teleopDrive(double x, double y, double z){
+		double power_2 = x+y+z;
+		double power_1 = -x+y-z;
+		double power_3 = -x+y+z;
+		double power_4 = x+y-z;
+		double trim_max = Math.max(Math.max(Math.max(Math.abs(power_1),Math.abs(power_2)),
+                Math.max(Math.abs(power_3),Math.abs(power_4))),1);
+		power_1 /= trim_max;
+		power_2 /= trim_max;
+		power_3 /= trim_max;
+		power_4 /= trim_max;
+		
+		
+	}
+	
+	
+}
+

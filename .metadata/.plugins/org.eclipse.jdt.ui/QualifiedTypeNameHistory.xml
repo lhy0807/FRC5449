@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.vision.VisionThread"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team5449.robot.subsystems.Wrist"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team5449.robot.subsystems.Claw"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Joystick.AxisType"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.buttons.JoystickButton"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team5449.robot.command.Drive"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.command.Subsystem"/>
+<fullyQualifiedTypeName name="com.ctre.CanTalonJNI"/>
+<fullyQualifiedTypeName name="com.ctre.CANTalon"/>
+<fullyQualifiedTypeName name="java.security.spec.DSAGenParameterSpec"/>
+<fullyQualifiedTypeName name="com.ctre.CANTalon.TalonControlMode"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.TimedRobot"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.RobotDrive"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.drive.MecanumDrive"/>
+<fullyQualifiedTypeName name="com.ctre.phoenix.drive.MecanumDrive"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.SpeedController"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Talon"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.PWMTalonSRX"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Joystick"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.interfaces.Gyro"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.GyroBase"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.AnalogGyro"/>
+<fullyQualifiedTypeName name="java.util.function.DoubleToLongFunction"/>
+<fullyQualifiedTypeName name="com.ctre.phoenix.motorcontrol.can.TalonSRX"/>
+<fullyQualifiedTypeName name="com.ctre.phoenix.motorcontrol.ControlMode"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team5449.robot.subsystems.Chasis"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team5449.robot.Robot"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team5449.robot.OI"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.command.Command"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup"/>
+<fullyQualifiedTypeName name="java.lang.Override"/>
+</qualifiedTypeNameHistroy>

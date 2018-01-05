@@ -1,0 +1,40 @@
+package org.usfirst.frc.team5449.robot.subsystems;
+
+import org.usfirst.frc.team5449.robot.OI;
+import org.usfirst.frc.team5449.robot.command.Drive;
+
+import com.ctre.CANTalon;
+
+import edu.wpi.first.wpilibj.command.Subsystem;
+
+/**
+ *
+ */
+public class Chasis extends Subsystem {
+	
+	private CANTalon LeftRear;
+	private CANTalon LeftFront;
+	private CANTalon RightRear;
+	private CANTalon RightFront;
+	
+    public Chasis(){
+    	//
+    	LeftFront = new CANTalon(OI.leftfront);
+    	LeftRear = new CANTalon(OI.leftrear);
+    	RightFront = new CANTalon(OI.rightfront);
+    	RightRear = new CANTalon(OI.rightrear);
+    	
+    	RightFront.setInverted(true);
+    	RightRear.setInverted(true);
+    }	
+	
+	public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        setDefaultCommand(new Drive());
+    }
+	
+	public
+	
+	
+}
+

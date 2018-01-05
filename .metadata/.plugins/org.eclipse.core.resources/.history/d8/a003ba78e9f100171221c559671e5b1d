@@ -1,0 +1,21 @@
+package org.usfirst.frc.team5449.robot;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
+public class OI {
+	public static final int leftfront = 2;
+	public static final int leftrear = 3;
+	public static final int rightfront = 1;
+	public static final int rightrear = 4;
+	
+	
+	
+	
+	Joystick stick1 = new Joystick(1);
+	JoystickButton reverse = new JoystickButton(stick1, 1);
+	
+	public void getJoystickValue
+	
+	
+}
