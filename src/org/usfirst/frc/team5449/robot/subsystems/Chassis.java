@@ -14,16 +14,20 @@ import edu.wpi.first.wpilibj.drive.Vector2d;
 public class Chassis extends Subsystem {
 	
 	private TalonSRX LeftRear;
+	private TalonSRX LeftMid;
 	private TalonSRX LeftFront;
 	private TalonSRX RightRear;
+	private TalonSRX RightMid;
 	private TalonSRX RightFront;
 	
     public Chassis(){
     	//define motors
-    	LeftFront = new TalonSRX(RobotMap.leftfront);
-    	LeftRear = new TalonSRX(RobotMap.leftrear);
-    	RightFront = new TalonSRX(RobotMap.rightfront);
-    	RightRear = new TalonSRX(RobotMap.rightrear);
+    	LeftFront = new TalonSRX(RobotMap.LEFT_FRONT_MOTOR_PORT);
+    	LeftMid = new TalonSRX(RobotMap.LEFT_MID_MOTOR_PORT);
+    	LeftRear = new TalonSRX(RobotMap.LEFT_REAR_MOTOR_PORT);
+    	RightFront = new TalonSRX(RobotMap.RIGHT_FRONT_MOTOR_PORT);
+    	RightMid = new TalonSRX(RobotMap.RIGHT_MID_MOTOR_PORT);
+    	RightRear = new TalonSRX(RobotMap.RIGHT_REAR_MOTOR_PORT);
     	//set inverted motors (default: RIGHT ???)
     	RightFront.setInverted(true);
     	RightRear.setInverted(true);
@@ -31,7 +35,7 @@ public class Chassis extends Subsystem {
     	//build mecanum drive
     	//mecanumDrive = new MecanumDrive(LeftFront, LeftRear, RightFront, RightRear);
     }	
-	
+	/*
 	public void BaseMecDriveTest(){
 		//NOTE: deadzone should be directly applied to x y and z in here, 
 			//currently there is no deadzone for testing 
@@ -59,6 +63,7 @@ public class Chassis extends Subsystem {
 	/**on the basis that the Robot is facing the court and has 0-gyro (calibrated) at start 
 	 * NEVER BEEN TESTED, CAUTION! 
 	 * */
+    /*
 	public void HeadlessMecDriveTest(){
 		//NOTE: deadzone should be directly applied to x y and z in here, 
 			//currently there is no deadzone for testing 
@@ -92,6 +97,7 @@ public class Chassis extends Subsystem {
 	public void AutonomousTimedMecDriveTest(double x, double y, double z, double seconds){
 		//TODO		
 	}
+	*/
 	
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
@@ -100,8 +106,10 @@ public class Chassis extends Subsystem {
 	
 	public void stop(){
 		LeftFront.set(ControlMode.PercentOutput,0);
-		RightFront.set(ControlMode.PercentOutput,0);
+		LeftMid.set(ControlMode.PercentOutput, 0);
 		LeftRear.set(ControlMode.PercentOutput,0);
+		RightFront.set(ControlMode.PercentOutput,0);
+		RightMid.set(ControlMode.PercentOutput, 0);
 		RightRear.set(ControlMode.PercentOutput,0);
 	}
 	 

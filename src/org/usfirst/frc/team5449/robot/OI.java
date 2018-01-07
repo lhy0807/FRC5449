@@ -18,7 +18,7 @@ public class OI {
 	
 	public OI(){
 		//sensors
-		gyro = new AnalogGyro(RobotMap.gyrochannel);
+		gyro = new AnalogGyro(RobotMap.GYRO_PORT);
 		//joystick
 		stick1 = new Joystick(1);
 		//button

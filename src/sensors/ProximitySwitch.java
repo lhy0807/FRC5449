@@ -3,6 +3,8 @@ package sensors;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class ProximitySwitch {
+	
+	//Assumes that the sensor is digital
 	//requires a digital input port
 	private DigitalInput d1;
 	
