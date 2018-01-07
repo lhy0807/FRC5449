@@ -30,6 +30,7 @@ public class Chassis extends Subsystem {
     	RightRear = new TalonSRX(RobotMap.RIGHT_REAR_MOTOR_PORT);
     	//set inverted motors (default: RIGHT ???)
     	RightFront.setInverted(true);
+    	RightMid.setInverted(true);
     	RightRear.setInverted(true);
     	//motor Mode    	
     	//build mecanum drive
