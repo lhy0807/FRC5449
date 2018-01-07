@@ -29,14 +29,14 @@ public class OI {
 	}
 	
 	//Methods
-	public double getJoystickX(){
-		return stick1.getX();
+	public double getJoystickX(Joystick stick){
+		return stick.getX();
 	}	
-	public double getJoystickY(){
-		return stick1.getY();
+	public double getJoystickY(Joystick stick){
+		return stick.getY();
 	}	
-	public double getJoystickZ(){
-		return stick1.getZ();
+	public double getJoystickZ(Joystick stick){
+		return stick.getZ();
 	}
 	public double getGyroZ(){
 		return gyro.getAngle();

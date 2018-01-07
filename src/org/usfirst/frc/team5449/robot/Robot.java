@@ -1,7 +1,7 @@
 package org.usfirst.frc.team5449.robot;
 
 import org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup;
-import org.usfirst.frc.team5449.robot.subsystems.Chassis;
+import org.usfirst.frc.team5449.robot.subsystems.Chassis_Mecanum;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
 import sensors.EncoderModule;
@@ -18,7 +18,7 @@ public class Robot extends TimedRobot {
 	//RobotDrive myRobot = new RobotDrive(0, 1);
 	public static Robot r = new Robot();
 	public static OI oi;
-	public static Chassis chassis;
+	public static Chassis_Mecanum chassis;
 	public static EncoderModule encodermodule = new EncoderModule();
 	
 	Command AutonomousCommand;
@@ -26,7 +26,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
-		chassis = new Chassis();
+		chassis = new Chassis_Mecanum();
 		//command
 		AutonomousCommand = new AutonomousGroup();
 	}
