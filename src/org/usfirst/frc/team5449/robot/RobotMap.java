@@ -11,6 +11,10 @@ public class RobotMap {
 	public static final int RIGHT_INTAKE_PORT = 6;
 	//gyro channel
 	public static final int gyrochannel = 1;
+	//sensors
+	public static final int DOWN_PROXIMITY_SENSOR_PORT = 1;
+	public static final int MID_PROXIMITY_SENSOR_PORT = 2;
+	public static final int UP_PROXIMITY_SENSOR_PORT = 3;
 	//information
 	
 }
