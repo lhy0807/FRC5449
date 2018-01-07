@@ -5,6 +5,8 @@ import org.usfirst.frc.team5449.robot.RobotMap;
 import org.usfirst.frc.team5449.robot.command.Drive;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.Vector2d;
 

@@ -1,11 +1,15 @@
-package org.usfirst.frc.team5449.robot;
+package sensors;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class EncoderModule {
 	
-	public static double getX(){
+	
+	public EncoderModule(){
+		
+	}
+	
+	public double getX(){
 		Timer out_of_time = new Timer();
 		byte[] request = {9};
 		out_of_time.reset();
@@ -24,7 +28,7 @@ public class EncoderModule {
 		buf = Serial.Arduino.read(4);
 		return (double)Serial.bytes2Float(buf);	
 	}
-	public static double getY(){
+	public double getY(){
 		Timer out_of_time = new Timer();
 		byte[] request = {8};
 		out_of_time.reset();
@@ -43,7 +47,7 @@ public class EncoderModule {
 		buf = Serial.Arduino.read(4);
 		return (double)Serial.bytes2Float(buf);	
 	}
-	public static void reset(){
+	public void reset(){
 		byte[] request = {7};
 		Serial.Arduino.read(Serial.Arduino.getBytesReceived());
 		Serial.Arduino.write(request, 1);

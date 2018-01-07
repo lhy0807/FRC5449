@@ -1,4 +1,4 @@
-package org.usfirst.frc.team5449.robot;
+package sensors;
 
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SerialPort.Port;

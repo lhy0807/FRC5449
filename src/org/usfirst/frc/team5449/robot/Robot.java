@@ -4,6 +4,7 @@ import org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup;
 import org.usfirst.frc.team5449.robot.subsystems.Chassis;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
+import sensors.EncoderModule;
 
 
 /**
@@ -18,6 +19,7 @@ public class Robot extends TimedRobot {
 	public static Robot r = new Robot();
 	public static OI oi;
 	public static Chassis chassis;
+	public static EncoderModule encodermodule = new EncoderModule();
 	
 	Command AutonomousCommand;
 	
