@@ -14,7 +14,7 @@ public class Lifter extends Subsystem{
 	TalonSRX Liftmotor1,Liftmotor2;
 	private int current_status = 0;//0 for down,1 for mid,2 for up
 	
-	public void Lifter(){
+	public Lifter(){
 		downswitch = new ProximitySwitch(RobotMap.DOWN_PROXIMITY_SENSOR_PORT);
 		midswitch = new ProximitySwitch(RobotMap.DOWN_PROXIMITY_SENSOR_PORT);
 		upswitch = new ProximitySwitch(RobotMap.DOWN_PROXIMITY_SENSOR_PORT);
@@ -44,6 +44,11 @@ public class Lifter extends Subsystem{
 			this.current_status = Status;
 		}
 	}
+	
+	public int getStatus(){
+		return this.current_status;
+	}
+	
 	
 	//read sensors
 	public boolean is_down(){
