@@ -34,4 +34,19 @@ public class RobotMap {
 	public static final int LIFTER_ENCODER_PORT_A = 0;
 	public static final int LIFTER_ENCODER_PORT_B = 1;
 	
+//Parameters
+	//lifter
+	public static final long LIFTER_UP_POSE = 0;
+	public static final long LIFTER_MID_POSE = 0;
+	public static final long LIFTER_DOWN_POSE = 0;
+	public static final double LIFTER_MAXIUM_PASSING_ERROR = 0;
+	public static final double LIFTER_MAXIUM_POWER = 0;
+	public static final double LIFTER_KP = 0;
+	public static final double LIFTER_KD = 0;
+	
+	
+	
+	
+	
+	
 }

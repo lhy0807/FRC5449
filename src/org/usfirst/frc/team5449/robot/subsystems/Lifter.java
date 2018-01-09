@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import sensors.ProximitySwitch;
 
 public class Lifter extends Subsystem{
-	private double power = 0.5;
 	TalonSRX Liftmotor1,Liftmotor2;
 	private int current_status = 0;//0 for down,1 for mid,2 for up
 	private Encoder lifter_encoder_1;
@@ -17,17 +16,10 @@ public class Lifter extends Subsystem{
 		lifter_encoder_1 = new Encoder(RobotMap.LIFTER_ENCODER_PORT_A,RobotMap.LIFTER_ENCODER_PORT_B);
 	}
 	
-	public void setPower(double power){
-		this.power = power;
-	}
 	
 	//moves lifter
 	//TODO
-	public void move_up(){
-		
-	}
-	
-	public void move_down(){
+	public void move(double Power){
 		
 	}
 	
