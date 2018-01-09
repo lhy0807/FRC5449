@@ -18,11 +18,12 @@ public class IntakeStop extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	//TODO set whatever (idk)
+    	Robot.intake.Stop();//Motor
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intake.Stop();//Motor
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

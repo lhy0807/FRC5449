@@ -45,6 +45,8 @@ public class RobotMap {
 	public static final double LIFTER_KD = 0;
 	//Holder
 	public static final double HOLDER_DELAY = 1.000;//sec
+	//Climber
+	public static final double CLIMBER_POWER = 1.000;
 	
 	
 	

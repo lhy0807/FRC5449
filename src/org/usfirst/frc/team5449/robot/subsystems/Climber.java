@@ -11,7 +11,7 @@ public class Climber extends Subsystem{
 	
 	private TalonSRX ClimberMotor1,ClimberMotor2;
 	//parameters
-	private double power = 1;
+	private double power = RobotMap.CLIMBER_POWER;
 	
 	Climber(){
 		ClimberMotor1 = new TalonSRX(RobotMap.CLIMBER_MOTOR_1_PORT);
@@ -20,6 +20,7 @@ public class Climber extends Subsystem{
 	
 	public void up(){
 		//TODO
+		
 	}
 	
 	public void down(){
@@ -36,6 +37,7 @@ public class Climber extends Subsystem{
 	public void setPower(double power){
 		this.power = power;
 	}
+	
 	
 	
 	@Override
