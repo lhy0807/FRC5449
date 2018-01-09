@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5449.robot;
 
 public class RobotMap {
+//TalonSRXs
 	//chassis motors
 	public static final int LEFT_FRONT_MOTOR_PORT = 0;
 	public static final int LEFT_MID_MOTOR_PORT = 0;
@@ -18,7 +19,15 @@ public class RobotMap {
 	//climber motors
 	public static final int CLIMBER_MOTOR_1_PORT = 0;
 	public static final int CLIMBER_MOTOR_2_PORT = 0;
-	//gyro channel
+//Pneumatics
+	//Intake solenoids 
+	public static final int INTAKE_LEFT_SOLENOID_PORT = 0;
+	public static final int INTAKE_RIGHT_SOLENOID_PORT = 0;
+	//Holder
+	public static final int HOLDER_PORT = 0;
+	public static final int S2_PORT = 0;//TODO
+//Sensors
+	//gyro
 	public static final int GYRO_PORT = 1;
 	//sensors
 	public static final int DOWN_PROXIMITY_SENSOR_PORT = 0;

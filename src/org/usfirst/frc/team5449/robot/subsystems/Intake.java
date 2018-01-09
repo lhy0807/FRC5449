@@ -5,6 +5,7 @@ import org.usfirst.frc.team5449.robot.RobotMap;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -12,6 +13,7 @@ public class Intake extends Subsystem{
 	//motors
 	private TalonSRX left_intake;
 	private TalonSRX right_intake;
+	private Solenoid left_solenoid,right_solenoid;
 	
 	
 	//TODO - may need pneumatics
@@ -19,6 +21,8 @@ public class Intake extends Subsystem{
 	Intake(){
 		left_intake = new TalonSRX(RobotMap.LEFT_INTAKE_PORT);
 		right_intake = new TalonSRX(RobotMap.RIGHT_INTAKE_PORT);
+		left_solenoid = new Solenoid(RobotMap.INTAKE_LEFT_SOLENOID_PORT);
+		right_solenoid = new Solenoid(RobotMap.INTAKE_RIGHT_SOLENOID_PORT);
 	}
 	
 	//parameters:
@@ -45,4 +49,15 @@ public class Intake extends Subsystem{
 		left_intake.set(ControlMode.PercentOutput,0);
 		right_intake.set(ControlMode.PercentOutput,0);
 	}
+	
+	public void Open(){
+		left_solenoid.set(false);
+		right_solenoid.set(false);
+	}
+	
+	public void Close(){
+		left_solenoid.set(true);
+		right_solenoid.set(true);
+	}
+	
 }
