@@ -2,6 +2,7 @@ package org.usfirst.frc.team5449.robot;
 
 import org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup;
 import org.usfirst.frc.team5449.robot.subsystems.Chassis_Mecanum;
+import org.usfirst.frc.team5449.robot.subsystems.Holder;
 import org.usfirst.frc.team5449.robot.subsystems.Intake;
 import org.usfirst.frc.team5449.robot.subsystems.Lifter;
 
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
 	public static Chassis_Mecanum chassis;
 	public static Lifter lifter = new Lifter();
 	public static Intake intake = new Intake();
+	public static Holder holder = new Holder();
 	public static EncoderModule encodermodule = new EncoderModule();
 	
 	Command AutonomousCommand;

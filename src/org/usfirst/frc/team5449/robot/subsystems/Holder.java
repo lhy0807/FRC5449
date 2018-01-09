@@ -7,20 +7,22 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Holder extends Subsystem{
 	
-	Solenoid block_holder,s2;
+	Solenoid block_pusher_1,block_pusher_2;
 	
-	Holder(){
-		block_holder = new Solenoid(RobotMap.HOLDER_PORT);
-		s2 = new Solenoid(RobotMap.S2_PORT);
+	public Holder(){
+		block_pusher_1 = new Solenoid(RobotMap.HOLDER_BLOCK_PUSHER1_PORT);
+		block_pusher_2 = new Solenoid(RobotMap.HOLDER_BLOCK_PUSHER2_PORT);
 		
 	}
 	
-	public void open(){
-		
+	public void Back(){
+		block_pusher_1.set(false);
+		block_pusher_2.set(false);
 	} 
 	
-	public void close(){
-		
+	public void Push(){
+		block_pusher_1.set(true);
+		block_pusher_2.set(true);
 	}
 	
 	@Override
