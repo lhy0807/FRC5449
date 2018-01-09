@@ -18,7 +18,7 @@ public class Intake extends Subsystem{
 	
 	//TODO - may need pneumatics
 	
-	Intake(){
+	public Intake(){
 		left_intake = new TalonSRX(RobotMap.LEFT_INTAKE_PORT);
 		right_intake = new TalonSRX(RobotMap.RIGHT_INTAKE_PORT);
 		left_solenoid = new Solenoid(RobotMap.INTAKE_LEFT_SOLENOID_PORT);

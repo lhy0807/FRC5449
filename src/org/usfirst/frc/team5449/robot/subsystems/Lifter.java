@@ -4,20 +4,17 @@ import org.usfirst.frc.team5449.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import sensors.ProximitySwitch;
 
 public class Lifter extends Subsystem{
-	
-	ProximitySwitch downswitch,midswitch,upswitch;
 	private double power = 0.5;
 	TalonSRX Liftmotor1,Liftmotor2;
 	private int current_status = 0;//0 for down,1 for mid,2 for up
-	
+	private Encoder lifter_encoder_1;
 	public Lifter(){
-		downswitch = new ProximitySwitch(RobotMap.DOWN_PROXIMITY_SENSOR_PORT);
-		midswitch = new ProximitySwitch(RobotMap.DOWN_PROXIMITY_SENSOR_PORT);
-		upswitch = new ProximitySwitch(RobotMap.DOWN_PROXIMITY_SENSOR_PORT);
+		lifter_encoder_1 = new Encoder(RobotMap.LIFTER_ENCODER_PORT_A,RobotMap.LIFTER_ENCODER_PORT_B);
 	}
 	
 	public void setPower(double power){
@@ -49,18 +46,9 @@ public class Lifter extends Subsystem{
 		return this.current_status;
 	}
 	
-	
 	//read sensors
-	public boolean is_down(){
-		return downswitch.get();
-	}
-	
-	public boolean is_mid(){
-		return midswitch.get();
-	}
-	
-	public boolean is_up(){
-		return upswitch.get();
+	public long get_position(){
+		return lifter_encoder_1.get();
 	}
 	
 	@Override

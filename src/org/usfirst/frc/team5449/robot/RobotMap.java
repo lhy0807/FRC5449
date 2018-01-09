@@ -29,10 +29,9 @@ public class RobotMap {
 //Sensors
 	//gyro
 	public static final int GYRO_PORT = 1;
-	//sensors
-	public static final int DOWN_PROXIMITY_SENSOR_PORT = 0;
-	public static final int MID_PROXIMITY_SENSOR_PORT = 0;
-	public static final int UP_PROXIMITY_SENSOR_PORT = 0;
-	//information
+	//proximity switches
+	//Encoders
+	public static final int LIFTER_ENCODER_PORT_A = 0;
+	public static final int LIFTER_ENCODER_PORT_B = 1;
 	
 }
