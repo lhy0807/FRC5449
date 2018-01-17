@@ -35,6 +35,8 @@ public class RobotMap {
 	public static final int LIFTER_ENCODER_PORT_B = 1;
 	
 //Parameters
+	//Chassis
+	public static final double CHASSIS_MAX_PASSING_ERROR = 0;
 	//lifter
 	public static final long LIFTER_UP_POSE = 0;
 	public static final long LIFTER_MID_POSE = 0;
@@ -49,7 +51,9 @@ public class RobotMap {
 	public static final double CLIMBER_POWER = 1.000;
 	
 	
-	
+	//Potention field
+	public static final double PF_EXPELL_CONSTANT = 1;
+	public static final double PF_EXPELL_RANGE = 1.000; //unit: meter
 	
 	
 	

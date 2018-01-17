@@ -31,7 +31,7 @@ public class LifterToUp extends Command {
     	error[0] = 0;
     	error[1] = RobotMap.LIFTER_UP_POSE - Robot.lifter.get_position();
     }
-    
+   
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
@@ -39,7 +39,7 @@ public class LifterToUp extends Command {
     	error[0] = RobotMap.LIFTER_UP_POSE - Robot.lifter.get_position();
     	P_output = error[0] * -Kp;
     	dt = timer.get() - last_time;
-    	D_output = Kd * (error[0] - error[1])/dt;
+    	D_output = -Kd * (error[0] - error[1])/dt;
     	error[1] = error[0];
     	last_time = timer.get();
     	

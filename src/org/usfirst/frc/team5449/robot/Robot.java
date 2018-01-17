@@ -6,6 +6,8 @@ import org.usfirst.frc.team5449.robot.subsystems.Holder;
 import org.usfirst.frc.team5449.robot.subsystems.Intake;
 import org.usfirst.frc.team5449.robot.subsystems.Lifter;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
 import sensors.EncoderModule;
@@ -27,7 +29,7 @@ public class Robot extends TimedRobot {
 	public static Intake intake = new Intake();
 	public static Holder holder = new Holder();
 	public static EncoderModule encodermodule = new EncoderModule();
-	
+	//public static I2C i1;
 	Command AutonomousCommand;
 	
 	@Override

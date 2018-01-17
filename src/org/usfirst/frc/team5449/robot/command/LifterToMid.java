@@ -39,7 +39,7 @@ public class LifterToMid extends Command {
     	error[0] = RobotMap.LIFTER_MID_POSE - Robot.lifter.get_position();
     	P_output = error[0] * -Kp;
     	dt = timer.get() - last_time;
-    	D_output = Kd * (error[0] - error[1])/dt;
+    	D_output = -Kd * (error[0] - error[1])/dt;
     	error[1] = error[0];
     	last_time = timer.get();
     	
