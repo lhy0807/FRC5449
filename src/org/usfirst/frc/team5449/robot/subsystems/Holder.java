@@ -10,8 +10,8 @@ public class Holder extends Subsystem{
 	Solenoid block_pusher_1,block_pusher_2;
 	
 	public Holder(){
-		block_pusher_1 = new Solenoid(RobotMap.HOLDER_BLOCK_PUSHER1_PORT);
-		block_pusher_2 = new Solenoid(RobotMap.HOLDER_BLOCK_PUSHER2_PORT);
+		block_pusher_1 = new Solenoid(16,RobotMap.HOLDER_BLOCK_PUSHER1_PORT);
+		block_pusher_2 = new Solenoid(16,RobotMap.HOLDER_BLOCK_PUSHER2_PORT);
 		
 	}
 	

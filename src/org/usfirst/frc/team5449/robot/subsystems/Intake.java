@@ -21,8 +21,8 @@ public class Intake extends Subsystem{
 	public Intake(){
 		left_intake = new TalonSRX(RobotMap.LEFT_INTAKE_PORT);
 		right_intake = new TalonSRX(RobotMap.RIGHT_INTAKE_PORT);
-		left_solenoid = new Solenoid(RobotMap.INTAKE_LEFT_SOLENOID_PORT);
-		right_solenoid = new Solenoid(RobotMap.INTAKE_RIGHT_SOLENOID_PORT);
+		left_solenoid = new Solenoid(16,RobotMap.INTAKE_LEFT_SOLENOID_PORT);
+		right_solenoid = new Solenoid(16,RobotMap.INTAKE_RIGHT_SOLENOID_PORT);
 	}
 	
 	//parameters:
@@ -51,13 +51,13 @@ public class Intake extends Subsystem{
 	}
 	
 	public void Open(){
-		left_solenoid.set(false);
-		right_solenoid.set(false);
+		left_solenoid.set(true);
+		right_solenoid.set(true);
 	}
 	
 	public void Close(){
-		left_solenoid.set(true);
-		right_solenoid.set(true);
+		left_solenoid.set(false);
+		right_solenoid.set(false);
 	}
 	
 }

@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5449.robot;
 
+import org.usfirst.frc.team5449.robot.command.IntakeIn;
+import org.usfirst.frc.team5449.robot.command.IntakeOut;
 import org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup;
 import org.usfirst.frc.team5449.robot.subsystems.Chassis_Mecanum;
 import org.usfirst.frc.team5449.robot.subsystems.Holder;
@@ -10,6 +12,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import sensors.EncoderModule;
 
 
@@ -54,6 +57,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();		
+		SmartDashboard.putData(new IntakeIn());
+		SmartDashboard.putData(new IntakeOut());
 	}
 	/*
 	private void log(){
