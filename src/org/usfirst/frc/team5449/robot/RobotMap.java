@@ -25,7 +25,7 @@ public class RobotMap {
 	public static final int INTAKE_RIGHT_SOLENOID_PORT = 1;
 	//Holder
 	public static final int HOLDER_BLOCK_PUSHER1_PORT = 2;
-	public static final int HOLDER_BLOCK_PUSHER2_PORT = 3;//TODO
+	public static final int HOLDER_BLOCK_PUSHER2_PORT = 3;
 //Sensors
 	//gyro
 	public static final int GYRO_PORT = 1;

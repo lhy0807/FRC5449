@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5449.robot;
 
+import org.usfirst.frc.team5449.robot.command.CompressorOff;
+import org.usfirst.frc.team5449.robot.command.CompressorOn;
 import org.usfirst.frc.team5449.robot.command.IntakeIn;
 import org.usfirst.frc.team5449.robot.command.IntakeOut;
 import org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup;
@@ -56,9 +58,13 @@ public class Robot extends TimedRobot {
 	}
 	@Override
 	public void teleopPeriodic() {
+		
 		Scheduler.getInstance().run();		
 		SmartDashboard.putData(new IntakeIn());
 		SmartDashboard.putData(new IntakeOut());
+		SmartDashboard.putData(new CompressorOn());
+		SmartDashboard.putData(new CompressorOff());
+		
 	}
 	/*
 	private void log(){
