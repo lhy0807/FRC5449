@@ -13,7 +13,7 @@ public class Climber extends Subsystem{
 	//parameters
 	private double power = RobotMap.CLIMBER_POWER;
 	
-	Climber(){
+	public Climber(){
 		ClimberMotor1 = new TalonSRX(RobotMap.CLIMBER_MOTOR_1_PORT);
 		ClimberMotor2 = new TalonSRX(RobotMap.CLIMBER_MOTOR_2_PORT);
 	}

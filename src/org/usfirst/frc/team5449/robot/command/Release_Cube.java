@@ -10,7 +10,7 @@ public class Release_Cube extends Command{
 	
 	private Timer timer = new Timer();
 	
-	Release_Cube(){
+	public Release_Cube(){
 		requires(Robot.holder);
 	}
 	// Called just before this Command runs the first time

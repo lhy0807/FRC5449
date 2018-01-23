@@ -2,6 +2,7 @@ package org.usfirst.frc.team5449.robot.subsystems;
 
 import org.usfirst.frc.team5449.robot.RobotMap;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -9,10 +10,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import sensors.ProximitySwitch;
 
 public class Lifter extends Subsystem{
-	TalonSRX Liftmotor1,Liftmotor2;
+	TalonSRX Liftmotor_L,Liftmotor_R;
 	private int current_status = 0;//0 for down,1 for mid,2 for up
 	private Encoder lifter_encoder_1;
 	public Lifter(){
+		Liftmotor_L = new TalonSRX(RobotMap.LIFTER_LEFT_MOTOR_PORT);
+		Liftmotor_R = new TalonSRX(RobotMap.LIFTER_RIGHT_MOTOR_PORT);	
+		Liftmotor_R.setInverted(true);
 		lifter_encoder_1 = new Encoder(RobotMap.LIFTER_ENCODER_PORT_A,RobotMap.LIFTER_ENCODER_PORT_B);
 	}
 	
@@ -20,10 +24,13 @@ public class Lifter extends Subsystem{
 	//moves lifter
 	//TODO
 	public void move(double Power){
-		
+		Liftmotor_L.set(ControlMode.PercentOutput,Power);
+		Liftmotor_R.set(ControlMode.PercentOutput,Power);
 	}
 	
 	public void stop(){
+		Liftmotor_L.set(ControlMode.PercentOutput,0);
+		Liftmotor_R.set(ControlMode.PercentOutput,0);
 		
 	}
 	
@@ -42,10 +49,12 @@ public class Lifter extends Subsystem{
 	public long get_position(){
 		return lifter_encoder_1.get();
 	}
+	//TODO
+	public boolean is_down(){
+		return false;
+	}
 	
 	@Override
-	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+	protected void initDefaultCommand() {		
 	}
 }

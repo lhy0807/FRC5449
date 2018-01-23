@@ -4,8 +4,10 @@ import org.usfirst.frc.team5449.robot.command.CompressorOff;
 import org.usfirst.frc.team5449.robot.command.CompressorOn;
 import org.usfirst.frc.team5449.robot.command.IntakeIn;
 import org.usfirst.frc.team5449.robot.command.IntakeOut;
+import org.usfirst.frc.team5449.robot.command.Release_Cube;
 import org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup;
-import org.usfirst.frc.team5449.robot.subsystems.Chassis_Mecanum;
+import org.usfirst.frc.team5449.robot.subsystems.Chassis;
+import org.usfirst.frc.team5449.robot.subsystems.Climber;
 import org.usfirst.frc.team5449.robot.subsystems.Holder;
 import org.usfirst.frc.team5449.robot.subsystems.Intake;
 import org.usfirst.frc.team5449.robot.subsystems.Lifter;
@@ -29,7 +31,8 @@ public class Robot extends TimedRobot {
 	//RobotDrive myRobot = new RobotDrive(0, 1);
 	public static Robot r = new Robot();
 	public static OI oi;
-	public static Chassis_Mecanum chassis;
+	public static Chassis chassis;
+	public static Climber climber = new Climber();
 	public static Lifter lifter = new Lifter();
 	public static Intake intake = new Intake();
 	public static Holder holder = new Holder();
@@ -40,7 +43,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
-		chassis = new Chassis_Mecanum();
+		chassis = new Chassis();
 		//command
 		AutonomousCommand = new AutonomousGroup();
 	}
@@ -58,12 +61,13 @@ public class Robot extends TimedRobot {
 	}
 	@Override
 	public void teleopPeriodic() {
-		
-		Scheduler.getInstance().run();		
 		SmartDashboard.putData(new IntakeIn());
 		SmartDashboard.putData(new IntakeOut());
 		SmartDashboard.putData(new CompressorOn());
 		SmartDashboard.putData(new CompressorOff());
+		SmartDashboard.putData("RELEASE",new Release_Cube());
+		this.lifter.move(1);
+		Scheduler.getInstance().run();		
 		
 	}
 	/*
