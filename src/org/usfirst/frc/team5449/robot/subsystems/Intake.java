@@ -50,14 +50,14 @@ public class Intake extends Subsystem{
 	}
 	
 	public void In(){
-		left_intake.set(ControlMode.PercentOutput,IntakePower);
-		right_intake.set(ControlMode.PercentOutput,-IntakePower);
+		left_intake.set(ControlMode.PercentOutput,-IntakePower);
+		right_intake.set(ControlMode.PercentOutput,IntakePower);
 		mid_intake.set(ControlMode.PercentOutput, IntakePower);
 	}
 	
 	public void Out(){
-		left_intake.set(ControlMode.PercentOutput,-IntakePower);
-		right_intake.set(ControlMode.PercentOutput,IntakePower);
+		left_intake.set(ControlMode.PercentOutput,IntakePower);
+		right_intake.set(ControlMode.PercentOutput,-IntakePower);
 		mid_intake.set(ControlMode.PercentOutput, IntakePower);
 	}
 	

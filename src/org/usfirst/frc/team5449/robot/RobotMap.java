@@ -32,11 +32,13 @@ public class RobotMap {
 	//gyro
 	public static final int GYRO_PORT = 1;
 	//proximity switches
-	public static final int LIFTER_PS_LOW_PORT = 0;
-	public static final int LIFTER_PS_HIGH_PORT = 1;
+	public static final int LIFTER_PS_LOW_PORT = 4;
+	public static final int LIFTER_PS_HIGH_PORT = 5;
 	//Encoders
-	public static final int LIFTER_ENCODER_PORT_A = 0;
-	public static final int LIFTER_ENCODER_PORT_B = 1;
+	public static final int LIFTER_ENCODER_LEFT_PORT_A = 0;
+	public static final int LIFTER_ENCODER_LEFT_PORT_B = 1;
+	public static final int LIFTER_ENCODER_RIGHT_PORT_A = 2;
+	public static final int LIFTER_ENCODER_RIGHT_PORT_B = 3;
 	
 //Parameters
 	//Chassis

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5449.robot.subsystems;
 
 import org.usfirst.frc.team5449.robot.RobotMap;
+import org.usfirst.frc.team5449.robot.command.Lifter_Remote;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -11,21 +12,28 @@ import sensors.ProximitySwitch;
 
 public class Lifter extends Subsystem{
 	TalonSRX Liftmotor_L,Liftmotor_R;
+	ProximitySwitch low_switch = new ProximitySwitch(RobotMap.LIFTER_PS_HIGH_PORT);
 	private int current_status = 0;//0 for down,1 for mid,2 for up
-	private Encoder lifter_encoder_1;
+	private Encoder lifter_encoder_l,lifter_encoder_r;
 	public Lifter(){
 		Liftmotor_L = new TalonSRX(RobotMap.LIFTER_LEFT_MOTOR_PORT);
 		Liftmotor_R = new TalonSRX(RobotMap.LIFTER_RIGHT_MOTOR_PORT);	
 		Liftmotor_R.setInverted(true);
-		lifter_encoder_1 = new Encoder(RobotMap.LIFTER_ENCODER_PORT_A,RobotMap.LIFTER_ENCODER_PORT_B);
+		lifter_encoder_l = new Encoder(RobotMap.LIFTER_ENCODER_LEFT_PORT_A,RobotMap.LIFTER_ENCODER_LEFT_PORT_B);
+		lifter_encoder_r = new Encoder(RobotMap.LIFTER_ENCODER_RIGHT_PORT_A,RobotMap.LIFTER_ENCODER_RIGHT_PORT_B);
+		this.lifter_encoder_r.setReverseDirection(true);
 	}
 	
 	
 	//moves lifter
-	//TODO
 	public void move(double Power){
 		Liftmotor_L.set(ControlMode.PercentOutput,Power);
 		Liftmotor_R.set(ControlMode.PercentOutput,Power);
+	}
+	
+	public void move(double Power,double delta_power){
+		Liftmotor_L.set(ControlMode.PercentOutput,Power + delta_power);
+		Liftmotor_R.set(ControlMode.PercentOutput,Power - delta_power);
 	}
 	
 	public void stop(){
@@ -46,15 +54,30 @@ public class Lifter extends Subsystem{
 	}
 	
 	//read sensors
-	public long get_position(){
-		return lifter_encoder_1.get();
+	public int[] get_position2(){
+		int[] val = {lifter_encoder_l.get(),lifter_encoder_r.get()};
+		return val;
+	}
+	
+	public int get_position(){
+		int val = (int)(lifter_encoder_l.get() + lifter_encoder_r.get()) / 2;
+		return val;
 	}
 	//TODO
 	public boolean is_down(){
-		return false;
+		return !low_switch.get();
 	}
 	
-	@Override
-	protected void initDefaultCommand() {		
+	public void ResetEncoders(){
+		this.lifter_encoder_l.reset();
+		this.lifter_encoder_r.reset();
 	}
+	
+	
+	@Override
+	protected void initDefaultCommand() {	
+		this.setDefaultCommand(new Lifter_Remote());
+	}
+	
+
 }
