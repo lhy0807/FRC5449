@@ -32,10 +32,21 @@ public class Lifter extends Subsystem{
 	}
 	
 	public void move(double Power,double delta_power){
-		Liftmotor_L.set(ControlMode.PercentOutput,Power + delta_power);
-		Liftmotor_R.set(ControlMode.PercentOutput,Power - delta_power);
+		Liftmotor_L.set(ControlMode.PercentOutput,range(Power - delta_power,-RobotMap.LIFTER_MAXIUM_POWER,RobotMap.LIFTER_MAXIUM_POWER));
+		Liftmotor_R.set(ControlMode.PercentOutput,range(Power + delta_power,-RobotMap.LIFTER_MAXIUM_POWER,RobotMap.LIFTER_MAXIUM_POWER));
+		
+		
 	}
-	
+	 private double range(double val,double min,double max){
+	    	if (val < min){
+	    		return min;
+	    	}else if (val > max){
+	    		return max;
+	    	}else{
+	    		return val;
+	    	}
+	    } 
+	 
 	public void stop(){
 		Liftmotor_L.set(ControlMode.PercentOutput,0);
 		Liftmotor_R.set(ControlMode.PercentOutput,0);

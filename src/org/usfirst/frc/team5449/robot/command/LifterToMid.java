@@ -36,6 +36,7 @@ public class LifterToMid extends Command {
     protected void execute() {
     	
     	double P_output,D_output,dt,output;
+    	double balance_output;
     	error[0] = RobotMap.LIFTER_MID_POSE - Robot.lifter.get_position();
     	P_output = error[0] * Kp;
     	dt = timer.get() - last_time;
@@ -45,8 +46,8 @@ public class LifterToMid extends Command {
     	
     	output = P_output + D_output;
     	output = range2(output,RobotMap.LIFTER_MINIUM_POWER,RobotMap.LIFTER_MAXIUM_POWER);
-    	
-    	Robot.lifter.move(output);
+    	balance_output = RobotMap.LIFTER_BALANCE_KP * (Robot.lifter.get_position2()[0] - Robot.lifter.get_position2()[1]);
+    	Robot.lifter.move(output,balance_output);
     	
     }
 
@@ -66,6 +67,8 @@ public class LifterToMid extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     }
+    
+    
     private double range(double val,double min,double max){
     	if (val < min){
     		return min;
