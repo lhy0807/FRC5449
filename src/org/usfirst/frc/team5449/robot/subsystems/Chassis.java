@@ -40,7 +40,7 @@ public class Chassis extends Subsystem {
 		RightMotorC.set(ControlMode.Follower, RightMotorA.getDeviceID());
 	}
 	
-	private void arcadeStyle(double power, double turn){
+	public void arcadeStyle(double power, double turn){
 		double leftPower, rightPower;
 		double Speed = stickScaling(power);
 		double Rotate = stickScaling(turn);
@@ -66,7 +66,7 @@ public class Chassis extends Subsystem {
 		RightMotorA.set(ControlMode.PercentOutput, rightPower);
 	}
 	
-	private void tankStyle(double leftInput, double rightInput){
+	public void tankStyle(double leftInput, double rightInput){
 		double leftPower = stickScaling(leftInput);
 		double rightPower = stickScaling(rightInput);
 		LeftMotorA.set(ControlMode.PercentOutput, leftPower);
@@ -75,17 +75,20 @@ public class Chassis extends Subsystem {
 	
 	public void arcadeDrive(){
 		//TODO Get the sticks you want to use FROM OI.java!
-		//arcadeStyle(, );
+		
+		//arcadeStyle(forwardStick, turnStick);
 	}
 	
 	public void tankDrive(){
 		//TODO Get the sticks you want to use FROM OI.java!
-		//tankStyle(, );
+		
+		//tankStyle(leftStick, rightStick);
 	}
 	
 	private double stickScaling(double input){
 		//TODO scale the stick for this chassis;
 		//limit 0-1 => Deadzone => square input
+		
 		return input;
 	}
 	
