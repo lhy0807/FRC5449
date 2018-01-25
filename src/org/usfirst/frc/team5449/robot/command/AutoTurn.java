@@ -1,8 +1,9 @@
 package org.usfirst.frc.team5449.robot.command;
 
 import java.lang.annotation.Target;
+
 import org.usfirst.frc.team5449.robot.Robot;
-import org.usfirst.frc.team5449.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import sensors.EncoderModule;
@@ -12,9 +13,9 @@ import sensors.EncoderModule;
  */
 public class AutoTurn extends Command {
 	//TODO Parameters
-	private double Kp = RobotMap.CHASSIS_TURNING_P;
-	private double Kd = RobotMap.CHASSIS_TURNING_D;
-	private double allowedError = RobotMap.CHASSIS_TURNING_ALLOWED_ERROR;
+	private double Kp = 0;
+	private double Kd = 0;
+	private double allowedError = 0;
 	private Timer timer;
 	private double lastError;
 	private double currError;
@@ -35,13 +36,13 @@ public class AutoTurn extends Command {
     	lastTime = 0;
     	currError = target;
     	lastError = 0;
-    	//TODO angleTarget = target+EncoderModule.getAngle();
+    	//TODO angleTarget = target+EncoderModule.getZ();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double dt = timer.get() - lastTime;
-    	//TODO currError = angleTarget-EncoderModule.getAngle();
+    	//TODO currError = angleTarget-EncoderModule.getZ();
     	double varP = Kp*(currError);
     	double varD = Kd*(currError - lastError)/dt;
     	double output = varP + varD;
@@ -60,7 +61,7 @@ public class AutoTurn extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return true;
-    	//TODO return (Math.abs(angleTarget-EncoderModule.getAngle())<allowedError);
+    	//TODO return (Math.abs(angleTarget-EncoderModule.getZ())<allowedError);
     }
 
     // Called once after isFinished returns true
