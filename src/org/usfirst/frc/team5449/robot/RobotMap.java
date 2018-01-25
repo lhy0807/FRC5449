@@ -41,8 +41,12 @@ public class RobotMap {
 	public static final int LIFTER_ENCODER_RIGHT_PORT_B = 3;
 	
 //Parameters
-	//Chassis
+	//Chassis TODO configure
 	public static final double CHASSIS_MAX_PASSING_ERROR = 0;
+	public static final double CHASSIS_TURNING_P = 0;
+	public static final double CHASSIS_TURNING_D = 0;
+	public static final double CHASSIS_TURNING_ALLOWED_ERROR = 0;
+	
 	//lifter
 	public static final long LIFTER_UP_POSE = 0;
 	public static final long LIFTER_MID_POSE = 0;
