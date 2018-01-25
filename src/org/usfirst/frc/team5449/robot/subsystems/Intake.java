@@ -77,4 +77,14 @@ public class Intake extends Subsystem{
 		right_solenoid.set(false);
 	}
 	
+	public void LeftIn(){
+		left_intake.set(ControlMode.PercentOutput,-IntakePower);
+		mid_intake.set(ControlMode.PercentOutput, IntakePower);
+	}
+	
+	public void RightIn(){
+		right_intake.set(ControlMode.PercentOutput,IntakePower);
+		mid_intake.set(ControlMode.PercentOutput, IntakePower);
+	}
+	
 }

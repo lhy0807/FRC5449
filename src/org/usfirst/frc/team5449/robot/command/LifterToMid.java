@@ -31,20 +31,20 @@ public class LifterToMid extends Command {
     	error[0] = 0;
     	error[1] = RobotMap.LIFTER_MID_POSE - Robot.lifter.get_position();
     }
-    
+   
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
     	double P_output,D_output,dt,output;
     	error[0] = RobotMap.LIFTER_MID_POSE - Robot.lifter.get_position();
-    	P_output = error[0] * -Kp;
+    	P_output = error[0] * Kp;
     	dt = timer.get() - last_time;
-    	D_output = -Kd * (error[0] - error[1])/dt;
+    	D_output = Kd * (error[0] - error[1])/dt;
     	error[1] = error[0];
     	last_time = timer.get();
     	
     	output = P_output + D_output;
-    	output = range(output,-RobotMap.LIFTER_MAXIUM_POWER,RobotMap.LIFTER_MAXIUM_POWER);
+    	output = range2(output,RobotMap.LIFTER_MINIUM_POWER,RobotMap.LIFTER_MAXIUM_POWER);
     	
     	Robot.lifter.move(output);
     	
@@ -52,7 +52,9 @@ public class LifterToMid extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(RobotMap.LIFTER_MID_POSE - Robot.lifter.get_position()) < RobotMap.LIFTER_MAXIUM_PASSING_ERROR;
+        boolean p1 =  Math.abs(RobotMap.LIFTER_MID_POSE - Robot.lifter.get_position()) < RobotMap.LIFTER_MAXIUM_PASSING_ERROR;
+        boolean p2 = false;
+        return p1 || p2;
     }
 
     // Called once after isFinished returns true
@@ -73,4 +75,20 @@ public class LifterToMid extends Command {
     		return val;
     	}
     }
+    
+    private double range2(double val,double min,double max){
+    	max = Math.abs(max);
+    	min = Math.abs(min);
+    	if (Math.abs(val)<min){
+    		return Math.signum(val) * min;
+    	} else if (Math.abs(val) > max){
+    		return Math.signum(val) * max;
+    	}else{
+    		return Math.signum(val) * Math.abs(val);
+    	}
+    	
+    }
+    
+    
+    
 }
