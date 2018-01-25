@@ -71,11 +71,15 @@ public class DriveTo extends Command {
     	double dt = timer.get() - lastTime;
     	currError_distance = distance;
     	currError_angle = theta - Gyro.getAngle();
+    	
     	if(currError_angle>=180){
     		currError_angle -= 360;
     	}else if(currError_angle<=-180){
     		currError_angle += 360;
     	}
+    	
+    	
+    	
     	double distanceVarP = Drive_P*(currError_distance);
     	double distanceVarD = Drive_D*(currError_distance - lastError_distance)/dt;
     	double angleVarP = Turn_P*(currError_angle);
