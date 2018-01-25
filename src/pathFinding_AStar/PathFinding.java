@@ -37,8 +37,8 @@ public class PathFinding {
 	private boolean goalReached = false; //patch for o.equals() un-overrode-able
 	
 	/**Constructor
-	 * @param x1 Starting
-	 * @param useChebyshev use Chebyshev to calculate Exact Distance rather than Manhattan*/
+	 * @param safetyDistance safety distance in centimeters
+	 * @param useChebyshev use Chebyshev to calculate more accurate Distance rather than Manhattan*/
 	public PathFinding(int x1, int y1, int x2, int y2, boolean useChebyshev, int safetyDistance){
 		
 		//initiate lists

@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class Drive extends Command {
-
+	@Deprecated
     public Drive() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.chassis);

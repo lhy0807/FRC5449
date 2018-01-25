@@ -1,9 +1,7 @@
 package org.usfirst.frc.team5449.robot.subsystems;
 
 import org.usfirst.frc.team5449.robot.RobotMap;
-import org.usfirst.frc.team5449.robot.command.Drive;
 import org.usfirst.frc.team5449.robot.command.Move;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -41,7 +39,7 @@ public class Chassis extends Subsystem {
 		RightMotorC.set(ControlMode.Follower, RightMotorA.getDeviceID());
 	}
 	
-	private void arcadeStyle(double power, double turn){
+	public void arcadeStyle(double power, double turn){
 		double leftPower, rightPower;
 		double Speed = stickScaling(power);
 		double Rotate = stickScaling(turn);
