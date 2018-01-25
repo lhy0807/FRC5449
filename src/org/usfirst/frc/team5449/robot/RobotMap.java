@@ -44,12 +44,13 @@ public class RobotMap {
 	//Chassis
 	public static final double CHASSIS_MAX_PASSING_ERROR = 0;
 	//lifter
-	public static final long LIFTER_UP_POSE = 0;
-	public static final long LIFTER_MID_POSE = 0;
+	public static final long LIFTER_UP_POSE = 3000;
+	public static final long LIFTER_MID_POSE = 1500;
 	public static final long LIFTER_DOWN_POSE = 0;
-	public static final double LIFTER_MAXIUM_PASSING_ERROR = 0;
-	public static final double LIFTER_MAXIUM_POWER = 0;
-	public static final double LIFTER_KP = 0;
+	public static final double LIFTER_MAXIUM_PASSING_ERROR = 50;
+	public static final double LIFTER_MAXIUM_POWER = 1;
+	public static final double LIFTER_MINIUM_POWER = 0.3;
+	public static final double LIFTER_KP = 0.0015;
 	public static final double LIFTER_KD = 0;
 	//Holder
 	public static final double HOLDER_DELAY = 0.500;//sec

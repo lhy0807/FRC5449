@@ -2,6 +2,7 @@ package org.usfirst.frc.team5449.robot.subsystems;
 
 import org.usfirst.frc.team5449.robot.RobotMap;
 import org.usfirst.frc.team5449.robot.command.Drive;
+import org.usfirst.frc.team5449.robot.command.Move;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -66,22 +67,13 @@ public class Chassis extends Subsystem {
 		RightMotorA.set(ControlMode.PercentOutput, rightPower);
 	}
 	
-	private void tankStyle(double leftInput, double rightInput){
+	public void tankStyle(double leftInput, double rightInput){
 		double leftPower = stickScaling(leftInput);
 		double rightPower = stickScaling(rightInput);
 		LeftMotorA.set(ControlMode.PercentOutput, leftPower);
 		RightMotorA.set(ControlMode.PercentOutput, rightPower);
 	}
 	
-	public void arcadeDrive(){
-		//TODO Get the sticks you want to use FROM OI.java!
-		//arcadeStyle(, );
-	}
-	
-	public void tankDrive(){
-		//TODO Get the sticks you want to use FROM OI.java!
-		//tankStyle(, );
-	}
 	
 	private double stickScaling(double input){
 		//TODO scale the stick for this chassis;
@@ -91,7 +83,7 @@ public class Chassis extends Subsystem {
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new Drive());
+        setDefaultCommand(new Move());
     }
     
     @Deprecated
@@ -109,5 +101,6 @@ public class Chassis extends Subsystem {
     	RightMotorB.set(ControlMode.PercentOutput, 0);
     	RightMotorC.set(ControlMode.PercentOutput,0);
 	}
+    
 }
 

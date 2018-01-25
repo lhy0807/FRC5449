@@ -21,7 +21,7 @@ public class Lifter extends Subsystem{
 		Liftmotor_R.setInverted(true);
 		lifter_encoder_l = new Encoder(RobotMap.LIFTER_ENCODER_LEFT_PORT_A,RobotMap.LIFTER_ENCODER_LEFT_PORT_B);
 		lifter_encoder_r = new Encoder(RobotMap.LIFTER_ENCODER_RIGHT_PORT_A,RobotMap.LIFTER_ENCODER_RIGHT_PORT_B);
-		this.lifter_encoder_r.setReverseDirection(true);
+		this.lifter_encoder_l.setReverseDirection(true);
 	}
 	
 	
