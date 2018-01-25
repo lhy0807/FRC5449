@@ -12,13 +12,13 @@ import sensors.EncoderModule;
  *
  */
 public class AutoTurn extends Command {
-	//Parameters
+	//TODO Parameters
 	private double Kp = 0;
 	private double Kd = 0;
+	private double allowedError = 0;
 	private Timer timer;
 	private double lastError;
 	private double currError;
-	private double allowedError;
 	private double lastTime;
 	private double target; //one use only; left is negative right is positive
 	private double angleTarget;
