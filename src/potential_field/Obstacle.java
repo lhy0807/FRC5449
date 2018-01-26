@@ -14,5 +14,6 @@ public abstract class Obstacle {
 	
 	
 	
-	protected abstract double[] expell_force(double[] Position);
+	protected abstract double[] expell_force(double[] Position,double[] VectorToGoal);
+
 }

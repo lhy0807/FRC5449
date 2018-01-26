@@ -18,39 +18,49 @@ public class Square_obstacle extends Obstacle{
 
 
 	@Override
-	public double[] expell_force(double[] Position) {
-		
+	public double[] expell_force(double[] Position,double[] VectorToGoal) {
+		Dot_obstacle obs;
 		double[] nx = {1,0};//Unit vector in X direction
 		double[] ny = {0,1};//Unit vector in Y direction
 		double[] p = {Coordinates[0] - Position[0],Coordinates[1] - Position[1]};//relative position vector 
 		double p_mag = Math.hypot(p[0], p[1]);
 		double px = 0,py = 0;//the position vector in X and Y direction
-		nx = Rotate(nx,Angle);
-		ny = Rotate(ny,Angle);
+		
+
 		
 		px = Dot(p,nx);
 		py = Dot(p,ny);
 		
+		double gx = Dot(VectorToGoal,nx);
+		double gy = Dot(VectorToGoal,ny);
+		
+		
 		double[] ans = {0,0};
-		double Force;
 		
 		if (Math.abs(px) <= this.Width/2){
 			if (Math.abs(py) <= this.Length/2){
 				return ans;//Inside the box, return 0
-			}else{
-				Force = K_exp * (1/(Math.abs(py) - Length / 2) - 1/(range + Length / 2));
-				Force = Math.signum(py) * Force;
-				ans[0] = -Math.cos(Angle + Math.PI/2) * Force;
-				ans[1] = -Math.sin(Angle + Math.PI/2) * Force;
-				return ans;
+			}else{	
+				double[] coord = {-px + Coordinates[0],-Math.signum(py)*Length/2+Coordinates[1]};
+				/*
+				System.out.println("DOT COORD:");
+				System.out.print(coord[0]);
+				System.out.print("\t");
+				System.out.println(coord[1]);
+				*/
+				return new Dot_obstacle(coord,0).expell_force(Position, VectorToGoal);
 			}
 		} else{ 
 			if (Math.abs(py) <= this.Length/2){
-				Force = K_exp * (1/(Math.abs(px) - Width / 2) - 1/(range + Width / 2));
-				Force = Math.signum(px) * Force;
-				ans[0] = -Math.cos(Angle) * Force;
-				ans[1] = -Math.sin(Angle) * Force;
-				return ans;
+				double[] coord = {-Math.signum(px)*Width/2 + Coordinates[0],-py + Coordinates[1]};
+
+				/*
+				System.out.println("DOT COORD:");
+				System.out.print(coord[0]);
+				System.out.print("\t");
+				System.out.println(coord[1]);
+				*/
+				return new Dot_obstacle(coord,0).expell_force(Position, VectorToGoal);
 			}else{
 				double[] pos = {0,0};
 				pos[0] = -Math.signum(px) * Width/2;
@@ -60,7 +70,7 @@ public class Square_obstacle extends Obstacle{
 				pos[0] += Coordinates[0];
 				pos[1] += Coordinates[1];
 
-				ans = new Dot_obstacle(pos,0).expell_force(Position);
+				ans = new Dot_obstacle(pos,0).expell_force(Position,VectorToGoal);
 				return ans;
 			}
 		}
