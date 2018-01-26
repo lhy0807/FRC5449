@@ -7,6 +7,7 @@ import org.usfirst.frc.team5449.robot.command.IntakeStop;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import triggers.LiftTriggerTest;
 
 /**
  * OI Class: 
@@ -37,7 +38,7 @@ public class OI {
 		
 		//button function Map
 		//button1.whileHeld(new whatever_Command);
-		
+		new LiftTriggerTest().whenActive(new IntakeStop());
 	}
 	
 	//Methods
