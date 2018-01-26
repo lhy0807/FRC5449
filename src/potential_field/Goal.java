@@ -4,7 +4,7 @@ package potential_field;
 public class Goal {
 	
 	private double X,Y;
-	private double K_Attract = 3;
+	private double K_Attract = 7;
 	
 	public Goal(double[] Position){
 		X = Position[0];

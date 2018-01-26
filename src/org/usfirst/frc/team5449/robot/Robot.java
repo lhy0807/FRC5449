@@ -5,6 +5,7 @@ import org.usfirst.frc.team5449.robot.command.CompressorOn;
 import org.usfirst.frc.team5449.robot.command.IntakeIn;
 import org.usfirst.frc.team5449.robot.command.IntakeIn2;
 import org.usfirst.frc.team5449.robot.command.IntakeOut;
+import org.usfirst.frc.team5449.robot.command.Intake_Release;
 import org.usfirst.frc.team5449.robot.command.LifterToDown;
 import org.usfirst.frc.team5449.robot.command.LifterToMid;
 import org.usfirst.frc.team5449.robot.command.LifterToUp;
@@ -82,6 +83,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(new LifterToMid());
 		SmartDashboard.putData(new LifterToDown());
 		SmartDashboard.putData(new IntakeIn2());
+		SmartDashboard.putData(new Intake_Release());
 		SmartDashboard.putData("RELEASE",new Release_Cube());
 		SmartDashboard.putNumber("Left Encoder", this.lifter.get_position2()[0]);
 		SmartDashboard.putNumber("Right Encoder", this.lifter.get_position2()[1]);

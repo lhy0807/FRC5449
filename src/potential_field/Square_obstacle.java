@@ -48,7 +48,7 @@ public class Square_obstacle extends Obstacle{
 				System.out.print("\t");
 				System.out.println(coord[1]);
 				*/
-				return new Dot_obstacle(coord,0).expell_force(Position, VectorToGoal);
+				return new Dot_obstacle(coord,Range).expell_force(Position, VectorToGoal);
 			}
 		} else{ 
 			if (Math.abs(py) <= this.Length/2){
@@ -60,7 +60,7 @@ public class Square_obstacle extends Obstacle{
 				System.out.print("\t");
 				System.out.println(coord[1]);
 				*/
-				return new Dot_obstacle(coord,0).expell_force(Position, VectorToGoal);
+				return new Dot_obstacle(coord,Range).expell_force(Position, VectorToGoal);
 			}else{
 				double[] pos = {0,0};
 				pos[0] = -Math.signum(px) * Width/2;
@@ -70,7 +70,7 @@ public class Square_obstacle extends Obstacle{
 				pos[0] += Coordinates[0];
 				pos[1] += Coordinates[1];
 
-				ans = new Dot_obstacle(pos,0).expell_force(Position,VectorToGoal);
+				ans = new Dot_obstacle(pos,Range).expell_force(Position,VectorToGoal);
 				return ans;
 			}
 		}
