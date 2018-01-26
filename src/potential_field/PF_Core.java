@@ -23,6 +23,11 @@ public class PF_Core {
 		obs_count += 1;
 	}
 	
+	public void addObstacle(double[] coordinates,double Length,double Width,double Angle){
+		this.obs[obs_count] = new Square_obstacle(coordinates ,Length ,Width ,Angle);
+		obs_count += 1;
+	}
+	
 	public double[] get(double[] Position){
 		double[] ans = {0,0};
 		for (int i = 0;i < obs_count;i++){
