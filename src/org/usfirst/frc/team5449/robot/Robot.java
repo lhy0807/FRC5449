@@ -3,6 +3,7 @@ package org.usfirst.frc.team5449.robot;
 import org.usfirst.frc.team5449.robot.command.CompressorOff;
 import org.usfirst.frc.team5449.robot.command.CompressorOn;
 import org.usfirst.frc.team5449.robot.command.IntakeIn;
+import org.usfirst.frc.team5449.robot.command.IntakeIn2;
 import org.usfirst.frc.team5449.robot.command.IntakeOut;
 import org.usfirst.frc.team5449.robot.command.LifterToDown;
 import org.usfirst.frc.team5449.robot.command.LifterToMid;
@@ -15,7 +16,10 @@ import org.usfirst.frc.team5449.robot.subsystems.Climber;
 import org.usfirst.frc.team5449.robot.subsystems.Holder;
 import org.usfirst.frc.team5449.robot.subsystems.Intake;
 import org.usfirst.frc.team5449.robot.subsystems.Lifter;
+
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
@@ -35,17 +39,22 @@ public class Robot extends TimedRobot {
 	public static Robot r = new Robot();
 	public static OI oi;
 	public static Chassis chassis;
-	public static Camera c1 = new Camera();
 	public static Climber climber = new Climber();
 	public static Lifter lifter = new Lifter();
 	public static Intake intake = new Intake();
 	public static Holder holder = new Holder();
 	public static EncoderModule encodermodule = new EncoderModule();
+	public static CameraServer server = CameraServer.getInstance();
+	public static UsbCamera c1 = new UsbCamera("USB Camera 0",0);
+    
 	//public static I2C i1;
 	Command AutonomousCommand;
 	
 	@Override
 	public void robotInit() {
+		c1.setResolution(960, 540);
+		c1.setFPS(24);
+		server.startAutomaticCapture(c1);
 		oi = new OI();
 		chassis = new Chassis();
 		//command
@@ -72,6 +81,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(new LifterToUp());
 		SmartDashboard.putData(new LifterToMid());
 		SmartDashboard.putData(new LifterToDown());
+		SmartDashboard.putData(new IntakeIn2());
 		SmartDashboard.putData("RELEASE",new Release_Cube());
 		SmartDashboard.putNumber("Left Encoder", this.lifter.get_position2()[0]);
 		SmartDashboard.putNumber("Right Encoder", this.lifter.get_position2()[1]);

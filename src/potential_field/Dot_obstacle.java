@@ -1,6 +1,6 @@
 package potential_field;
 
-import edu.wpi.first.wpilibj.drive.Vector2d;
+
 
 public class Dot_obstacle extends Obstacle{
 	
@@ -17,13 +17,16 @@ public class Dot_obstacle extends Obstacle{
 	
 	
 	@Override
-	protected double[] expell_force(double[] Position) {
+	public double[] expell_force(double[] Position) {
 		double ans[] = {0,0};
-		if (Math.hypot(Position[0], Position[1]) <= this.Range + this.diameter){
+		if (Math.hypot(Position[0] - Coordinates[0], Position[1] - Coordinates[1]) <= this.Range){
 			//Expel force become active 
 			//Force = K * (1/relative distance - 1/maxium effect range)
-			ans[0] = this.K_expell * (1/(Coordinates[0] - Position[0]) - 1/(this.Range + this.diameter));
-			ans[1] = this.K_expell * (1/(Coordinates[1] - Position[1]) - 1/(this.Range + this.diameter));
+			double Force =K_expell *( 1/Math.hypot(Position[0] - Coordinates[0], Position[1] - Coordinates[1]) - 1/(this.Range));
+			double theta = Math.atan2(Coordinates[1] - Position[1], Coordinates[0] - Position[0]);
+			theta += Math.PI;
+			ans[0] = Force * Math.cos(theta);
+			ans[1] = Force * Math.sin(theta);
 			return ans;
 		}else{
 			//no expel force

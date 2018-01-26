@@ -7,7 +7,8 @@ public class PF_Core {
 	private Goal goal;
 	private Obstacle obs[] = new Obstacle[15]; 
 	private int obs_count = 0;
-	@Deprecated
+	
+	
 	public PF_Core(){
 		obs_count = 0;
 		obs = new Obstacle[15];
@@ -19,11 +20,12 @@ public class PF_Core {
 	
 	public void addObstacle(double[] coordinates,double range){
 		this.obs[obs_count] = new Dot_obstacle(coordinates,range);
+		obs_count += 1;
 	}
 	
 	public double[] get(double[] Position){
 		double[] ans = {0,0};
-		for (int i = 0;i < obs_count+1;i++){
+		for (int i = 0;i < obs_count;i++){
 			ans[0] += obs[i].expell_force(Position)[0];
 			ans[1] += obs[i].expell_force(Position)[1];
 		}

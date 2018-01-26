@@ -1,11 +1,10 @@
 package potential_field;
 
-import org.usfirst.frc.team5449.robot.RobotMap;
 
 public class Goal {
 	
 	private double X,Y;
-	private double K_Attract = RobotMap.PF_ATTRACT_CONSTANT;
+	private double K_Attract = 1;
 	
 	protected Goal(double[] Position){
 		X = Position[0];

@@ -1,8 +1,6 @@
 package potential_field;
 
-import org.usfirst.frc.team5449.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.drive.Vector2d;
 
 public abstract class Obstacle {
 	 
@@ -11,8 +9,8 @@ public abstract class Obstacle {
 	}
 	
 	
-	protected double K_expell = RobotMap.PF_EXPELL_CONSTANT;
-	protected double Range = RobotMap.PF_EXPELL_RANGE;
+	protected double K_expell = 10;
+	protected double Range = 2;
 	
 	
 	
