@@ -15,7 +15,7 @@ public class Dot_obstacle extends Obstacle{
 	@Override
 	protected double[] expell_force(double[] Position,double[] VectorToGoal) {
 		double[] Force = {0,0};
-		double n = 2;
+		double n = 1;
 		double R0 = this.radious;//Maximum affecting range
 		
 		double[] V_OR = {0,0};//Obstacle -> Robot
@@ -53,6 +53,20 @@ public class Dot_obstacle extends Obstacle{
 		
 		return Force;
 	}
+	
+	public boolean is_In(double[] Position,double[] VectorToGoal) {
+		
+		double[] V_OR = {0,0};//Obstacle -> Robot
+		V_OR[0] = Position[0] - Coordinates[0];
+		V_OR[1] = Position[1] - Coordinates[1];
+
+		double p_OR = Math.hypot(V_OR[0], V_OR[1]);//distance between obstacle and robot
+
+		return p_OR <= radious;
+	}
+	
+	
+	
 	public double[] Rotate(double[] Vector,double Radius){
 		//Positive angle means rotating counterclockwise
 		//angle in radius
