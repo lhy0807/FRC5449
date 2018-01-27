@@ -1,6 +1,8 @@
 package org.usfirst.frc.team5449.robot.subsystems;
 
 import org.usfirst.frc.team5449.robot.RobotMap;
+import org.usfirst.frc.team5449.robot.command.ClimberRemote;
+import org.usfirst.frc.team5449.robot.command.Lifter_Remote;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -16,15 +18,12 @@ public class Climber extends Subsystem{
 	public Climber(){
 		ClimberMotor1 = new TalonSRX(RobotMap.CLIMBER_MOTOR_1_PORT);
 		ClimberMotor2 = new TalonSRX(RobotMap.CLIMBER_MOTOR_2_PORT);
+		ClimberMotor2.setInverted(true);
 	}
 	
-	public void up(){
-		//TODO
-		
-	}
-	
-	public void down(){
-		//TODO
+	public void move(double Power){
+		ClimberMotor1.set(ControlMode.PercentOutput,Power);
+		ClimberMotor2.set(ControlMode.PercentOutput,Power);
 	}
 	
 	public void stop(){
@@ -41,9 +40,8 @@ public class Climber extends Subsystem{
 	
 	
 	@Override
-	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+	protected void initDefaultCommand() {	
+		this.setDefaultCommand(new ClimberRemote());
 	}
 
 }

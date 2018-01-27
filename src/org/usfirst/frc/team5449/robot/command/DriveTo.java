@@ -51,8 +51,8 @@ public class DriveTo extends Command {
     protected void initialize() {
     	VectorUpdate();
     	timer = new Timer();
-    	timer.start();
     	timer.reset();
+    	timer.start();
     	lastTime = 0;
     	currError_distance = distance;
     	lastError_distance = 0;

@@ -55,7 +55,7 @@ public class LifterToUp extends Command {
     protected boolean isFinished() {
         boolean p1 =  Math.abs(RobotMap.LIFTER_UP_POSE - Robot.lifter.get_position()) < RobotMap.LIFTER_MAXIUM_PASSING_ERROR;
         boolean p2 = false;
-        return p1 || p2;
+        return false;
     }
 
     // Called once after isFinished returns true

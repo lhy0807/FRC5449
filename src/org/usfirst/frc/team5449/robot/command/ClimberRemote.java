@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class Lifter_Remote extends Command {
+public class ClimberRemote extends Command {
 
-    public Lifter_Remote() {
+    public ClimberRemote() {
     	// Use requires() here to declare subsystem dependencies
-        requires(Robot.lifter);
+        requires(Robot.climber);
     }
 
     // Called just before this Command runs the first time
@@ -20,7 +20,7 @@ public class Lifter_Remote extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//Robot.lifter.move(Robot.oi.stick1.getX() * 0.4);
+    	//Robot.climber.move(Robot.oi.stick1.getX() * 0.4);
     	
     }
 
@@ -31,12 +31,12 @@ public class Lifter_Remote extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.lifter.stop();
+    	Robot.climber.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.lifter.stop();
+    	Robot.climber.stop();
     }
 }

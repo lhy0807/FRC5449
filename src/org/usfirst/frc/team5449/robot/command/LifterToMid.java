@@ -17,6 +17,7 @@ public class LifterToMid extends Command {
 	private double Kd = RobotMap.LIFTER_KD;
 	private double last_time;
 	private Timer timer = new Timer();
+	private boolean is_down = false;
 	
     public LifterToMid() {
         // Use requires() here to declare subsystem dependencies
@@ -30,6 +31,7 @@ public class LifterToMid extends Command {
     	last_time = timer.get();
     	error[0] = 0;
     	error[1] = RobotMap.LIFTER_MID_POSE - Robot.lifter.get_position();
+    	is_down = (Robot.lifter.get_position() - RobotMap.LIFTER_MID_POSE)>=0;
     }
    
     // Called repeatedly when this Command is scheduled to run
@@ -47,15 +49,17 @@ public class LifterToMid extends Command {
     	output = P_output + D_output;
     	output = range2(output,RobotMap.LIFTER_MINIUM_POWER,RobotMap.LIFTER_MAXIUM_POWER);
     	balance_output = RobotMap.LIFTER_BALANCE_KP * (Robot.lifter.get_position2()[0] - Robot.lifter.get_position2()[1]);
+    	
+    	if (is_down){
+    		output *= 0.5;
+    	}
     	Robot.lifter.move(output,balance_output);
     	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        boolean p1 =  Math.abs(RobotMap.LIFTER_MID_POSE - Robot.lifter.get_position()) < RobotMap.LIFTER_MAXIUM_PASSING_ERROR;
-        boolean p2 = false;
-        return p1 || p2;
+        return false;
     }
 
     // Called once after isFinished returns true

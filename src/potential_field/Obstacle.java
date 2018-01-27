@@ -9,7 +9,7 @@ public abstract class Obstacle {
 	}
 	
 	
-	protected double K_expell = 0.4;
+	protected double K_expell = 0.5;
 	protected double Range = 0.6;
 	
 	

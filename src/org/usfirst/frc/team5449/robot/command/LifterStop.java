@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class Lifter_Remote extends Command {
+public class LifterStop extends Command {
 
-    public Lifter_Remote() {
+    public LifterStop() {
     	// Use requires() here to declare subsystem dependencies
         requires(Robot.lifter);
     }
@@ -20,13 +20,13 @@ public class Lifter_Remote extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//Robot.lifter.move(Robot.oi.stick1.getX() * 0.4);
+    	Robot.lifter.move(0);
     	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
