@@ -74,6 +74,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		AutonomousCommand.cancel();
 		encodermodule.reset();
+		lifter.ResetEncoders();
 		
 	}
 	@Override

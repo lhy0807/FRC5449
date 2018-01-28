@@ -69,11 +69,6 @@ public class Chassis extends Subsystem {
 		double leftPower = stickScaling(leftInput);
 		double rightPower = stickScaling(rightInput);
 		
-		if (Math.abs(leftPower - rightPower) < RobotMap.CHASSIS_TURNING_DEADZONE){
-			double val = (leftPower + rightPower) * 0.50;
-			leftPower = val;
-			rightPower = val;
-		}
 		LeftMotorA.set(ControlMode.PercentOutput, leftPower);
 		RightMotorA.set(ControlMode.PercentOutput, rightPower);
 	}
@@ -84,7 +79,7 @@ public class Chassis extends Subsystem {
 	private double stickScaling(double input){
 		//TODO scale the stick for this chassis;
 		//limit 0-1 => Deadzone => square input
-		return Math.signum(input) * Math.pow(Math.abs(input), 1.2);
+		return Math.signum(input) * Math.pow(Math.abs(input), 1.5);
 	}
 	
 	
