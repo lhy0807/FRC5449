@@ -76,7 +76,7 @@ public class Lifter extends Subsystem{
 	}
 	//TODO
 	public boolean is_down(){
-		return !low_switch.get();
+		return (Math.abs(this.get_position() - RobotMap.LIFTER_DOWN_POSE) < RobotMap.LIFTER_MID_POSE * 0.4);
 	}
 	
 	public void ResetEncoders(){

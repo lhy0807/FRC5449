@@ -14,6 +14,7 @@ public class Intake extends Subsystem{
 	private TalonSRX mid_intake;
 	private Solenoid left_solenoid,right_solenoid;
 	private Compressor Compressor;
+	private boolean isin;
 	
 	
 	//TODO - may need pneumatics
@@ -25,6 +26,7 @@ public class Intake extends Subsystem{
 		left_solenoid = new Solenoid(RobotMap.PCM_PORT,RobotMap.INTAKE_LEFT_SOLENOID_PORT);
 		right_solenoid = new Solenoid(RobotMap.PCM_PORT,RobotMap.INTAKE_RIGHT_SOLENOID_PORT);
 		Compressor = new Compressor(RobotMap.PCM_PORT);
+		isin = true;
 	}
 	
 	//parameters:
@@ -66,12 +68,19 @@ public class Intake extends Subsystem{
 	public void Open(){
 		left_solenoid.set(true);
 		right_solenoid.set(true);
+		isin = false;
 	}
 	
 	public void Close(){
 		left_solenoid.set(false);
 		right_solenoid.set(false);
+		isin = true;
 	}
+	
+	public boolean isIn(){
+		return this.isin;
+	}
+	
 	
 	public void LeftIn(){
 		left_intake.set(ControlMode.PercentOutput,-IntakePower);

@@ -73,6 +73,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		AutonomousCommand.cancel();
+		encodermodule.reset();
+		
 	}
 	@Override
 	public void teleopPeriodic() {
@@ -89,6 +91,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("RELEASE",new Release_Cube());
 		SmartDashboard.putNumber("Left Encoder", this.lifter.get_position2()[0]);
 		SmartDashboard.putNumber("Right Encoder", this.lifter.get_position2()[1]);
+		SmartDashboard.putNumber("X",this.encodermodule.getX());
+		SmartDashboard.putNumber("Y",this.encodermodule.getY());
 		SmartDashboard.putNumber("Input", this.oi.stick1.getX());
 		Scheduler.getInstance().run();
 		

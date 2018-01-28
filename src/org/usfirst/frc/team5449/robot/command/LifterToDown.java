@@ -54,7 +54,9 @@ public class LifterToDown extends Command {
     protected boolean isFinished() {
         boolean p1 =  Math.abs(RobotMap.LIFTER_DOWN_POSE - Robot.lifter.get_position()) < RobotMap.LIFTER_MAXIUM_PASSING_ERROR;
         boolean p2 = false;
-        return p1 || p2;
+        boolean p3 = Robot.intake.isIn();
+        
+        return p1 || p2 || p3;
     }
 
     // Called once after isFinished returns true
