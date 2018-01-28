@@ -28,7 +28,6 @@ public class Gyro {
 		byte[] data = new byte[2];
 		data[0] = buf[1];
 		data[1] = buf[0];
-		SmartDashboard.putNumber("test2", 180*(Serial.byte2Short(data))/32768.0);
 		return 180*(Serial.byte2Short(data))/32768.0;
 	}
 }

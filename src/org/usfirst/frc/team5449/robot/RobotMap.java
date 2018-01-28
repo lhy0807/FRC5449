@@ -52,8 +52,8 @@ public class RobotMap {
 	public static final long LIFTER_MID_POSE = 120;
 	public static final long LIFTER_DOWN_POSE = 0;
 	public static final double LIFTER_MAXIUM_PASSING_ERROR = 20;
-	public static final double LIFTER_MAXIUM_POWER = 0.7;
-	public static final double LIFTER_MINIUM_POWER = 0.17;
+	public static final double LIFTER_MAXIUM_POWER = 0.5;
+	public static final double LIFTER_MINIUM_POWER = 0.1;
 	public static final double LIFTER_KP = 0.015;
 	public static final double LIFTER_KD = 0;
 	public static final double LIFTER_BALANCE_KP = 0.03;

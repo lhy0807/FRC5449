@@ -70,7 +70,13 @@ public class Chassis extends Subsystem {
 		double rightPower = stickScaling(rightInput);
 		
 		LeftMotorA.set(ControlMode.PercentOutput, leftPower);
+		LeftMotorB.set(ControlMode.PercentOutput, leftPower);
+		LeftMotorC.set(ControlMode.PercentOutput, leftPower);
+		
 		RightMotorA.set(ControlMode.PercentOutput, rightPower);
+		RightMotorB.set(ControlMode.PercentOutput, rightPower);
+		RightMotorC.set(ControlMode.PercentOutput, rightPower);
+
 	}
 	
 
