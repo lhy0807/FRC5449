@@ -4,6 +4,7 @@ import org.usfirst.frc.team5449.robot.command.IntakeIn;
 import org.usfirst.frc.team5449.robot.command.IntakeOut;
 import org.usfirst.frc.team5449.robot.command.IntakeStop;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -17,13 +18,11 @@ import triggers.LiftTriggerTest;
 public class OI {
 	
 	//initiate
-	public AnalogGyro gyro;
 	public Joystick stick1;
 	public JoystickButton button1,button2,button3;
 	
 	public OI(){
-		//sensors
-		gyro = new AnalogGyro(RobotMap.GYRO_PORT);
+
 		//joystick
 		stick1 = new Joystick(0);
 		//button
@@ -34,27 +33,10 @@ public class OI {
 		button2.whenPressed(new IntakeOut());
 		button3.whenPressed(new IntakeStop());
 		
-		
-		
-		//button function Map
-		//button1.whileHeld(new whatever_Command);
-		new LiftTriggerTest().whenActive(new IntakeStop());
+
 	}
 	
-	//Methods
-	public double getJoystickX(Joystick stick){
-		return stick.getX();
-	}	
-	public double getJoystickY(Joystick stick){
-		return stick.getY();
-	}	
-	public double getJoystickZ(Joystick stick){
-		return stick.getZ();
-	}
-	public double getGyroZ(){
-		return gyro.getAngle();
-	}
-	
+
 	
 	
 }

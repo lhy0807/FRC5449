@@ -6,6 +6,7 @@ import org.usfirst.frc.team5449.robot.RobotMap;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -43,16 +44,16 @@ public class LifterToMid extends Command {
     	P_output = error[0] * Kp;
     	dt = timer.get() - last_time;
     	D_output = Kd * (error[0] - error[1])/dt;
-    	error[1] = error[0];
-    	last_time = timer.get();
     	
+    	last_time = timer.get();
     	output = P_output + D_output;
     	output = range2(output,RobotMap.LIFTER_MINIUM_POWER,RobotMap.LIFTER_MAXIUM_POWER);
     	balance_output = RobotMap.LIFTER_BALANCE_KP * (Robot.lifter.get_position2()[0] - Robot.lifter.get_position2()[1]);
     	
     	if (is_down){
-    		output *= 0.5;
+    		output *= 0.15;
     	}
+    	error[1] = error[0];
     	Robot.lifter.move(output,balance_output);
     	
     }

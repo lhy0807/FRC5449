@@ -5,6 +5,8 @@ import org.usfirst.frc.team5449.robot.command.Move;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -19,6 +21,8 @@ public class Chassis extends Subsystem {
 	private TalonSRX RightMotorA;
 	private TalonSRX RightMotorB;
 	private TalonSRX RightMotorC;
+	private Encoder encoder_l;
+	private Encoder encoder_r;
 	
 	public Chassis(){
 		//TODO set ports CHANGE IT TO IMPLEMENT ROBOMAP IF PUT THIS IN USE
@@ -32,11 +36,11 @@ public class Chassis extends Subsystem {
 		RightMotorA.setInverted(true);
     	RightMotorB.setInverted(true);
     	RightMotorC.setInverted(true);
-		//slave
-		LeftMotorB.set(ControlMode.Follower, LeftMotorA.getDeviceID());
-		LeftMotorC.set(ControlMode.Follower, LeftMotorA.getDeviceID());
-		RightMotorB.set(ControlMode.Follower, RightMotorA.getDeviceID());
-		RightMotorC.set(ControlMode.Follower, RightMotorA.getDeviceID());
+		//Encoders
+    	encoder_l = new Encoder(RobotMap.CHASSIS_ENCODER_LEFT_PORT_A,RobotMap.CHASSIS_ENCODER_LEFT_PORT_B);
+    	encoder_r = new Encoder(RobotMap.CHASSIS_ENCODER_RIGHT_PORT_A,RobotMap.CHASSIS_ENCODER_RIGHT_PORT_B);
+    	encoder_l.setReverseDirection(true);
+    	reset();
 	}
 	
 	public void arcadeStyle(double power, double turn){
@@ -79,7 +83,36 @@ public class Chassis extends Subsystem {
 
 	}
 	
-
+	public void arcade_drive(double Power, double Rotate){
+		double leftPower,rightPower;
+		Rotate /= 2;
+		leftPower = range(Power + Rotate,-1,1);
+		rightPower = range(Power - Rotate,-1,1);
+		LeftMotorA.set(ControlMode.PercentOutput, leftPower);
+		LeftMotorB.set(ControlMode.PercentOutput, leftPower);
+		LeftMotorC.set(ControlMode.PercentOutput, leftPower);
+		
+		RightMotorA.set(ControlMode.PercentOutput, rightPower);
+		RightMotorB.set(ControlMode.PercentOutput, rightPower);
+		RightMotorC.set(ControlMode.PercentOutput, rightPower);
+	}
+	 
+	private double range(double val,double min,double max){
+	    	if (val < min){
+	    		return min;
+	    	}else if (val > max){
+	    		return max;
+	    	}else{
+	    		return val;
+	    	}
+	    } 
+	
+	public double[] get(){
+		double[] val = {0,0};
+		val[0] = this.encoder_l.get();
+		val[1] = this.encoder_r.get();
+		return val;
+	}
 	
 	
 	private double stickScaling(double input){
@@ -94,12 +127,10 @@ public class Chassis extends Subsystem {
         setDefaultCommand(new Move());
     }
     
-    @Deprecated
-	public void setEncoder(TalonSRX testMotor){
-		testMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10); //
-		testMotor.setSensorPhase(false); //true to invert sensor???
-		testMotor.getSelectedSensorPosition(0); //???
-	}
+    public void reset(){
+    	this.encoder_l.reset();
+    	this.encoder_r.reset();
+    	}
     
     public void stop(){
     	LeftMotorA.set(ControlMode.PercentOutput,0);

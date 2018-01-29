@@ -11,6 +11,7 @@ import org.usfirst.frc.team5449.robot.command.LifterToDown;
 import org.usfirst.frc.team5449.robot.command.LifterToMid;
 import org.usfirst.frc.team5449.robot.command.LifterToUp;
 import org.usfirst.frc.team5449.robot.command.Release_Cube;
+import org.usfirst.frc.team5449.robot.command.TurnTo;
 import org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup;
 import org.usfirst.frc.team5449.robot.subsystems.Camera;
 import org.usfirst.frc.team5449.robot.subsystems.Chassis;
@@ -21,7 +22,10 @@ import org.usfirst.frc.team5449.robot.subsystems.Lifter;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
@@ -49,12 +53,16 @@ public class Robot extends TimedRobot {
 	public static EncoderModule encodermodule = new EncoderModule();
 	public static CameraServer server = CameraServer.getInstance();
 	public static UsbCamera c1 = new UsbCamera("USB Camera 0",0);
-    
-	//public static I2C i1;
+	private static int working = 0;
+	public static ADXRS450_Gyro g1 = new ADXRS450_Gyro();
+    //Autonomous 
 	Command AutonomousCommand;
-	
+	//Parameters
+	public static double FirstHeading = 0;
 	@Override
 	public void robotInit() {
+		g1.reset();
+		g1.calibrate();
 		c1.setResolution(960, 540);
 		c1.setFPS(24);
 		server.startAutomaticCapture(c1);
@@ -62,10 +70,13 @@ public class Robot extends TimedRobot {
 		chassis = new Chassis();
 		//command
 		AutonomousCommand = new AutonomousGroup();
+		Scheduler.getInstance().removeAll();
 	}
 	@Override
 	public void autonomousInit() {
+		Scheduler.getInstance().removeAll();
 		AutonomousCommand.start();
+		working = 0;
 	}
 	@Override
 	public void autonomousPeriodic() {
@@ -73,9 +84,14 @@ public class Robot extends TimedRobot {
 	}
 	@Override
 	public void teleopInit() {
+		
+		
+		Scheduler.getInstance().removeAll();
+		FirstHeading = Gyro.getAngle();
 		AutonomousCommand.cancel();
 		encodermodule.reset();
 		lifter.ResetEncoders();
+		working = 0;
 		
 	}
 	@Override
@@ -90,17 +106,31 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(new IntakeIn2());
 		SmartDashboard.putData(new Intake_Release());
 		SmartDashboard.putData(new LifterStop());
+		SmartDashboard.putData(new TurnTo(90));
 		SmartDashboard.putData("RELEASE",new Release_Cube());
-		SmartDashboard.putNumber("Left Encoder", this.lifter.get_position2()[0]);
-		SmartDashboard.putNumber("Right Encoder", this.lifter.get_position2()[1]);
-		SmartDashboard.putNumber("Heading", Gyro.getAngle());
-		SmartDashboard.putNumber("X",this.encodermodule.getX());
-		SmartDashboard.putNumber("Y",this.encodermodule.getY());
+		SmartDashboard.putNumber("LIFTER Left Encoder", this.lifter.get_position2()[0]);
+		SmartDashboard.putNumber("LIFTER Right Encoder", this.lifter.get_position2()[1]);
+		SmartDashboard.putNumber("CHASSIS Left Encoder", this.chassis.get()[0]);
+		SmartDashboard.putNumber("CHASSIS Right Encoder", this.chassis.get()[1]);
+		double Heading2 = Math.toRadians((Gyro.getAngle() - Robot.FirstHeading));
+		Heading2 = Math.toDegrees(Math.atan2(Math.sin(Heading2), Math.cos(Heading2)));
+		SmartDashboard.putNumber("Heading", -Heading2);
+		SmartDashboard.putNumber("X",this.encodermodule.getX() * 0.10);
+		SmartDashboard.putNumber("Y",this.encodermodule.getY() * 0.10);
 		SmartDashboard.putNumber("Input", this.oi.stick1.getX());
-		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("working",working);
+		SmartDashboard.putNumber("AnalogGyro Data",g1.getAngle());
 		
+		
+		working ++;
+		Scheduler.getInstance().run();
+	}
+	@Override
+	public void disabledInit(){
+		Scheduler.getInstance().removeAll();
 	}
 	/*
+	 * 
 	private void log(){
 		//TODO TBD
 	}*/

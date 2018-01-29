@@ -20,7 +20,7 @@ public class ClimberRemote extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.climber.move(Math.abs(Robot.oi.stick1.getX() * 1));
+    	//Robot.climber.move(Math.abs(Robot.oi.stick1.getX() * 1));
     	
     }
 
