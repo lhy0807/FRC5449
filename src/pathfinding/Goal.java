@@ -1,14 +1,21 @@
-package potential_field;
+package pathfinding;
 
 
 public class Goal {
 	
 	private double X,Y;
-	private double K_Attract = 2;
+	private double K_Attract =4;
 	
 	public Goal(double[] Position){
 		X = Position[0];
 		Y = Position[1];
+	}
+	
+	protected double[] getPosition(){
+		double[] val = {0,0};
+		val[0] = this.X;
+		val[1] = this.Y;
+		return val;
 	}
 	
 	public double[] Att_Force(double[] Position){

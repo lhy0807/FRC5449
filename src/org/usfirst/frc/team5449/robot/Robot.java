@@ -87,9 +87,9 @@ public class Robot extends TimedRobot {
 		
 		
 		Scheduler.getInstance().removeAll();
-		FirstHeading = Gyro.getAngle();
 		AutonomousCommand.cancel();
 		encodermodule.reset();
+		FirstHeading = Gyro.getAngle();
 		lifter.ResetEncoders();
 		working = 0;
 		
@@ -112,8 +112,10 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("LIFTER Right Encoder", this.lifter.get_position2()[1]);
 		SmartDashboard.putNumber("CHASSIS Left Encoder", this.chassis.get()[0]);
 		SmartDashboard.putNumber("CHASSIS Right Encoder", this.chassis.get()[1]);
+		
 		double Heading2 = Math.toRadians((Gyro.getAngle() - Robot.FirstHeading));
 		Heading2 = Math.toDegrees(Math.atan2(Math.sin(Heading2), Math.cos(Heading2)));
+		
 		SmartDashboard.putNumber("Heading", -Heading2);
 		SmartDashboard.putNumber("X",this.encodermodule.getX() * 0.10);
 		SmartDashboard.putNumber("Y",this.encodermodule.getY() * 0.10);

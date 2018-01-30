@@ -1,4 +1,4 @@
-package potential_field;
+package pathfinding;
 
 
 

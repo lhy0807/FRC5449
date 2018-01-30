@@ -1,11 +1,10 @@
-package pathFinding_AStar;
+package pathfinding;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**patched*/
 public class PathFinding {
-	
 	//system enum
 	protected enum pathFindStatus{
 		Route_NOT_Available,
@@ -14,13 +13,14 @@ public class PathFinding {
 	}
 	
 	//map system - (ableNode_Value = 0)
+	private static double scalingConstant;
 	private static final int blockedNode_Value = 1;
 	private static final int closeNode_Value = 2;
-	private static final int MapXLength = 823;
-	private static final int MapYLength = 1646;
-	private static int[][] CourtMap = new int[MapYLength][MapXLength]; //court map size in centimeters 
-	private final int RobotXRadius = 50;
-	private final int RobotYRadius = 45;
+	private static int MapXLength;
+	private static int MapYLength;
+	private static int[][] CourtMap; //court map size in centimeters 
+	private final int RobotXRadius;
+	private final int RobotYRadius;
 	private final int RobotSafetyLength;
 	
 	//path finding system
@@ -37,9 +37,17 @@ public class PathFinding {
 	private boolean goalReached = false; //patch for o.equals() un-overrode-able
 	
 	/**Constructor
-	 * @param safetyDistance safety distance in centimeters
-	 * @param useChebyshev use Chebyshev to calculate more accurate Distance rather than Manhattan*/
-	public PathFinding(int x1, int y1, int x2, int y2, boolean useChebyshev, int safetyDistance){
+	 * @param x1 Starting
+	 * @param useChebyshev use Chebyshev to calculate Exact Distance rather than Manhattan*/
+	public PathFinding(int x1, int y1, int x2, int y2, boolean useChebyshev, int safetyDistance, double FASTER){
+		
+		scalingConstant = FASTER;
+		MapXLength = (int)(823/scalingConstant);
+		MapYLength = (int)(1646/scalingConstant);
+		CourtMap = new int[MapYLength][MapXLength]; //court map size in centimeters 
+		RobotXRadius = (int)(50/scalingConstant);
+		RobotYRadius = (int)(45/scalingConstant);
+		
 		
 		//initiate lists
 		openList = new ArrayList<MapNode>();
@@ -51,7 +59,7 @@ public class PathFinding {
 		ParentYMap = new int[MapYLength][MapXLength];
 		
 		//initiate Map System
-		RobotSafetyLength = safetyDistance;
+		RobotSafetyLength = (int)(safetyDistance/scalingConstant);
 		for(int i = 0;i<CourtMap.length;i++){
 			for(int j=0;j<CourtMap[i].length;j++){
 				CourtMap[i][j]=0;
@@ -74,12 +82,12 @@ public class PathFinding {
 				}
 			}
 		}
-		startNode = new MapNode(x1, y1);
-		goalNode = new MapNode(x2, y2);
+		startNode = new MapNode((int)(x1/scalingConstant), (int)(y1/scalingConstant));
+		goalNode = new MapNode((int)(x2/scalingConstant), (int)(y2/scalingConstant));
 	}
 	
 	/**must call this or you will get nothing*/
-	public void findPath(ArrayList<Integer> waypointListX, ArrayList<Integer> waypointListY, ArrayList<Integer> waypointDirection, boolean emptyLists){
+	public void findPath(ArrayList<Integer> waypointListX, ArrayList<Integer> waypointListY, ArrayList<Integer> waypointDirection, boolean emptyLists,ArrayList<Integer> waypointShortListX,ArrayList<Integer> waypointShortListY){
 		//Initiate
 		openList.add(startNode);
 		startNode.setParent(startNode);
@@ -134,21 +142,30 @@ public class PathFinding {
 			System.out.println("[Warning]:traceList UNREACHABLE! ");
 		}else{
 			int iTurn = getXYAngle(traceList.get(1).getX()-traceList.get(0).getX(), traceList.get(1).getY()-traceList.get(0).getY());
-			waypointListX.add(traceList.get(0).getX());
-			waypointListY.add(traceList.get(0).getY());
+			waypointListX.add((int) (scalingConstant*traceList.get(0).getX()));
+			waypointListY.add((int) (scalingConstant*traceList.get(0).getY()));
+			waypointShortListX.add((int) (scalingConstant*traceList.get(0).getX()));
+			waypointShortListY.add((int) (scalingConstant*traceList.get(0).getY()));
 			waypointDirection.add(iTurn);
 			for(int i=1;i<traceList.size()-1;i++){
 				int dx=traceList.get(i+1).getX()-traceList.get(i).getX();
 				int dy=traceList.get(i+1).getY()-traceList.get(i).getY();
 				if(getXYAngle(dx, dy)!=iTurn){
-					iTurn = getXYAngle(dx, dy);
-					waypointListX.add(traceList.get(i).getX());
-					waypointListY.add(traceList.get(i).getY());
-					waypointDirection.add(iTurn);
+					
+					waypointShortListX.add((int) (scalingConstant*traceList.get(i).getX()));
+					waypointShortListY.add((int) (scalingConstant*traceList.get(i).getY()));
+					
 				}
+				iTurn = getXYAngle(dx, dy);
+				waypointListX.add((int) (scalingConstant*traceList.get(i).getX()));
+				waypointListY.add((int) (scalingConstant*traceList.get(i).getY()));
+				waypointDirection.add(iTurn);
 			}//map end point
-			waypointListX.add(traceList.get(traceList.size()-1).getX());
-			waypointListY.add(traceList.get(traceList.size()-1).getY());
+			waypointListX.add((int) (scalingConstant*traceList.get(traceList.size()-1).getX()));
+			waypointListY.add((int) (scalingConstant*traceList.get(traceList.size()-1).getY()));
+			waypointShortListX.add((int) (scalingConstant*traceList.get(traceList.size()-1).getX()));
+			waypointShortListY.add((int) (scalingConstant*traceList.get(traceList.size()-1).getY()));
+			
 			waypointDirection.add(0);
 		}
 	}
@@ -157,9 +174,9 @@ public class PathFinding {
 	//TODO Map system Functions (Set Layout)
 	private void loadFieldLayout(){
 		//TODO get more accurate measurements
-		setRectObstacle(216-RobotXRadius-RobotSafetyLength, 355-RobotYRadius-RobotSafetyLength, 607+RobotXRadius+RobotSafetyLength, 498+RobotYRadius+RobotSafetyLength); //middle
-		setRectObstacle(242-RobotXRadius-RobotSafetyLength, 604-RobotYRadius-RobotSafetyLength, 580+RobotXRadius+RobotSafetyLength, 982+RobotYRadius+RobotSafetyLength);//far side
-		setRectObstacle(216-RobotXRadius-RobotSafetyLength, 1148-RobotYRadius-RobotSafetyLength, 607+RobotXRadius+RobotSafetyLength, 1291+RobotYRadius+RobotSafetyLength);//near side
+		setRectObstacle((int)(216/scalingConstant-RobotXRadius-RobotSafetyLength), (int)(355/scalingConstant-RobotYRadius-RobotSafetyLength), (int)(607/scalingConstant+RobotXRadius+RobotSafetyLength), (int)(498/scalingConstant+RobotYRadius+RobotSafetyLength)); //middle
+		setRectObstacle((int)(242/scalingConstant-RobotXRadius-RobotSafetyLength), (int)(664/scalingConstant-RobotYRadius-RobotSafetyLength), (int)(580/scalingConstant+RobotXRadius+RobotSafetyLength), (int)(982/scalingConstant+RobotYRadius+RobotSafetyLength));//far side
+		setRectObstacle((int)(216/scalingConstant-RobotXRadius-RobotSafetyLength), (int)(1148/scalingConstant-RobotYRadius-RobotSafetyLength), (int)(607/scalingConstant+RobotXRadius+RobotSafetyLength), (int)(1291/scalingConstant+RobotYRadius+RobotSafetyLength));//near side
 		//field edge
 		setRectObstacle(0, 0, RobotXRadius+RobotSafetyLength, MapYLength-1);//left
 		setRectObstacle(0, 0, MapXLength-1, RobotYRadius+RobotSafetyLength);//down
@@ -337,15 +354,4 @@ public class PathFinding {
 			return CourtMap[y][x];
 		}
 	}
-	
-	/* Example on how to use it: 
-	ArrayList<Integer> waypointListX = new ArrayList<Integer>();
-	ArrayList<Integer> waypointListY = new ArrayList<Integer>();
-	ArrayList<Integer> waypointDirection = new ArrayList<Integer>();
-	PathFinding PFS = new PathFinding(150,80,150,800,false,30);
-	PFS.findPath(waypointListX, waypointListY, waypointDirection, false);
-	for(int i=0; i<waypointDirection.size();i++){
-		System.out.println(waypointListX.get(i)+" "+waypointListY.get(i)+" "+waypointDirection.get(i));
-	}*/
 }
-

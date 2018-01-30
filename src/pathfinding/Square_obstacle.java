@@ -1,4 +1,4 @@
-package potential_field;
+package pathfinding;
 
 public class Square_obstacle extends Obstacle{
 	
@@ -119,8 +119,8 @@ public class Square_obstacle extends Obstacle{
 			}else{
 				t_p = Rotate(n_p,-Math.PI/2);
 			}
-			ans[0] += range(-t_p[0] * p_RG*1,-10,10);
-			ans[1] += range(-t_p[1] * p_RG*1,-10,10);
+			//ans[0] += range(-t_p[0] * p_RG*2.5,-10,10);
+			//ans[1] += range(-t_p[1] * p_RG*2.5,-10,10);
 		}
 		return ans;
 	}

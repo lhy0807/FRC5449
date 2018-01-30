@@ -1,0 +1,14 @@
+%Matlab code for viewing the path
+%1.type "data = 0" in the MATLAB console
+%2.Run the JAVA code, then copy the results
+%3.paste the results into "data"
+%4.Run this script
+hold on;
+plot([2.16,2.16,6.06,6.06,2.16],[3.55,4.97,4.97,3.55,3.55]);
+plot([2.41,2.41,5.81,5.81,2.41],[6.64,9.81,9.81,6.64,6.64]);
+plot([2.16,2.16,6.06,6.06,2.16],[11.48,12.90,12.90,11.48,11.48]);
+x = data(:,1);
+y = data(:,2);
+scatter(x,y);
+axis equal;
+clear;

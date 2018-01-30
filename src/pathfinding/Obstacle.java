@@ -1,4 +1,4 @@
-package potential_field;
+package pathfinding;
 
 
 
@@ -9,8 +9,8 @@ public abstract class Obstacle {
 	}
 	
 	
-	protected double K_expell = 0.5;
-	protected double Range = 0.6;
+	protected double K_expell = 2;
+	protected double Range = 2;
 	
 	
 	
