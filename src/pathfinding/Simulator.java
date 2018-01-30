@@ -18,7 +18,7 @@ public class Simulator {
 	
 	public Simulator(double[] StartPos,double[] EndPos,double step){
 		is_simulated = false;
-		step *= 100;//convert cm -> m
+		step *= 100;//convert m -> cm
 		this.step = step;
 		Position[0] = StartPos[0];
 		Position[1] = StartPos[1];

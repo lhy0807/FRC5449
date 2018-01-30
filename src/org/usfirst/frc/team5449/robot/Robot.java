@@ -107,34 +107,21 @@ public class Robot extends TimedRobot {
 	}
 	@Override
 	public void teleopPeriodic() {
-		SmartDashboard.putData(new IntakeIn());
-		SmartDashboard.putData(new IntakeOut());
 		SmartDashboard.putData(new CompressorOn());
 		SmartDashboard.putData(new CompressorOff());
-		SmartDashboard.putData(new LifterToUp());
-		SmartDashboard.putData(new LifterToMid());
-		SmartDashboard.putData(new LifterToDown());
-		SmartDashboard.putData(new IntakeIn2());
-		SmartDashboard.putData(new Intake_Release());
-		SmartDashboard.putData(new LifterStop());
 		SmartDashboard.putData(new TurnTo(90));
-		SmartDashboard.putData("RELEASE",new Release_Cube());
-		SmartDashboard.putNumber("LIFTER Left Encoder", this.lifter.get_position2()[0]);
-		SmartDashboard.putNumber("LIFTER Right Encoder", this.lifter.get_position2()[1]);
-		SmartDashboard.putNumber("CHASSIS Left Encoder", this.chassis.get()[0]);
-		SmartDashboard.putNumber("CHASSIS Right Encoder", this.chassis.get()[1]);
-		
 		double Heading2 = Math.toRadians((Gyro.getAngle() - Robot.FirstHeading));
 		Heading2 = Math.toDegrees(Math.atan2(Math.sin(Heading2), Math.cos(Heading2)));
-		
 		SmartDashboard.putNumber("Heading", -Heading2);
 		SmartDashboard.putNumber("X",this.encodermodule.getX() * 0.10);
 		SmartDashboard.putNumber("Y",this.encodermodule.getY() * 0.10);
-		SmartDashboard.putNumber("Input", this.oi.stick1.getX());
 		SmartDashboard.putNumber("working",working);
 		SmartDashboard.putNumber("AnalogGyro Data",g1.getAngle());
-		
-		
+		if (this.holder.is_holding_block()){
+			SmartDashboard.putNumber("BLOCK?",100);
+		}else{
+			SmartDashboard.putNumber("BLOCK?",0);
+		}
 		working ++;
 		Scheduler.getInstance().run();
 	}

@@ -12,7 +12,6 @@ import sensors.ProximitySwitch;
 
 public class Lifter extends Subsystem{
 	TalonSRX Liftmotor_L,Liftmotor_R;
-	ProximitySwitch low_switch = new ProximitySwitch(RobotMap.LIFTER_PS_HIGH_PORT);
 	private int current_status = 0;//0 for down,1 for mid,2 for up
 	private Encoder lifter_encoder_l,lifter_encoder_r;
 	public Lifter(){

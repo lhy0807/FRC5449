@@ -20,6 +20,7 @@ public class TurnTo extends Command {
 	private double currError;
 	private double lastTime;
 	private double angleTarget;
+	private double lastoutput;
 	
     public TurnTo(double angleTarget) {
         requires(Robot.chassis);
@@ -52,17 +53,21 @@ public class TurnTo extends Command {
     	}else if(currError<-180){
     		currError += 360;
     	}
-    	lastError = 0;
     	double varP = Kp*(currError);
     	double varD = Kd*(currError - lastError);
     	double output = varP + varD;
-    	output = range2(output,0.42,0.8);
+    	output = range2(output,0.25,1);
+    	if (currError - lastError > 10){
+    		output = lastoutput;
+    	}
     	
     	
+    	lastoutput = output;
     	Robot.chassis.arcade_drive(0, -output);
     	
     	SmartDashboard.putNumber("Xdot", (currError - lastError));
     	//Retro
+    	
     	lastTime = timer.get();
     	lastError = currError;
     	currError = 0;
