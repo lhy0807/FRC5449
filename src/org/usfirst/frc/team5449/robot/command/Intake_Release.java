@@ -30,7 +30,7 @@ public class Intake_Release extends Command {
     	if (t1.get() > 0.4){
     		Robot.holder.Push();
     	}
-    	if (t1.get() > 0.5){
+    	if (t1.get() > 0.7){
     		Robot.intake.Close();
     	}
     }
