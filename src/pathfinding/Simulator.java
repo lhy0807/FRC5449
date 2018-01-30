@@ -94,6 +94,7 @@ public class Simulator {
 		
 		is_simulated = true;
 		boolean reached = pf.isReached();
+		
 		pf.resetGoal();
 		for (int i = 0; i < waypoint_count; i++){
 			waypointX[i] /= 100;

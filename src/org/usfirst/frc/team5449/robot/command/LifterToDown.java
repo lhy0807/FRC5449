@@ -46,7 +46,7 @@ public class LifterToDown extends Command {
     	output = P_output + D_output;
     	output = range2(output,RobotMap.LIFTER_MINIUM_POWER,RobotMap.LIFTER_MAXIUM_POWER);
     	balance_output = RobotMap.LIFTER_BALANCE_KP * (Robot.lifter.get_position2()[0] - Robot.lifter.get_position2()[1]);
-    	Robot.lifter.move(output * 0.5,balance_output);
+    	Robot.lifter.move(output * 0.15,balance_output);
     	
     }
 

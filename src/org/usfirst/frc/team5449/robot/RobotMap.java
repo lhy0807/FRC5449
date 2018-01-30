@@ -51,14 +51,14 @@ public class RobotMap {
 	public static final double CHASSIS_TURNING_D = 0.070;
 	public static final double CHASSIS_TURNING_ALLOWED_ERROR = 2.00;
 	//lifter
-	public static final long LIFTER_UP_POSE = 400;
+	public static final long LIFTER_UP_POSE = 410;
 	public static final long LIFTER_MID_POSE = 120;
 	public static final long LIFTER_DOWN_POSE = 0;
 	public static final double LIFTER_MAXIUM_PASSING_ERROR = 20;
 	public static final double LIFTER_MAXIUM_POWER = 0.6;
 	public static final double LIFTER_MINIUM_POWER = 0.1;
-	public static final double LIFTER_KP = 0.01;
-	public static final double LIFTER_KD = 0.001;
+	public static final double LIFTER_KP = 0.012;
+	public static final double LIFTER_KD = 0.0008;
 	public static final double LIFTER_BALANCE_KP = 0.03;
 	//Holder
 	public static final double HOLDER_DELAY = 0.500;//sec
