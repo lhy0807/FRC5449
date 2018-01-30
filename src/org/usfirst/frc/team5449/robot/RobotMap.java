@@ -32,8 +32,8 @@ public class RobotMap {
 	//gyro
 	public static final int GYRO_PORT = 1;
 	//proximity switches
-	public static final int LIFTER_PS_LOW_PORT = 0;
-	public static final int LIFTER_PS_HIGH_PORT = 1;
+	//IR Sensors
+	public static final int HOLDER_IR_PORT = 0;
 	//Encoders
 	public static final int LIFTER_ENCODER_LEFT_PORT_A = 2;
 	public static final int LIFTER_ENCODER_LEFT_PORT_B = 3;
@@ -47,8 +47,8 @@ public class RobotMap {
 	//Chassis TODO configure
 	public static final double CHASSIS_TURNING_DEADZONE = 0.05;
 	public static final double CHASSIS_MAX_PASSING_ERROR = 0;
-	public static final double CHASSIS_TURNING_P = 0.008;
-	public static final double CHASSIS_TURNING_D = 0.004;
+	public static final double CHASSIS_TURNING_P = 0.011;
+	public static final double CHASSIS_TURNING_D = 0.070;
 	public static final double CHASSIS_TURNING_ALLOWED_ERROR = 2.00;
 	//lifter
 	public static final long LIFTER_UP_POSE = 400;

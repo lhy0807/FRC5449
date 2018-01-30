@@ -1,8 +1,15 @@
 package org.usfirst.frc.team5449.robot;
 
+import org.usfirst.frc.team5449.robot.command.Climb;
+import org.usfirst.frc.team5449.robot.command.ClimbStop;
 import org.usfirst.frc.team5449.robot.command.IntakeIn;
 import org.usfirst.frc.team5449.robot.command.IntakeOut;
 import org.usfirst.frc.team5449.robot.command.IntakeStop;
+import org.usfirst.frc.team5449.robot.command.Intake_Release;
+import org.usfirst.frc.team5449.robot.command.LifterToDown;
+import org.usfirst.frc.team5449.robot.command.LifterToMid;
+import org.usfirst.frc.team5449.robot.command.LifterToUp;
+import org.usfirst.frc.team5449.robot.command.Release_Cube;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -18,22 +25,38 @@ import triggers.LiftTriggerTest;
 public class OI {
 	
 	//initiate
-	public Joystick stick1;
-	public JoystickButton button1,button2,button3;
+	public Joystick stick2;
+	//button-stick1
+	//button-stick2
+	stick1 = new Joystick(0);
+	stick2 = new Joystick(1);
 	
-	public OI(){
-
-		//joystick
-		stick1 = new Joystick(0);
-		//button
-		button1 = new JoystickButton(stick1, 1);
-		button2 = new JoystickButton(stick1, 2);
-		button3 = new JoystickButton(stick1, 3);
-		button1.whenPressed(new IntakeIn());
-		button2.whenPressed(new IntakeOut());
-		button3.whenPressed(new IntakeStop());
+	public JoystickButton Holder_release = new JoystickButton(stick2,1);
+	public JoystickButton Intake_release = new JoystickButton(stick2,2);
+	public JoystickButton Lifter_UP = new JoystickButton(stick2,8);
+	public JoystickButton Lifter_MID = new JoystickButton(stick2,10);
+	public JoystickButton Lifter_DOWN = new JoystickButton(stick2,12);
+	public JoystickButton Intake_out = new JoystickButton(stick2,5);
+	public JoystickButton Intake_in = new JoystickButton(stick2,3);
+	public JoystickButton Intake_stop = new JoystickButton(stick2,4);
+	
+	
+	OI(){
 		
-
+		//joystick1
+		//
+		//button1
+		//joystick2
+		
+		//button2
+		Holder_release.whenPressed(new Release_Cube());
+		Intake_release.whenPressed(new Intake_Release());
+		Lifter_UP.whenPressed(new LifterToDown());
+		Lifter_MID.whenPressed(new LifterToMid());
+		Lifter_DOWN.whenPressed(new LifterToUp());
+		Intake_in.whenPressed(new IntakeIn());
+		Intake_out.whenPressed(new IntakeOut());
+		Intake_stop.whenPressed(new IntakeStop());
 	}
 	
 

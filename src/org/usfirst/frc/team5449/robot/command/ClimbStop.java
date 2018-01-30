@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  *
  */
-public class ClimberRemote extends Command {
+public class ClimbStop extends Command {
 
-    public ClimberRemote() {
+    public ClimbStop() {
     	// Use requires() here to declare subsystem dependencies
         requires(Robot.climber);
     }
@@ -21,13 +21,13 @@ public class ClimberRemote extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//Robot.climber.move(Math.abs(Robot.oi.stick1.getX() * 1));
+    	Robot.climber.stop();
     	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
@@ -38,6 +38,5 @@ public class ClimberRemote extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.climber.stop();
     }
 }
