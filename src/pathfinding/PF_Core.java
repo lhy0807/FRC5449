@@ -30,6 +30,13 @@ public class PF_Core {
 		is_reached = false;
 	}
 	
+	public void resetGoal(){
+		goal = new Goal[30];
+		is_reached = false;
+		current_goal = 0;
+		goal_count = 0;
+	}
+	
 	public void addGoal(double[] coordinates){
 		this.goal[goal_count] = new Goal(coordinates);
 		goal_count += 1;

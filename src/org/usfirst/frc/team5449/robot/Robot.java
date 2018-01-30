@@ -28,8 +28,10 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import pathfinding.Simulator;
 import sensors.EncoderModule;
 import sensors.Gyro;
 
@@ -75,7 +77,16 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
-		AutonomousCommand.start();
+		Timer timer = new Timer();
+		//AutonomousCommand.start();
+		timer.reset();
+		timer.start();
+		double[] start = {4,0.8};
+		double[] end = {4,10.6};
+		Simulator simulator = new Simulator(start,end,1);
+		simulator.Simulate();
+		timer.stop();
+		SmartDashboard.putNumber("Caculation time:", timer.get());
 		working = 0;
 	}
 	@Override
