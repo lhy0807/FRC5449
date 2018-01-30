@@ -1,7 +1,7 @@
 package org.usfirst.frc.team5449.robot.subsystems;
 
 import org.usfirst.frc.team5449.robot.RobotMap;
-import org.usfirst.frc.team5449.robot.command.Climb;
+
 import org.usfirst.frc.team5449.robot.command.Lifter_Remote;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -41,7 +41,6 @@ public class Climber extends Subsystem{
 	
 	@Override
 	protected void initDefaultCommand() {	
-		this.setDefaultCommand(new Climb());
 	}
 
 }
