@@ -37,11 +37,6 @@ public class SquareObstacle {
 		double[] us_vector = ultrasonic.getPos();
 		us_vector = Rotate(us_vector,-Heading);
 		
-		System.out.print("US_VECTOR_X:");
-		System.out.println(us_vector[0]);
-		System.out.print("US_VECTOR_Y:");
-		System.out.println(us_vector[1]);
-		
 		double[] p = {Position[0] + us_vector[0] - Coordinates[0],Position[1] + us_vector[1] - Coordinates[1]};
 		
 
@@ -56,22 +51,17 @@ public class SquareObstacle {
 		System.out.println(heading);
 		if(((Math.abs((relative_angle(ANGLE_UP,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_UP) > Length*0.5) && (Dot(p,VECTOR_UP) < Length*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_RIGHT,p)) < Width * 0.5 - SAFE_DISTANCE))){
 			val[0] = true;//UP
-			System.out.println("UP");
 			return val;
 		}else if((Math.abs((relative_angle(ANGLE_DOWN,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_DOWN) > Length*0.5) && (Dot(p,VECTOR_DOWN) < Length*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_RIGHT,p)) < Width * 0.5 - SAFE_DISTANCE)){
 			val[1] = true;//DOWN
-			System.out.println("DOWN");
 			return val;
 		}else if((Math.abs((relative_angle(ANGLE_LEFT,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_LEFT) > Width*0.5) && (Dot(p,VECTOR_LEFT) < Width*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_UP,p)) < Length * 0.5 - SAFE_DISTANCE)){
 			val[2] = true;//LEFT
-			System.out.println("LEFT");
 			return val;
 		}else if ((Math.abs((relative_angle(ANGLE_RIGHT,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_RIGHT) > Width*0.5) && (Dot(p,VECTOR_RIGHT) < Width*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_UP,p)) < Length * 0.5 - SAFE_DISTANCE)){
 			val[3] = true;//RIGHT
-			System.out.println("RIGHT");
 			return val;
 		}else{
-			System.out.println("NONE");
 			return val;//NONE
 		}
 	}
