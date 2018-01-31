@@ -56,8 +56,8 @@ public class TurnTo extends Command {
     	double varP = Kp*(currError);
     	double varD = Kd*(currError - lastError);
     	double output = varP + varD;
-    	output = range2(output,0.25,1);
-    	if (currError - lastError > 10){
+    	output = range2(output,0.26,1);
+    	if (Math.abs(currError - lastError) > 10){
     		output = lastoutput;
     	}
     	
@@ -85,7 +85,7 @@ public class TurnTo extends Command {
     	}
     	SmartDashboard.putNumber("error", Math.abs(currError));
     	
-        return (Math.abs(currError)<allowedError && Math.abs(currError - lastError) < 0.1);
+        return (Math.abs(currError)<allowedError && Math.abs(currError - lastError) < 0.1) || (timer.get() > 3);
     }
 
     // Called once after isFinished returns true

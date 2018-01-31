@@ -85,7 +85,7 @@ public class Chassis extends Subsystem {
 	
 	public void arcade_drive(double Power, double Rotate){
 		double leftPower,rightPower;
-		Rotate /= 2;
+		Rotate /= 1.5;
 		leftPower = range(Power + Rotate,-1,1);
 		rightPower = range(Power - Rotate,-1,1);
 		LeftMotorA.set(ControlMode.PercentOutput, leftPower);
