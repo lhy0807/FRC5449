@@ -198,7 +198,7 @@ public class PathFinding {
 	 * <p>.contains(goalNode) Will ALWAYS return FALSE! </Strong>
 	 * <p>(because it uses the .equals() method that was not Overrode in MapNode.java)
 	 * */
-	private pathFindStatus isEnd(){
+	protected pathFindStatus isEnd(){
 		if(goalReached){
 			return pathFindStatus.Route_Found;
 		}else if(openList.isEmpty()){

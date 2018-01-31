@@ -2,6 +2,7 @@ package org.usfirst.frc.team5449.robot;
 
 import org.usfirst.frc.team5449.robot.command.CompressorOff;
 import org.usfirst.frc.team5449.robot.command.CompressorOn;
+import org.usfirst.frc.team5449.robot.command.DriveDistance;
 import org.usfirst.frc.team5449.robot.command.IntakeIn;
 import org.usfirst.frc.team5449.robot.command.IntakeIn2;
 import org.usfirst.frc.team5449.robot.command.IntakeOut;
@@ -102,6 +103,7 @@ public class Robot extends TimedRobot {
 		encodermodule.reset();
 		FirstHeading = Gyro.getAngle();
 		lifter.ResetEncoders();
+		this.chassis.reset();
 		working = 0;
 		
 	}
@@ -110,8 +112,14 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(new CompressorOn());
 		SmartDashboard.putData(new CompressorOff());
 		SmartDashboard.putData(new TurnTo(90));
+		SmartDashboard.putData(new DriveDistance(4));
+		SmartDashboard.putNumber("enc_l",Robot.chassis.get()[0]);
+		SmartDashboard.putNumber("enc_r",Robot.chassis.get()[1]);
+		SmartDashboard.putData(new DriveDistance(4));
+		
 		double Heading2 = Math.toRadians((Gyro.getAngle() - Robot.FirstHeading));
 		Heading2 = Math.toDegrees(Math.atan2(Math.sin(Heading2), Math.cos(Heading2)));
+		
 		SmartDashboard.putNumber("Heading", -Heading2);
 		SmartDashboard.putNumber("X",this.encodermodule.getX() * 0.10);
 		SmartDashboard.putNumber("Y",this.encodermodule.getY() * 0.10);
