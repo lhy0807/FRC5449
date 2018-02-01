@@ -20,7 +20,7 @@ public class Move extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.chassis.tankStyle(-Robot.oi.stick1.getRawAxis(1)*0.6, -Robot.oi.stick1.getRawAxis(5)*0.6);
+    	Robot.chassis.arcade_drive(-Robot.oi.stick2.getRawAxis(1)*0.6, Robot.oi.stick2.getRawAxis(2),0.2);
     	
     }
 

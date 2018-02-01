@@ -5,6 +5,7 @@ import org.usfirst.frc.team5449.robot.RobotMap;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.drive.Vector2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import sensors.Gyro;
 
 /**
@@ -13,14 +14,15 @@ import sensors.Gyro;
 public class DriveTo extends Command {
 	private double TargetX,TargetY;
 	private double currX,currY;
-    Vector2d t = new Vector2d(0,0);
+	double[] t = {0,0};	
+	
     double distance,theta;
 	private boolean Stop = true;
 	
 	//PID
-	private double Drive_P = 0;
+	private double Drive_P = 0.4;
 	private double Drive_D = 0;
-	private double Turn_P = 0;
+	private double Turn_P = 0.04;
 	private double Turn_D = 0;
 	//private double Turn_Scale = 1;
 	
@@ -32,18 +34,18 @@ public class DriveTo extends Command {
 	private double lastError_angle;
 	private double currError_angle;
 	 
-	public DriveTo(double TargetX,double TargetY) {
+	public DriveTo(double[] Target) {
     	// Use requires() here to declare subsystem dependencies
-        requires(Robot.chassis);
-        this.TargetX = TargetX;
-        this.TargetY = TargetY;
+        //requires(Robot.chassis);
+        this.TargetX = Target[0];
+        this.TargetY = Target[1];
         this.Stop = true;
     }
-	public DriveTo(double TargetX,double TargetY,boolean Stop)
+	public DriveTo(double[] Target,boolean Stop)
 	{
-		requires(Robot.chassis);
-		this.TargetX = TargetX;
-		this.TargetY = TargetY;
+		//requires(Robot.chassis);
+		this.TargetX = Target[0];
+		this.TargetY = Target[1];
 		this.Stop = Stop;
 	}
 	
@@ -88,14 +90,20 @@ public class DriveTo extends Command {
     	double distance_output = distanceVarP+distanceVarD;
     	double angle_output = angleVarP+angleVarD;
     	
-    	double leftPower = distance_output + angle_output; 
-    	double rightPower = distance_output - angle_output;
+    	distance_output = range(distance_output,-0.2,0.2);
+    	angle_output = range(angle_output,-0.5,0.5);
     	
-    	double trim = Math.max(Math.max(Math.abs(leftPower),Math.abs(rightPower)),1);
-    	leftPower /= trim;
-    	rightPower /= trim; 
+    	Robot.chassis.arcade_drive(distance_output, -angle_output);
     	
-    	Robot.chassis.tankStyle(leftPower, rightPower);
+    	//Robot.chassis.tankStyle(leftPower, rightPower);
+    	SmartDashboard.putNumber("t.X", this.t[0]);
+    	SmartDashboard.putNumber("t.Y", this.t[1]);
+    	SmartDashboard.putNumber("theta", this.theta);
+    	SmartDashboard.putNumber("distance_output", distance_output);
+    	SmartDashboard.putNumber("theangle_output", angle_output);
+    	
+    	
+    	
     	
     	lastTime = timer.get();
     	lastError_distance = currError_distance;
@@ -106,7 +114,7 @@ public class DriveTo extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (distance <= RobotMap.CHASSIS_MAX_PASSING_ERROR);
+        return (distance <= RobotMap.CHASSIS_MAX_PASSING_ERROR) || timer.get() > 10;
     }
 
     // Called once after isFinished returns true
@@ -125,12 +133,21 @@ public class DriveTo extends Command {
     }
     
     private void VectorUpdate(){
-    	currX = Robot.encodermodule.getX();
-    	currY = Robot.encodermodule.getY();
-    	t.x = TargetX - currX;
-    	t.y = TargetY - currY;
-    	theta = Math.atan2(t.y, t.x)*180.0/Math.PI;
-    	distance = t.magnitude();
+    	currX = Robot.encodermodule.getX() * 0.001;
+    	currY = Robot.encodermodule.getY() * 0.001;
+    	t[0] = TargetX - currX;
+    	t[1] = TargetY - currY;
+    	theta = Math.toDegrees(-Math.atan2(t[0], t[1]));
+    	distance = Math.hypot(t[0], t[1]);
     }
+	 private double range(double val,double min,double max){
+	    	if (val < min){
+	    		return min;
+	    	}else if (val > max){
+	    		return max;
+	    	}else{
+	    		return val;
+	    	}
+	    }
     
 }

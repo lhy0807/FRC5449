@@ -85,6 +85,21 @@ public class Chassis extends Subsystem {
 	
 	public void arcade_drive(double Power, double Rotate){
 		double leftPower,rightPower;
+		//Rotate = deadzone(Rotate,0.2);
+		Rotate /= 1.5;
+		leftPower = range(Power + Rotate,-1,1);
+		rightPower = range(Power - Rotate,-1,1);
+		LeftMotorA.set(ControlMode.PercentOutput, leftPower);
+		LeftMotorB.set(ControlMode.PercentOutput, leftPower);
+		LeftMotorC.set(ControlMode.PercentOutput, leftPower);
+		
+		RightMotorA.set(ControlMode.PercentOutput, rightPower);
+		RightMotorB.set(ControlMode.PercentOutput, rightPower);
+		RightMotorC.set(ControlMode.PercentOutput, rightPower);
+	}
+	public void arcade_drive(double Power, double Rotate,double deadzone){
+		double leftPower,rightPower;
+		Rotate = deadzone(Rotate,deadzone);
 		Rotate /= 1.5;
 		leftPower = range(Power + Rotate,-1,1);
 		rightPower = range(Power - Rotate,-1,1);
@@ -106,6 +121,15 @@ public class Chassis extends Subsystem {
 	    		return val;
 	    	}
 	    } 
+	private double deadzone(double val,double deadzone){
+		if (Math.abs(val) >= deadzone){
+			return val;
+		}else{
+			return 0;
+		}
+	}
+	
+	
 	
 	public double[] get(){
 		double[] val = {0,0};

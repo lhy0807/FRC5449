@@ -1,5 +1,7 @@
 package sensors;
 
+import org.usfirst.frc.team5449.robot.Robot;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -8,6 +10,15 @@ public class Gyro {
 	
 	
 	private static double offset = 0;
+	
+	public static void reset(){
+		offset = 0;
+	}
+	
+	public static void set_offset(double offset2){
+		offset = offset2;
+	}
+	
 	public static double getAngle(){
 		Timer out_of_time = new Timer();
 		byte[] request = {10};
@@ -28,9 +39,14 @@ public class Gyro {
 		byte[] data = new byte[2];
 		data[0] = buf[1];
 		data[1] = buf[0];
-		double val =  180.0*(Serial.byte2Short(data))/32768.0;
+		double val =  180.0*(Serial.byte2Short(data))/32768.0 + offset;
+		if (val > 180){
+			val -= 360;
+		}
+		if (val <= -180){
+			val += 360;
+		}
 		return val;
-		
 	}
 	
 

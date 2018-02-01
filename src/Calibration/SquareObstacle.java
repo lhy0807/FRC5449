@@ -38,17 +38,10 @@ public class SquareObstacle {
 		us_vector = Rotate(us_vector,-Heading);
 		
 		double[] p = {Position[0] + us_vector[0] - Coordinates[0],Position[1] + us_vector[1] - Coordinates[1]};
-		
 
-		
 		double heading = relative_angle(Heading,-ultrasonic.getHeading());//adds the angle
 
-		
-		
-		
-		
 		boolean[] val = {false,false,false,false};
-		System.out.println(heading);
 		if(((Math.abs((relative_angle(ANGLE_UP,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_UP) > Length*0.5) && (Dot(p,VECTOR_UP) < Length*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_RIGHT,p)) < Width * 0.5 - SAFE_DISTANCE))){
 			val[0] = true;//UP
 			return val;

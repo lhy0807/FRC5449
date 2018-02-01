@@ -45,9 +45,7 @@ public class TurnTo extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double dt = timer.get() - lastTime;
-    	double Heading2 = Math.toRadians((Gyro.getAngle() - Robot.FirstHeading));
-    	currError = angleTarget - Math.toDegrees(Math.atan2(Math.sin(Heading2), Math.cos(Heading2)));
-    	
+    	currError = angleTarget - (Gyro.getAngle());
     	if(currError>180){
     		currError -= 360;
     	}else if(currError<-180){
@@ -75,8 +73,7 @@ public class TurnTo extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	double Heading2 = Math.toRadians((Gyro.getAngle() - Robot.FirstHeading));
-    	currError = angleTarget - Math.toDegrees(Math.atan2(Math.sin(Heading2), Math.cos(Heading2)));
+    	currError = angleTarget - (Gyro.getAngle());
     	
     	if(currError>180){
     		currError -= 360;

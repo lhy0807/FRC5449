@@ -10,7 +10,8 @@ public class Drive extends Command {
 	@Deprecated
     public Drive() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.chassis);
+        
+
     }
 
     // Called just before this Command runs the first time
