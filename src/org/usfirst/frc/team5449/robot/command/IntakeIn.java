@@ -29,7 +29,7 @@ public class IntakeIn extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (!is_holding){
+    	if (!is_holding && Robot.holder.is_holding_block()){
     		time = timer.get();
     		is_holding = true;
     	}
@@ -38,7 +38,7 @@ public class IntakeIn extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timer.get() > 2 || (Robot.holder.is_holding_block() && (timer.get() > time + 0.6));
+        return timer.get() > 3 || (Robot.holder.is_holding_block() && (timer.get() > time + 0.5));
     }
 
     // Called once after isFinished returns true

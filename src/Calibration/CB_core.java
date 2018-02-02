@@ -10,7 +10,7 @@ public class CB_core {
 	private int obstacle_count = 0;
 	
 	
-	CB_core(){
+	public CB_core(){
 		ultrasonic = new CB_ultrasonic[5];
 		obstacles = new SquareObstacle[10];
 		us_count = 0;
@@ -25,6 +25,13 @@ public class CB_core {
 	public void add_sensor(double[] Coordinates,double Heading,AnalogUltraSonic A_ultrasonic){
 		ultrasonic[us_count] = new CB_ultrasonic(Coordinates,Heading,A_ultrasonic);
 		us_count += 1;
+	}
+	
+	public void loadFRCfield(){
+		double[] switch1 = {4.11,4.26};
+		add_obstacle(switch1,1.42,3.89);
+		double[] switch2 = {4.11,12.19};
+		add_obstacle(switch2,1.42,3.89);
 	}
 	
 	public double[] Update(double[] Position,double Heading){

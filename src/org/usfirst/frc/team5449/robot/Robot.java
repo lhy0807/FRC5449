@@ -22,6 +22,7 @@ import org.usfirst.frc.team5449.robot.subsystems.Holder;
 import org.usfirst.frc.team5449.robot.subsystems.Intake;
 import org.usfirst.frc.team5449.robot.subsystems.Lifter;
 
+import Calibration.CB_core;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -32,8 +33,10 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.*;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import pathfinding.Simulator;
+import sensors.AnalogUltraSonic;
 import sensors.EncoderModule;
 import sensors.Gyro;
 
@@ -59,11 +62,20 @@ public class Robot extends TimedRobot {
 	public static UsbCamera c1 = new UsbCamera("USB Camera 0",0);
 	private static int working = 0;
 	public static ADXRS450_Gyro g1 = new ADXRS450_Gyro();
-    //Autonomous 
+	private static AnalogUltraSonic u1 = new AnalogUltraSonic(0);
+	private static CB_core cb = new CB_core();
+	
+	private static Timer timer = new Timer();
+	private static double last_calibration_time = 0;
+	private static SendableChooser<double[]> Field_pos_chooser = new SendableChooser();
+
+	//Autonomous 
 	Command AutonomousCommand;
 	//Parameters
 	@Override
 	public void robotInit() {
+		Field_pos_chooser.addDefault("LEFT", new double[]{2300,340});
+		Field_pos_chooser.addObject("MIDDLE", new double[]{4000,340});
 		g1.reset();
 		g1.calibrate();
 		c1.setResolution(960, 540);
@@ -73,6 +85,8 @@ public class Robot extends TimedRobot {
 		chassis = new Chassis();
 		//command
 		AutonomousCommand = new AutonomousGroup();
+		timer.reset();
+		timer.start();
 		Scheduler.getInstance().removeAll();
 	}
 	@Override
@@ -105,12 +119,28 @@ public class Robot extends TimedRobot {
 		Gyro.set_offset(-Gyro.getAngle());
 		lifter.ResetEncoders();
 		this.chassis.reset();
+		this.cb = new CB_core();
+		cb.loadFRCfield();
 		working = 0;
-		
+		last_calibration_time = this.timer.get();
+		this.encodermodule.setfieldOffset(Field_pos_chooser.getSelected());
 	}
 	@Override
 	public void teleopPeriodic() {
-		SmartDashboard.putData(new CompressorOn());
+		double[] Position = {this.encodermodule.getX() * 0.01d,this.encodermodule.getY() * 0.01d};
+		double Heading = g1.getAngle();
+		if (timer.get() - last_calibration_time > 0.3){
+			double[] calibration = cb.Update(Position, Heading);
+			SmartDashboard.putNumber("Calibration X:",calibration[0]);
+			SmartDashboard.putNumber("Calibration Y:",calibration[1]);
+			last_calibration_time = timer.get();
+		}
+		
+
+		
+
+
+        SmartDashboard.putData(new CompressorOn());
 		SmartDashboard.putData(new CompressorOff());
 		SmartDashboard.putData(new TurnTo(90));
 		SmartDashboard.putData(new DriveDistance(4));
@@ -120,10 +150,11 @@ public class Robot extends TimedRobot {
 		double[] goal = {1,1};
 		SmartDashboard.putData("DRIVE TO", new DriveTo(goal,true));
 		SmartDashboard.putNumber("Heading", Gyro.getAngle());
-		SmartDashboard.putNumber("X",this.encodermodule.getX() * 0.10);
-		SmartDashboard.putNumber("Y",this.encodermodule.getY() * 0.10);
-		SmartDashboard.putNumber("working",working);
-		SmartDashboard.putNumber("AnalogGyro Data",g1.getAngle());
+		SmartDashboard.putNumber("X",Position[0] * 10.0d);
+		SmartDashboard.putNumber("Y",Position[1] * 10.0d);
+
+		SmartDashboard.putNumber("AnalogGyro Data",Heading);
+		SmartDashboard.putNumber("Ultrasonic_LEFT:",u1.get());
 		if (this.holder.is_holding_block()){
 			SmartDashboard.putNumber("BLOCK?",100);
 		}else{
@@ -135,6 +166,11 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit(){
 		Scheduler.getInstance().removeAll();
+	}
+	
+	@Override
+	public void disabledPeriodic(){
+		SmartDashboard.putData(Field_pos_chooser);
 	}
 	/*
 	 * 

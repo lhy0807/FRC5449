@@ -4,7 +4,8 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class EncoderModule {
 	
-	
+	private double[] offsets = {0,0};
+	private double[] field_offsets = {2300,340};
 	public EncoderModule(){
 		
 	}
@@ -26,7 +27,7 @@ public class EncoderModule {
 		}
 		byte[] buf = new byte[4];
 		buf = Serial.Arduino.read(4);
-		return (double)Serial.bytes2Float(buf);	
+		return (double)Serial.bytes2Float(buf) + this.offsets[0] + field_offsets[0];	
 	}
 	public double getY(){
 		Timer out_of_time = new Timer();
@@ -45,10 +46,22 @@ public class EncoderModule {
 		}
 		byte[] buf = new byte[4];
 		buf = Serial.Arduino.read(4);
-		return (double)Serial.bytes2Float(buf);	
+		return (double)Serial.bytes2Float(buf) + this.offsets[1] + field_offsets[1];	
 	}
+	
+	public void setOffset(double[] Offsets){
+		this.offsets = Offsets;
+	}
+	
+	public void setfieldOffset(double[] Offsets){
+		this.field_offsets = Offsets;
+	}
+	
+	
 	public void reset(){
 		byte[] request = {7};
+		this.offsets[0] = 0;
+		this.offsets[1] = 0;
 		Serial.Arduino.read(Serial.Arduino.getBytesReceived());
 		Serial.Arduino.write(request, 1);
 	}
