@@ -5,12 +5,13 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
+ *
  */
-public class Move extends Command {
+public class Climb_remote extends Command {
 
-    public Move() {
+    public Climb_remote() {
     	// Use requires() here to declare subsystem dependencies
-        requires(Robot.chassis);
+        requires(Robot.climber);
     }
 
     // Called just before this Command runs the first time
@@ -20,7 +21,7 @@ public class Move extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.chassis.arcade_drive(-Robot.oi.stick2.getRawAxis(1)*0.6, Robot.oi.stick2.getRawAxis(2),0.2);
+    	Robot.climber.move(Math.abs(Robot.oi.stick1.getRawAxis(1)));
     	
     }
 
@@ -31,12 +32,11 @@ public class Move extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.chassis.stop();
+    	Robot.climber.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.chassis.stop();
     }
 }

@@ -2,26 +2,34 @@ package org.usfirst.frc.team5449.robot.command;
 
 import org.usfirst.frc.team5449.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
+import pathfinding.Simulator;
 
 /**
  *
  */
-public class Move extends Command {
+public class NavigateTo extends Command {
 
-    public Move() {
+	Simulator simulator;
+	double[] TargetPos;
+    public NavigateTo(double[] TargetPos) {
+    	requires(Robot.chassis);
+    	this.TargetPos = TargetPos;
     	// Use requires() here to declare subsystem dependencies
-        requires(Robot.chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
+    	double[] CurrentPos = {Robot.encodermodule.getX(),Robot.encodermodule.getY()};
+    	simulator = new Simulator(CurrentPos,TargetPos,1.000);
+    	simulator.Simulate();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.chassis.arcade_drive(-Robot.oi.stick2.getRawAxis(1)*0.6, Robot.oi.stick2.getRawAxis(2),0.2);
-    	
+    	double[] Position = {Robot.encodermodule.getX(),Robot.encodermodule.getY()};
+    	double[] Force = this.simulator.getForce(Position);
+    	double Target_heading = Math.atan2(Force[1], -Force[0]);
+    	//TODO
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -37,6 +45,5 @@ public class Move extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.chassis.stop();
     }
 }

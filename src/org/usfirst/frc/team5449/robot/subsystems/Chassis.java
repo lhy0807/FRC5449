@@ -100,7 +100,10 @@ public class Chassis extends Subsystem {
 	public void arcade_drive(double Power, double Rotate,double deadzone){
 		double leftPower,rightPower;
 		Rotate = deadzone(Rotate,deadzone);
+		Rotate = stickScaling(Rotate);
 		Rotate /= 1.5;
+		Power = stickScaling(Power);
+		
 		leftPower = range(Power + Rotate,-1,1);
 		rightPower = range(Power - Rotate,-1,1);
 		LeftMotorA.set(ControlMode.PercentOutput, leftPower);

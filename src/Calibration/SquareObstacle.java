@@ -1,13 +1,15 @@
 package Calibration;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class SquareObstacle {
 	private double[] Coordinates = {0,0};
 	private double Length = 0;
 	private double Width = 0;
 	
-	private static final double MAX_CALIBRATION_RANGE = 1.50;//meter
+	private static final double MAX_CALIBRATION_RANGE = 1.00;//meter
 	private static final double SAFE_DISTANCE = 0.4;
-	private static final double MAX_CALIBRATION_ANGLE = Math.PI / 6.0f;//Radious
+	private static final double MAX_CALIBRATION_ANGLE = Math.PI / 6.0f;//Radius
 	
 	
 	private static final double[] VECTOR_UP= {0,1};
@@ -21,8 +23,6 @@ public class SquareObstacle {
 	private static final double ANGLE_DOWN = 0;
 	private static final double ANGLE_LEFT = Math.PI * 0.5;
 	private static final double ANGLE_RIGHT = -Math.PI * 0.5;
-	
-	
 	
 	
 	protected SquareObstacle(double[] Coordinates,double Length,double Width){
@@ -40,21 +40,29 @@ public class SquareObstacle {
 		double[] p = {Position[0] + us_vector[0] - Coordinates[0],Position[1] + us_vector[1] - Coordinates[1]};
 
 		double heading = relative_angle(Heading,-ultrasonic.getHeading());//adds the angle
-
+		
+		//SmartDashboard.putNumber("DA", Math.toDegrees(relative_angle(ANGLE_LEFT,heading)));
 		boolean[] val = {false,false,false,false};
+		//SmartDashboard.putNumber("HEADING",Math.toDegrees(heading));
+	
 		if(((Math.abs((relative_angle(ANGLE_UP,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_UP) > Length*0.5) && (Dot(p,VECTOR_UP) < Length*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_RIGHT,p)) < Width * 0.5 - SAFE_DISTANCE))){
 			val[0] = true;//UP
+			//SmartDashboard.putString("CALIBRATION DIR","UP");
 			return val;
 		}else if((Math.abs((relative_angle(ANGLE_DOWN,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_DOWN) > Length*0.5) && (Dot(p,VECTOR_DOWN) < Length*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_RIGHT,p)) < Width * 0.5 - SAFE_DISTANCE)){
 			val[1] = true;//DOWN
+			//SmartDashboard.putString("CALIBRATION DIR","DOWN");
 			return val;
 		}else if((Math.abs((relative_angle(ANGLE_LEFT,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_LEFT) > Width*0.5) && (Dot(p,VECTOR_LEFT) < Width*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_UP,p)) < Length * 0.5 - SAFE_DISTANCE)){
 			val[2] = true;//LEFT
+			//SmartDashboard.putString("CALIBRATION DIR","LEFT");
 			return val;
 		}else if ((Math.abs((relative_angle(ANGLE_RIGHT,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_RIGHT) > Width*0.5) && (Dot(p,VECTOR_RIGHT) < Width*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_UP,p)) < Length * 0.5 - SAFE_DISTANCE)){
 			val[3] = true;//RIGHT
+			//SmartDashboard.putString("CALIBRATION DIR","RIGHT");
 			return val;
 		}else{
+			//SmartDashboard.putString("CALIBRATION DIR","NONE");
 			return val;//NONE
 		}
 	}
@@ -62,24 +70,28 @@ public class SquareObstacle {
 	protected double[] calibrate(double[] Position,double Heading,boolean[] is_calibratable,CB_ultrasonic ultrasonic){
 		double[] val = {0,0};
 		double USheading = relative_angle(Heading,-ultrasonic.getHeading());
+		double[] us_vector = ultrasonic.getPos();
+		us_vector = Rotate(us_vector,-Heading);
+		
+		
 		double K;	
 		if (is_calibratable[0]){
 			//UP
 			K = Math.cos(relative_angle(ANGLE_UP,USheading));
-			val[1] = (ultrasonic.get() * K + Coordinates[1] + Length * 0.5) - Position[1];
+			val[1] = (ultrasonic.get() * K + Coordinates[1] + Length * 0.5) - (Position[1] + us_vector[1]);
 			
 		}else if(is_calibratable[1]){
 			//DOWN
 			K = Math.cos(relative_angle(ANGLE_DOWN,USheading));
-			val[1] = (-ultrasonic.get() * K + Coordinates[1] -Length * 0.5) - Position[1];
+			val[1] = (-ultrasonic.get() * K + Coordinates[1] -Length * 0.5) - (Position[1] + us_vector[1]);
 		}else if(is_calibratable[2]){
 			//LEFT
 			K = Math.cos(relative_angle(ANGLE_LEFT,USheading));
-			val[0] = (Coordinates[0] - Width * 0.5 - ultrasonic.get() * K) - Position[0];
+			val[0] = (Coordinates[0] - Width * 0.5 - ultrasonic.get() * K) - (Position[0] + us_vector[0]);
 		}else if(is_calibratable[3]){
 			//RIGHT
 			K = Math.cos(relative_angle(ANGLE_RIGHT,USheading));
-			val[0] = (Coordinates[0] + Width * 0.5 + ultrasonic.get() * K) - Position[0];
+			val[0] = (Coordinates[0] + Width * 0.5 + ultrasonic.get() * K) - (Position[0] + us_vector[0]);
 		}else{
 			//NONE
 		}

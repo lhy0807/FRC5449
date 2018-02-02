@@ -121,18 +121,27 @@ public class Robot extends TimedRobot {
 		this.chassis.reset();
 		this.cb = new CB_core();
 		cb.loadFRCfield();
+		double[] us_pos = {0.16,-0.246};
+		cb.add_sensor(us_pos, Math.PI * 0.5, u1);
 		working = 0;
 		last_calibration_time = this.timer.get();
 		this.encodermodule.setfieldOffset(Field_pos_chooser.getSelected());
 	}
 	@Override
 	public void teleopPeriodic() {
-		double[] Position = {this.encodermodule.getX() * 0.01d,this.encodermodule.getY() * 0.01d};
-		double Heading = g1.getAngle();
-		if (timer.get() - last_calibration_time > 0.3){
-			double[] calibration = cb.Update(Position, Heading);
+		double[] Position = {this.encodermodule.getX() * 0.001d,this.encodermodule.getY() * 0.001d};
+		double Heading = Gyro.getAngle();
+		
+		if (timer.get() - last_calibration_time > 0.05){
+			double[] calibration = cb.Update(Position, Math.toRadians(-Heading));
 			SmartDashboard.putNumber("Calibration X:",calibration[0]);
 			SmartDashboard.putNumber("Calibration Y:",calibration[1]);
+			if (Math.hypot(calibration[0], calibration[1])>1.000){
+				calibration[0] = 0;
+				calibration[1] = 0;
+			}
+			double[] offsets = {calibration[0] * 1000,calibration[1] * 1000};
+			this.encodermodule.setOffset(offsets);
 			last_calibration_time = timer.get();
 		}
 		
@@ -150,8 +159,8 @@ public class Robot extends TimedRobot {
 		double[] goal = {1,1};
 		SmartDashboard.putData("DRIVE TO", new DriveTo(goal,true));
 		SmartDashboard.putNumber("Heading", Gyro.getAngle());
-		SmartDashboard.putNumber("X",Position[0] * 10.0d);
-		SmartDashboard.putNumber("Y",Position[1] * 10.0d);
+		SmartDashboard.putNumber("X",Position[0] * 100.0d);
+		SmartDashboard.putNumber("Y",Position[1] * 100.0d);
 
 		SmartDashboard.putNumber("AnalogGyro Data",Heading);
 		SmartDashboard.putNumber("Ultrasonic_LEFT:",u1.get());

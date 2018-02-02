@@ -30,8 +30,8 @@ public class CB_core {
 	public void loadFRCfield(){
 		double[] switch1 = {4.11,4.26};
 		add_obstacle(switch1,1.42,3.89);
-		double[] switch2 = {4.11,12.19};
-		add_obstacle(switch2,1.42,3.89);
+		//double[] switch2 = {4.11,12.19};
+		//add_obstacle(switch2,1.42,3.89);
 	}
 	
 	public double[] Update(double[] Position,double Heading){

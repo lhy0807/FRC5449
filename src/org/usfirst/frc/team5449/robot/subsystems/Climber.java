@@ -1,8 +1,9 @@
 package org.usfirst.frc.team5449.robot.subsystems;
 
 import org.usfirst.frc.team5449.robot.RobotMap;
-
+import org.usfirst.frc.team5449.robot.command.Climb_remote;
 import org.usfirst.frc.team5449.robot.command.Lifter_Remote;
+import org.usfirst.frc.team5449.robot.command.Move;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -41,6 +42,7 @@ public class Climber extends Subsystem{
 	
 	@Override
 	protected void initDefaultCommand() {	
+		setDefaultCommand(new Climb_remote());
 	}
 
 }
