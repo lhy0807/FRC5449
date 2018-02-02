@@ -14,8 +14,10 @@ public class PathFinding {
 	
 	//map system - (ableNode_Value = 0)
 	private static double scalingConstant;
+	private static final int clearNode_Value = 0;
 	private static final int blockedNode_Value = 1;
 	private static final int closeNode_Value = 2;
+	private static final int safetyNode_Value = 3; 
 	private static int MapXLength;
 	private static int MapYLength;
 	private static int[][] CourtMap; //court map size in centimeters 
@@ -65,7 +67,6 @@ public class PathFinding {
 				CourtMap[i][j]=0;
 			}
 		}
-		loadFieldLayout();
 		
 		//initiate situations
 		for(int i = 0;i<GMap.length;i++){//y
@@ -84,6 +85,8 @@ public class PathFinding {
 		}
 		startNode = new MapNode((int)(x1/scalingConstant), (int)(y1/scalingConstant));
 		goalNode = new MapNode((int)(x2/scalingConstant), (int)(y2/scalingConstant));
+		//load map in here
+		loadFieldLayout();
 	}
 	
 	/**must call this or you will get nothing*/
@@ -171,23 +174,48 @@ public class PathFinding {
 	}
 	
 	
-	//TODO Map system Functions (Set Layout)
 	private void loadFieldLayout(){
-		//TODO get more accurate measurements
-		setRectObstacle((int)(216/scalingConstant-RobotXRadius-RobotSafetyLength), (int)(355/scalingConstant-RobotYRadius-RobotSafetyLength), (int)(607/scalingConstant+RobotXRadius+RobotSafetyLength), (int)(498/scalingConstant+RobotYRadius+RobotSafetyLength)); //middle
-		setRectObstacle((int)(242/scalingConstant-RobotXRadius-RobotSafetyLength), (int)(664/scalingConstant-RobotYRadius-RobotSafetyLength), (int)(580/scalingConstant+RobotXRadius+RobotSafetyLength), (int)(982/scalingConstant+RobotYRadius+RobotSafetyLength));//far side
-		setRectObstacle((int)(216/scalingConstant-RobotXRadius-RobotSafetyLength), (int)(1148/scalingConstant-RobotYRadius-RobotSafetyLength), (int)(607/scalingConstant+RobotXRadius+RobotSafetyLength), (int)(1291/scalingConstant+RobotYRadius+RobotSafetyLength));//near side
-		//field edge
-		setRectObstacle(0, 0, RobotXRadius+RobotSafetyLength, MapYLength-1);//left
-		setRectObstacle(0, 0, MapXLength-1, RobotYRadius+RobotSafetyLength);//down
-		setRectObstacle(0, MapYLength-RobotYRadius-RobotSafetyLength, MapXLength-1, MapYLength-1);//up
-		setRectObstacle(MapXLength-RobotXRadius-RobotSafetyLength, 0, MapXLength-1, MapYLength-1);//right
+		//safety pre-ride
+		setRectObstacle((int)(216/scalingConstant-RobotXRadius-RobotSafetyLength), (int)(355/scalingConstant-RobotYRadius-RobotSafetyLength), (int)(607/scalingConstant+RobotXRadius+RobotSafetyLength), (int)(498/scalingConstant+RobotYRadius+RobotSafetyLength), safetyNode_Value); //middle
+		setRectObstacle((int)(242/scalingConstant-RobotXRadius-RobotSafetyLength), (int)(664/scalingConstant-RobotYRadius-RobotSafetyLength), (int)(580/scalingConstant+RobotXRadius+RobotSafetyLength), (int)(982/scalingConstant+RobotYRadius+RobotSafetyLength), safetyNode_Value);//far side
+		setRectObstacle((int)(216/scalingConstant-RobotXRadius-RobotSafetyLength), (int)(1148/scalingConstant-RobotYRadius-RobotSafetyLength), (int)(607/scalingConstant+RobotXRadius+RobotSafetyLength), (int)(1291/scalingConstant+RobotYRadius+RobotSafetyLength), safetyNode_Value);//near side
+		setRectObstacle(0, 0, RobotXRadius+RobotSafetyLength, MapYLength-1, safetyNode_Value);//left
+		setRectObstacle(0, 0, MapXLength-1, RobotYRadius+RobotSafetyLength, safetyNode_Value);//down
+		setRectObstacle(0, MapYLength-RobotYRadius-RobotSafetyLength, MapXLength-1, MapYLength-1, safetyNode_Value);//up
+		setRectObstacle(MapXLength-RobotXRadius-RobotSafetyLength, 0, MapXLength-1, MapYLength-1, safetyNode_Value);//right
+		//set required blocked
+		setRectObstacle((int)(216/scalingConstant-RobotXRadius), (int)(355/scalingConstant-RobotYRadius), (int)(607/scalingConstant+RobotXRadius), (int)(498/scalingConstant+RobotYRadius), blockedNode_Value); //middle
+		setRectObstacle((int)(242/scalingConstant-RobotXRadius), (int)(664/scalingConstant-RobotYRadius), (int)(580/scalingConstant+RobotXRadius), (int)(982/scalingConstant+RobotYRadius), blockedNode_Value);//far side
+		setRectObstacle((int)(216/scalingConstant-RobotXRadius), (int)(1148/scalingConstant-RobotYRadius), (int)(607/scalingConstant+RobotXRadius), (int)(1291/scalingConstant+RobotYRadius), blockedNode_Value);//near side
+		setRectObstacle(0, 0, RobotXRadius, MapYLength-1, blockedNode_Value);//left
+		setRectObstacle(0, 0, MapXLength-1, RobotYRadius, blockedNode_Value);//down
+		setRectObstacle(0, MapYLength-RobotYRadius, MapXLength-1, MapYLength-1, blockedNode_Value);//up
+		setRectObstacle(MapXLength-RobotXRadius, 0, MapXLength-1, MapYLength-1, blockedNode_Value);//right
+		//set start & end safety override
+		setObstacleOverride(startNode.getX(), startNode.getY());
+		setObstacleOverride(goalNode.getX(), goalNode.getY());
 	}
+	
 	/**xStart and xEnd and as well as yStart and yEnd are inclusive*/
-	private void setRectObstacle(int xStart, int yStart, int xEnd, int yEnd){
+	private void setRectObstacle(int xStart, int yStart, int xEnd, int yEnd, int value){
 		for(int i=yStart;i<=yEnd;i++){ //y
 			for(int j=xStart;j<=xEnd;j++){ //x
-				CourtMap[i][j] = blockedNode_Value;
+				CourtMap[i][j] = value;
+			}
+		}
+	}
+	/**NOT TESTED*/
+	private void setObstacleOverride(int x, int y){//TODO test this
+		for(int i=(y-RobotYRadius>0)?(y-RobotYRadius):0;i<((y+RobotYRadius<MapYLength)?(y+RobotYRadius):MapYLength);i++){ //y
+			for(int j=(x-RobotXRadius>0)?(x-RobotXRadius):0;j<((x+RobotXRadius<MapXLength)?(x+RobotXRadius):MapXLength);j++){ //x
+				if(CourtMap[i][j]==safetyNode_Value){
+					CourtMap[i][j] = clearNode_Value;
+				}/*else if(CourtMap[i][j]==closeNode_Value){
+					//config output
+					System.out.println("Something is Going WRONG! - "+x+" "+y);
+				}*/
+				
+				
 			}
 		}
 	}
@@ -292,7 +320,8 @@ public class PathFinding {
 							(j>=MapYLength)||
 							(i>=MapXLength)||
 							CourtMap[j][i]==closeNode_Value||
-							CourtMap[j][i]==blockedNode_Value){
+							CourtMap[j][i]==blockedNode_Value||
+							CourtMap[j][i]==safetyNode_Value){
 						
 					}else{
 						AdjacentSet.add(new MapNode(i, j));

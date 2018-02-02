@@ -20,7 +20,7 @@ public class DriveTo extends Command {
 	private boolean Stop = true;
 	
 	//PID
-	private double Drive_P = 0.4;
+	private double Drive_P = 0.5;
 	private double Drive_D = 0;
 	private double Turn_P = 0.04;
 	private double Turn_D = 0;

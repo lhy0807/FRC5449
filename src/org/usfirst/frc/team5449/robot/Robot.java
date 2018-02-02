@@ -12,6 +12,7 @@ import org.usfirst.frc.team5449.robot.command.LifterStop;
 import org.usfirst.frc.team5449.robot.command.LifterToDown;
 import org.usfirst.frc.team5449.robot.command.LifterToMid;
 import org.usfirst.frc.team5449.robot.command.LifterToUp;
+import org.usfirst.frc.team5449.robot.command.NavigateTo;
 import org.usfirst.frc.team5449.robot.command.Release_Cube;
 import org.usfirst.frc.team5449.robot.command.TurnTo;
 import org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup;
@@ -50,7 +51,7 @@ import sensors.Gyro;
  */
 public class Robot extends TimedRobot {
 	//RobotDrive myRobot = new RobotDrive(0, 1);
-	public static Robot r = new Robot();
+	//public static Robot r = new Robot();
 	public static OI oi;
 	public static Chassis chassis;
 	public static Climber climber = new Climber();
@@ -156,8 +157,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("enc_l",Robot.chassis.get()[0]);
 		SmartDashboard.putNumber("enc_r",Robot.chassis.get()[1]);
 		SmartDashboard.putData(new DriveDistance(4));
-		double[] goal = {1,1};
-		SmartDashboard.putData("DRIVE TO", new DriveTo(goal,true));
+		double[] goal = {4,5.74};
+		SmartDashboard.putData("NAVIGATE TO", new NavigateTo(goal,true));
 		SmartDashboard.putNumber("Heading", Gyro.getAngle());
 		SmartDashboard.putNumber("X",Position[0] * 100.0d);
 		SmartDashboard.putNumber("Y",Position[1] * 100.0d);

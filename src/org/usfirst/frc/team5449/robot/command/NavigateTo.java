@@ -1,49 +1,166 @@
 package org.usfirst.frc.team5449.robot.command;
 
 import org.usfirst.frc.team5449.robot.Robot;
+import org.usfirst.frc.team5449.robot.RobotMap;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.drive.Vector2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import pathfinding.Simulator;
+import sensors.Gyro;
 
 /**
- *
+ * NOTE THAT THE ENDING ANGLE IS RANDOM
  */
 public class NavigateTo extends Command {
-
-	Simulator simulator;
-	double[] TargetPos;
-    public NavigateTo(double[] TargetPos) {
-    	requires(Robot.chassis);
-    	this.TargetPos = TargetPos;
+	double[] t = {0,0};	
+	private double[] TargetPos = {0,0};
+	private double[] Position = {0,0};
+	
+    double distance,theta;
+	private boolean Stop = true;
+	
+	//PID
+	private double Drive_P = 0.5;
+	private double Drive_D = 0;
+	private double Turn_P = 0.04;
+	private double Turn_D = 0.80;
+	//Simulator 
+	private Simulator simulator;
+	private boolean is_reachable = false;
+	
+	//time & error
+	private Timer timer;
+	private double lastTime;
+	private double lastError_distance;
+	private double currError_distance;
+	private double lastError_angle;
+	private double currError_angle;
+	 
+	public NavigateTo(double[] TargetPos) {
     	// Use requires() here to declare subsystem dependencies
+        requires(Robot.chassis);
+		this.TargetPos = TargetPos;
+        this.Stop = true;
     }
-
+	public NavigateTo(double[] TargetPos,boolean Stop)
+	{
+		requires(Robot.chassis);
+		this.TargetPos = TargetPos;
+		this.Stop = Stop;
+	}
+	
     // Called just before this Command runs the first time
     protected void initialize() {
-    	double[] CurrentPos = {Robot.encodermodule.getX(),Robot.encodermodule.getY()};
-    	simulator = new Simulator(CurrentPos,TargetPos,1.000);
-    	simulator.Simulate();
+    	VectorUpdate();
+    	SmartDashboard.putNumber("startposX", Position[0]);
+    	SmartDashboard.putNumber("startposY", Position[1]);
+    	simulator = new Simulator(this.Position,this.TargetPos,2.00d);
+    	
+    	timer = new Timer();
+    	timer.reset();
+    	timer.start();
+    	SmartDashboard.putString("Navigate To", "COMMAND WORKING");
+    	is_reachable = this.simulator.Simulate();
+    	SmartDashboard.putString("Navigate To", "Calculation done");
+    	
+    	
+    	lastTime = 0;
+    	currError_distance = distance;
+    	lastError_distance = 0;
+    	currError_angle = theta - Gyro.getAngle();
+    	if(currError_angle>180){
+    		currError_angle -= 360;
+    	}else if(currError_angle<-180){
+    		currError_angle += 360;
+    	}
+    	lastError_angle = 0;
     }
-
+    
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double[] Position = {Robot.encodermodule.getX(),Robot.encodermodule.getY()};
-    	double[] Force = this.simulator.getForce(Position);
-    	double Target_heading = Math.atan2(Force[1], -Force[0]);
-    	//TODO
+    	VectorUpdate();
+    	double[] Force = simulator.getForce(Position);
+    	theta = -Math.toDegrees(Math.atan2(Force[0], Force[1]));
+    	SmartDashboard.putNumber("theta", theta);
+    	SmartDashboard.putNumber("ForceX", Force[0]);
+    	SmartDashboard.putNumber("ForceY", Force[1]);
+    	
+    	double dt = timer.get() - lastTime;
+    	currError_distance = distance;
+    	currError_angle = theta - Gyro.getAngle();
+    	
+    	if(currError_angle>=180){
+    		currError_angle -= 360;
+    	}else if(currError_angle<=-180){
+    		currError_angle += 360;
+    	}
+    	
+    	
+    	
+    	double distanceVarP = Drive_P*(currError_distance);
+    	double distanceVarD = Drive_D*(currError_distance - lastError_distance);
+    	double angleVarP = Turn_P*(currError_angle);
+    	double angleVarD = Turn_D*(currError_angle-lastError_angle);
+    	
+    	double distance_output = distanceVarP+distanceVarD;
+    	double angle_output = angleVarP+angleVarD;
+    	
+    	distance_output = range(distance_output,0,0.2);
+    	angle_output = range(angle_output,-0.5,0.5);
+    	
+
+    	SmartDashboard.putNumber("Angle_err", distance_output);
+    	SmartDashboard.putNumber("DIS_Power", distance_output);
+    	SmartDashboard.putNumber("Angle_Power",  -angle_output);
+    	Robot.chassis.arcade_drive(distance_output, -angle_output);
+    	
+    	lastTime = timer.get();
+    	lastError_distance = currError_distance;
+    	lastError_angle = currError_angle;
+    	currError_distance = 0;
+    	currError_angle = 0;
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+    	SmartDashboard.putNumber("dis",  -distance);
+        return (distance <= RobotMap.CHASSIS_MAX_PASSING_ERROR) || timer.get() > 60;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.chassis.stop();
+    	SmartDashboard.putString("Navigate To", "Command Ends");
+    	if (this.Stop){
+    		Robot.chassis.stop();
+    	}else{
+    		//TODO
+    	}
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	//Robot.chassis.stop();
     }
+    
+    private void VectorUpdate(){
+    	this.Position[0] = Robot.encodermodule.getX() * 0.001;
+    	this.Position[1] = Robot.encodermodule.getY() * 0.001;
+    	t[0] = TargetPos[0] - Position[0];
+    	t[1] = TargetPos[1] - Position[1];
+    	SmartDashboard.putNumber("t[0]", t[0]);
+    	SmartDashboard.putNumber("t[1]", t[1]);
+    	distance = Math.hypot(t[0], t[1]);
+    }
+	 private double range(double val,double min,double max){
+	    	if (val < min){
+	    		return min;
+	    	}else if (val > max){
+	    		return max;
+	    	}else{
+	    		return val;
+	    	}
+	    }
+    
 }

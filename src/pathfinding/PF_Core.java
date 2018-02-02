@@ -9,7 +9,7 @@ public class PF_Core {
 	//obs2 = ([4.11,8.22],3.17,3.39,0)
 	//obs3 = ([4.11,12.19],1.42,3.89,0)
 	
-	private final double MAX_PASSING_ERROR = 0.1;//meter
+	private final double MAX_PASSING_ERROR = 0.25;//meter
 	
 	
 	private Goal goal[] = new Goal[30];
