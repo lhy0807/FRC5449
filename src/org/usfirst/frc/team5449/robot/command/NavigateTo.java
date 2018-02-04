@@ -145,8 +145,8 @@ public class NavigateTo extends Command {
     }
     
     private void VectorUpdate(){
-    	this.Position[0] = Robot.encodermodule.getX() * 0.001;
-    	this.Position[1] = Robot.encodermodule.getY() * 0.001;
+    	this.Position[0] = 0 * 0.001;
+    	this.Position[1] = 0 * 0.001;
     	t[0] = TargetPos[0] - Position[0];
     	t[1] = TargetPos[1] - Position[1];
     	SmartDashboard.putNumber("t[0]", t[0]);

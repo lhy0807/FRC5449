@@ -2,6 +2,7 @@ package sensors;
 
 import edu.wpi.first.wpilibj.Timer;
 
+@Deprecated
 public class EncoderModule {
 	
 	private double[] offsets = {0,0};

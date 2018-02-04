@@ -58,8 +58,9 @@ public class RobotMap {
 	public static final double LIFTER_MAXIUM_POWER = 0.6;
 	public static final double LIFTER_MINIUM_POWER = 0.1;
 	public static final double LIFTER_KP = 0.012;
-	public static final double LIFTER_KD = 0.0008;
-	public static final double LIFTER_BALANCE_KP = 0.03;
+	public static final double LIFTER_KD = 0.0011;
+	public static final double LIFTER_BALANCE_KP = 0.008;
+	public static final double LIFTER_BALANCE_KD = 0;
 	//Holder
 	public static final double HOLDER_DELAY = 0.500;//sec
 	//Climber

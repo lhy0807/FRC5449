@@ -133,8 +133,8 @@ public class DriveTo extends Command {
     }
     
     private void VectorUpdate(){
-    	currX = Robot.encodermodule.getX() * 0.001;
-    	currY = Robot.encodermodule.getY() * 0.001;
+    	currX = 0;
+    	currY = 0;
     	t[0] = TargetX - currX;
     	t[1] = TargetY - currY;
     	theta = Math.toDegrees(-Math.atan2(t[0], t[1]));

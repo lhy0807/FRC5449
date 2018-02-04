@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class LifterToUp extends Command {
 	
 	private double error[] = {0,0};//{error,prev_error}
+	private double balance_error[] = {0,0};
 	private double Kp = RobotMap.LIFTER_KP;
 	private double Kd = RobotMap.LIFTER_KD;
 	private double last_time;
@@ -46,8 +47,11 @@ public class LifterToUp extends Command {
     	last_time = timer.get();
     	output = P_output + D_output;
     	output = range2(output,RobotMap.LIFTER_MINIUM_POWER,RobotMap.LIFTER_MAXIUM_POWER);
-    	balance_output = RobotMap.LIFTER_BALANCE_KP * (Robot.lifter.get_position2()[0] - Robot.lifter.get_position2()[1]);
+    	balance_error[0] = (Robot.lifter.get_position2()[0] - Robot.lifter.get_position2()[1]);
+    	balance_output = RobotMap.LIFTER_BALANCE_KP * balance_error[0];
+    	balance_output -= RobotMap.LIFTER_BALANCE_KD * (balance_error[0] - balance_error[1]);
     	Robot.lifter.move(output,balance_output);
+    	balance_error[1] = balance_error[0];
     	
     }
 

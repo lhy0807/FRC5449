@@ -58,7 +58,6 @@ public class Robot extends TimedRobot {
 	public static Lifter lifter = new Lifter();
 	public static Intake intake = new Intake();
 	public static Holder holder = new Holder();
-	public static EncoderModule encodermodule = new EncoderModule();
 	public static CameraServer server = CameraServer.getInstance();
 	public static UsbCamera c1 = new UsbCamera("USB Camera 0",0);
 	private static int working = 0;
@@ -115,9 +114,6 @@ public class Robot extends TimedRobot {
 		
 		Scheduler.getInstance().removeAll();
 		AutonomousCommand.cancel();
-		encodermodule.reset();
-		Gyro.reset();
-		Gyro.set_offset(-Gyro.getAngle());
 		lifter.ResetEncoders();
 		this.chassis.reset();
 		this.cb = new CB_core();
@@ -126,25 +122,11 @@ public class Robot extends TimedRobot {
 		cb.add_sensor(us_pos, Math.PI * 0.5, u1);
 		working = 0;
 		last_calibration_time = this.timer.get();
-		this.encodermodule.setfieldOffset(Field_pos_chooser.getSelected());
 	}
 	@Override
 	public void teleopPeriodic() {
-		double[] Position = {this.encodermodule.getX() * 0.001d,this.encodermodule.getY() * 0.001d};
-		double Heading = Gyro.getAngle();
-		
-		if (timer.get() - last_calibration_time > 0.05){
-			double[] calibration = cb.Update(Position, Math.toRadians(-Heading));
-			SmartDashboard.putNumber("Calibration X:",calibration[0]);
-			SmartDashboard.putNumber("Calibration Y:",calibration[1]);
-			if (Math.hypot(calibration[0], calibration[1])>1.000){
-				calibration[0] = 0;
-				calibration[1] = 0;
-			}
-			double[] offsets = {calibration[0] * 1000,calibration[1] * 1000};
-			this.encodermodule.setOffset(offsets);
-			last_calibration_time = timer.get();
-		}
+
+
 		
 
 		
@@ -153,17 +135,19 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData(new CompressorOn());
 		SmartDashboard.putData(new CompressorOff());
 		SmartDashboard.putData(new TurnTo(90));
+		
+		
 		SmartDashboard.putData(new DriveDistance(4));
+
+		SmartDashboard.putNumber("enc_larm",Robot.lifter.get_position2()[0]);
+		SmartDashboard.putNumber("enc_rarm",Robot.lifter.get_position2()[1]);
 		SmartDashboard.putNumber("enc_l",Robot.chassis.get()[0]);
 		SmartDashboard.putNumber("enc_r",Robot.chassis.get()[1]);
 		SmartDashboard.putData(new DriveDistance(4));
 		double[] goal = {4,5.74};
 		SmartDashboard.putData("NAVIGATE TO", new NavigateTo(goal,true));
 		SmartDashboard.putNumber("Heading", Gyro.getAngle());
-		SmartDashboard.putNumber("X",Position[0] * 100.0d);
-		SmartDashboard.putNumber("Y",Position[1] * 100.0d);
 
-		SmartDashboard.putNumber("AnalogGyro Data",Heading);
 		SmartDashboard.putNumber("Ultrasonic_LEFT:",u1.get());
 		if (this.holder.is_holding_block()){
 			SmartDashboard.putNumber("BLOCK?",100);
