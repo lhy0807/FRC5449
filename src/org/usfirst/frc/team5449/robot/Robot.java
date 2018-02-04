@@ -13,9 +13,12 @@ import org.usfirst.frc.team5449.robot.command.LifterToDown;
 import org.usfirst.frc.team5449.robot.command.LifterToMid;
 import org.usfirst.frc.team5449.robot.command.LifterToUp;
 import org.usfirst.frc.team5449.robot.command.NavigateTo;
+import org.usfirst.frc.team5449.robot.command.RecvGamedata;
 import org.usfirst.frc.team5449.robot.command.Release_Cube;
 import org.usfirst.frc.team5449.robot.command.TurnTo;
+import org.usfirst.frc.team5449.robot.commandGroup.Auto_L_Blockonly;
 import org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup;
+import org.usfirst.frc.team5449.robot.commandGroup.Initialize_block;
 import org.usfirst.frc.team5449.robot.subsystems.Camera;
 import org.usfirst.frc.team5449.robot.subsystems.Chassis;
 import org.usfirst.frc.team5449.robot.subsystems.Climber;
@@ -29,6 +32,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -52,6 +56,7 @@ import sensors.Gyro;
 public class Robot extends TimedRobot {
 	//RobotDrive myRobot = new RobotDrive(0, 1);
 	//public static Robot r = new Robot();
+	public static DigitalInput d1 = new DigitalInput(10);
 	public static OI oi;
 	public static Chassis chassis;
 	public static Climber climber = new Climber();
@@ -60,15 +65,12 @@ public class Robot extends TimedRobot {
 	public static Holder holder = new Holder();
 	public static CameraServer server = CameraServer.getInstance();
 	public static UsbCamera c1 = new UsbCamera("USB Camera 0",0);
-	private static int working = 0;
-	public static ADXRS450_Gyro g1 = new ADXRS450_Gyro();
 	private static AnalogUltraSonic u1 = new AnalogUltraSonic(0);
 	private static CB_core cb = new CB_core();
-	
 	private static Timer timer = new Timer();
 	private static double last_calibration_time = 0;
 	private static SendableChooser<double[]> Field_pos_chooser = new SendableChooser();
-
+	public static boolean[] Game_data = {false,false,false};//false = left
 	//Autonomous 
 	Command AutonomousCommand;
 	//Parameters
@@ -76,8 +78,6 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		Field_pos_chooser.addDefault("LEFT", new double[]{2300,340});
 		Field_pos_chooser.addObject("MIDDLE", new double[]{4000,340});
-		g1.reset();
-		g1.calibrate();
 		c1.setResolution(960, 540);
 		c1.setFPS(24);
 		server.startAutomaticCapture(c1);
@@ -92,17 +92,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
-		Timer timer = new Timer();
-		//AutonomousCommand.start();
-		timer.reset();
-		timer.start();
-		double[] start = {4,0.8};
-		double[] end = {4,10.6};
-		Simulator simulator = new Simulator(start,end,1);
-		simulator.Simulate();
-		timer.stop();
-		SmartDashboard.putNumber("Caculation time:", timer.get());
-		working = 0;
+		Gyro.reset();
+		Gyro.set_offset(-Gyro.getAngle());
 	}
 	@Override
 	public void autonomousPeriodic() {
@@ -110,8 +101,10 @@ public class Robot extends TimedRobot {
 	}
 	@Override
 	public void teleopInit() {
-		
-		
+		Gyro.reset();
+		Gyro.set_offset(-Gyro.getAngle());
+		this.chassis.TargetHeading = 0;
+		new RecvGamedata().start();
 		Scheduler.getInstance().removeAll();
 		AutonomousCommand.cancel();
 		lifter.ResetEncoders();
@@ -120,21 +113,34 @@ public class Robot extends TimedRobot {
 		cb.loadFRCfield();
 		double[] us_pos = {0.16,-0.246};
 		cb.add_sensor(us_pos, Math.PI * 0.5, u1);
-		working = 0;
 		last_calibration_time = this.timer.get();
 	}
 	@Override
 	public void teleopPeriodic() {
 
 
+		SmartDashboard.putData(new Auto_L_Blockonly());
 		
 
 		
 
+		SmartDashboard.putBoolean("DIO10",d1.get());
 
+        
         SmartDashboard.putData(new CompressorOn());
 		SmartDashboard.putData(new CompressorOff());
+		SmartDashboard.putData(new Initialize_block());
 		SmartDashboard.putData(new TurnTo(90));
+		
+		//Game data
+		SmartDashboard.putBoolean("SW1-1",this.Game_data[0]);
+		SmartDashboard.putBoolean("SC2-1",this.Game_data[1]);
+		SmartDashboard.putBoolean("SW3-1",this.Game_data[2]);
+		SmartDashboard.putBoolean("SW1-2",!this.Game_data[0]);
+		SmartDashboard.putBoolean("SC2-2",!this.Game_data[1]);
+		SmartDashboard.putBoolean("SW3-2",!this.Game_data[2]);
+		
+		
 		
 		
 		SmartDashboard.putData(new DriveDistance(4));
@@ -154,7 +160,7 @@ public class Robot extends TimedRobot {
 		}else{
 			SmartDashboard.putNumber("BLOCK?",0);
 		}
-		working ++;
+		
 		Scheduler.getInstance().run();
 	}
 	@Override

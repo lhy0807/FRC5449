@@ -10,10 +10,18 @@ public class IntakeIn extends Command {
 	private boolean is_holding = false;
 	Timer timer = new Timer();
 	double time = -1;
+	private double timeout = 3.00;
     public IntakeIn() {
     	
     	// Use requires() here to declare subsystem dependencies
         requires(Robot.intake);
+    }
+    
+    public IntakeIn(double timeout) {
+    	
+    	// Use requires() here to declare subsystem dependencies
+        requires(Robot.intake);
+        this.timeout = timeout;
     }
 
     // Called just before this Command runs the first time
@@ -38,7 +46,7 @@ public class IntakeIn extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timer.get() > 3 || (Robot.holder.is_holding_block() && (timer.get() > time + 0.5));
+        return timer.get() > this.timeout || (Robot.holder.is_holding_block() && (timer.get() > time + 0.5));
     }
 
     // Called once after isFinished returns true

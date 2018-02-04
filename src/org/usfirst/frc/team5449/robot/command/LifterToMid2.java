@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class LifterToMid extends Command {
+public class LifterToMid2 extends Command {
 	
 	private double error[] = {0,0};//{error,prev_error}
 	private double balance_error[] = {0,0};
@@ -20,17 +20,10 @@ public class LifterToMid extends Command {
 	private double last_time;
 	private Timer timer = new Timer();
 	private boolean is_down = false;
-	private double time = 9999;
 	
-    public LifterToMid() {
+    public LifterToMid2() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.lifter);
-    }
-    
-    public LifterToMid(double time) {
-        // Use requires() here to declare subsystem dependencies
-        requires(Robot.lifter);
-        this.time = time;
     }
 
     // Called just before this Command runs the first time
@@ -39,8 +32,8 @@ public class LifterToMid extends Command {
     	timer.start();
     	last_time = timer.get();
     	error[0] = 0;
-    	error[1] = RobotMap.LIFTER_MID_POSE - Robot.lifter.get_position();
-    	is_down = (Robot.lifter.get_position() - RobotMap.LIFTER_MID_POSE)>=0;
+    	error[1] = RobotMap.LIFTER_MID2_POSE - Robot.lifter.get_position();
+    	is_down = (Robot.lifter.get_position() - RobotMap.LIFTER_MID2_POSE)>=0;
     }
    
     // Called repeatedly when this Command is scheduled to run
@@ -48,7 +41,7 @@ public class LifterToMid extends Command {
     	
     	double P_output,D_output,dt,output;
     	double balance_output;
-    	error[0] = RobotMap.LIFTER_MID_POSE - Robot.lifter.get_position();
+    	error[0] = RobotMap.LIFTER_MID2_POSE - Robot.lifter.get_position();
     	P_output = error[0] * Kp;
     	dt = timer.get() - last_time;
     	D_output = Kd * (error[0] - error[1])/dt;
@@ -59,7 +52,7 @@ public class LifterToMid extends Command {
     	balance_error[0] = (Robot.lifter.get_position2()[0] - Robot.lifter.get_position2()[1]);
     	
     	if (is_down){
-    		output *= 0.15;
+    		output *= 0.80;
     	}
     	error[1] = error[0];
     	balance_output = RobotMap.LIFTER_BALANCE_KP * balance_error[0];
@@ -70,7 +63,7 @@ public class LifterToMid extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (Robot.intake.isIn() && Robot.lifter.is_down()) || timer.get() > this.time;
+        return (Robot.intake.isIn() && Robot.lifter.is_down());
     }
 
     // Called once after isFinished returns true

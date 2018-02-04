@@ -23,6 +23,8 @@ public class Chassis extends Subsystem {
 	private TalonSRX RightMotorC;
 	private Encoder encoder_l;
 	private Encoder encoder_r;
+	public double TargetHeading = 0;
+	public boolean is_target_set = false;
 	
 	public Chassis(){
 		//TODO set ports CHANGE IT TO IMPLEMENT ROBOMAP IF PUT THIS IN USE
@@ -40,6 +42,8 @@ public class Chassis extends Subsystem {
     	encoder_l = new Encoder(RobotMap.CHASSIS_ENCODER_LEFT_PORT_A,RobotMap.CHASSIS_ENCODER_LEFT_PORT_B);
     	encoder_r = new Encoder(RobotMap.CHASSIS_ENCODER_RIGHT_PORT_A,RobotMap.CHASSIS_ENCODER_RIGHT_PORT_B);
     	encoder_l.setReverseDirection(true);
+    	TargetHeading = 0;
+    	is_target_set = false;
     	reset();
 	}
 	

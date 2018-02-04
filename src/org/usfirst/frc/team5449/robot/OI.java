@@ -6,6 +6,7 @@ import org.usfirst.frc.team5449.robot.command.IntakeStop;
 import org.usfirst.frc.team5449.robot.command.Intake_Release;
 import org.usfirst.frc.team5449.robot.command.LifterToDown;
 import org.usfirst.frc.team5449.robot.command.LifterToMid;
+import org.usfirst.frc.team5449.robot.command.LifterToMid2;
 import org.usfirst.frc.team5449.robot.command.LifterToUp;
 import org.usfirst.frc.team5449.robot.command.Release_Cube;
 
@@ -26,7 +27,9 @@ public class OI {
 	
 	public JoystickButton Holder_release = new JoystickButton(stick2,1);
 	public JoystickButton Intake_release = new JoystickButton(stick2,2);
-	public JoystickButton Lifter_UP = new JoystickButton(stick2,8);
+
+	public JoystickButton Lifter_UP = new JoystickButton(stick2,7);
+	public JoystickButton Lifter_MID2 = new JoystickButton(stick2,8);
 	public JoystickButton Lifter_MID = new JoystickButton(stick2,10);
 	public JoystickButton Lifter_DOWN = new JoystickButton(stick2,12);
 	public JoystickButton Intake_out = new JoystickButton(stick2,5);
@@ -46,6 +49,7 @@ public class OI {
 		Intake_release.whenPressed(new Intake_Release());
 		Lifter_DOWN.whenPressed(new LifterToDown());
 		Lifter_MID.whenPressed(new LifterToMid());
+		Lifter_MID2.whenPressed(new LifterToMid2());
 		Lifter_UP.whenPressed(new LifterToUp());
 		Intake_in.whenPressed(new IntakeIn());
 		Intake_out.whenPressed(new IntakeOut());

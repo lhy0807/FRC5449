@@ -25,10 +25,13 @@ public class TurnTo extends Command {
     public TurnTo(double angleTarget) {
         requires(Robot.chassis);
         this.angleTarget = angleTarget;
+        
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.chassis.TargetHeading = angleTarget;
+        Robot.chassis.is_target_set = true;
     	timer = new Timer();
     	timer.reset();
     	timer.start();
@@ -52,12 +55,11 @@ public class TurnTo extends Command {
     		currError += 360;
     	}
     	double varP = Kp*(currError);
-    	double varD = Kd*(currError - lastError);
+    	double varD = range(-Kd* Math.signum(currError) * Math.abs(currError - lastError),-0.2,0.2);
+    	varP = range2(varP,0.38,1.2);
     	double output = varP + varD;
-    	output = range2(output,0.26,1);
-    	if (Math.abs(currError - lastError) > 10){
-    		output = lastoutput;
-    	}
+    	output = range2(output,0.38,0.7);
+
     	
     	
     	lastoutput = output;
@@ -68,7 +70,6 @@ public class TurnTo extends Command {
     	
     	lastTime = timer.get();
     	lastError = currError;
-    	currError = 0;
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -89,6 +90,9 @@ public class TurnTo extends Command {
     protected void end() {
     	Robot.chassis.arcade_drive(0, 0);
     }
+    
+    
+    
     private double range2(double val,double min,double max){
     	max = Math.abs(max);
     	min = Math.abs(min);

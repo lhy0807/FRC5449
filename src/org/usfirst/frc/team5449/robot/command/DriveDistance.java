@@ -14,28 +14,41 @@ import sensors.Gyro;
  */
 public class DriveDistance extends Command {
 	//configure
-	private double Kp = 0.40;
-	private double Kd = 3;
+	private double Kp = 0.5;
+	private double Kd = 3.5;
 	private double AngleKp = 0.03;
 	private double allowedError = 0.05;
 	//system
 	private Timer timer = new Timer();
 	private double targetDistance;
-	private final double drivingAngle;
+	private double drivingAngle;
 	private double lastError;
 	private double currError;
 	private double lastTime;
 	private double angle_error_last = 0;
 	private double A_output_last = 0;
+	private double timeout = 5;
 	
     public DriveDistance(double distance) {
     	requires(Robot.chassis);
 		this.targetDistance = distance;
-		drivingAngle = Gyro.getAngle();
+	}
+    
+    public DriveDistance(double distance,double timeout) {
+    	requires(Robot.chassis);
+		this.targetDistance = distance;
+		this.timeout = timeout;
 	}
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.chassis.reset();
+    	if (!Robot.chassis.is_target_set){
+			Robot.chassis.TargetHeading = Gyro.getAngle();
+			Robot.chassis.is_target_set = true;
+		}
+		SmartDashboard.putNumber("Robot.chassis.TargetHeading", Robot.chassis.TargetHeading);
+		this.drivingAngle = Robot.chassis.TargetHeading;
     	timer.reset();
     	timer.start();
     	lastTime = -0.02;
@@ -62,7 +75,7 @@ public class DriveDistance extends Command {
     	}
     	
     	double output = varP + varD;
-    	output = range2(output,0.1,1);
+    	output = range2(output,0.2,0.8);
     	SmartDashboard.putNumber("ERROR", currError);
     	SmartDashboard.putNumber("ERROR_DOT", currError - lastError);
     	SmartDashboard.putNumber("Angle_error", angleError);
@@ -78,7 +91,7 @@ public class DriveDistance extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	currError = targetDistance - calcDis((Robot.chassis.get()[0]+Robot.chassis.get()[1])*0.5);
-    	return (Math.abs(currError)<=allowedError) || timer.get() >5;
+    	return ((Math.abs(currError)<=allowedError) && (Math.abs(currError - lastError) < 0.01))|| timer.get() >timeout;
     	
     }
 
