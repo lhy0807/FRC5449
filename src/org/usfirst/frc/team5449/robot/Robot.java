@@ -43,6 +43,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import pathfinding.Simulator;
 import sensors.AnalogUltraSonic;
 import sensors.EncoderModule;
+import sensors.Encoder_Module;
 import sensors.Gyro;
 
 
@@ -56,13 +57,15 @@ import sensors.Gyro;
 public class Robot extends TimedRobot {
 	//RobotDrive myRobot = new RobotDrive(0, 1);
 	//public static Robot r = new Robot();
-	public static DigitalInput d1 = new DigitalInput(10);
 	public static OI oi;
 	public static Chassis chassis;
 	public static Climber climber = new Climber();
 	public static Lifter lifter = new Lifter();
 	public static Intake intake = new Intake();
 	public static Holder holder = new Holder();
+	
+	public static Encoder_Module e1 = new Encoder_Module();
+	
 	public static CameraServer server = CameraServer.getInstance();
 	public static UsbCamera c1 = new UsbCamera("USB Camera 0",0);
 	private static AnalogUltraSonic u1 = new AnalogUltraSonic(0);
@@ -92,8 +95,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
-		Gyro.reset();
-		Gyro.set_offset(-Gyro.getAngle());
 	}
 	@Override
 	public void autonomousPeriodic() {
@@ -101,8 +102,17 @@ public class Robot extends TimedRobot {
 	}
 	@Override
 	public void teleopInit() {
+
+		e1.reset();
 		Gyro.reset();
+		double offset;
+		while (Gyro.getAngle() == 1440){
+		}
+		
 		Gyro.set_offset(-Gyro.getAngle());
+		e1.reset();
+		e1.setfieldOffset(Field_pos_chooser.getSelected());
+		
 		this.chassis.TargetHeading = 0;
 		new RecvGamedata().start();
 		Scheduler.getInstance().removeAll();
@@ -124,7 +134,6 @@ public class Robot extends TimedRobot {
 
 		
 
-		SmartDashboard.putBoolean("DIO10",d1.get());
 
         
         SmartDashboard.putData(new CompressorOn());
@@ -140,8 +149,16 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("SC2-2",!this.Game_data[1]);
 		SmartDashboard.putBoolean("SW3-2",!this.Game_data[2]);
 		
+		SmartDashboard.putNumber("E0",e1.read()[0]);
+		SmartDashboard.putNumber("E1",e1.read()[1]);
+		SmartDashboard.putNumber("E2",e1.read()[2]);
 		
-		
+		double[] Pos = {0,0};
+		Pos = e1.update();
+		SmartDashboard.putNumber("X",Pos[0] * 0.1);
+		SmartDashboard.putNumber("Y",Pos[1] * 0.1);
+		SmartDashboard.putNumber("Heading", Gyro.getAngle());
+
 		
 		SmartDashboard.putData(new DriveDistance(4));
 
@@ -152,8 +169,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(new DriveDistance(4));
 		double[] goal = {4,5.74};
 		SmartDashboard.putData("NAVIGATE TO", new NavigateTo(goal,true));
-		SmartDashboard.putNumber("Heading", Gyro.getAngle());
-
+		
 		SmartDashboard.putNumber("Ultrasonic_LEFT:",u1.get());
 		if (this.holder.is_holding_block()){
 			SmartDashboard.putNumber("BLOCK?",100);

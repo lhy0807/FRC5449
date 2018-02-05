@@ -26,20 +26,22 @@ public class Gyro {
 		out_of_time.start();
 		Serial.Arduino.read(Serial.Arduino.getBytesReceived());
 		Serial.Arduino.write(request, 1);
-		while (Serial.Arduino.getBytesReceived()<6){
-			if (out_of_time.get()>=0.02){
+		while (Serial.Arduino.getBytesReceived()<2){
+			if (out_of_time.get()>=0.04){
 				return 1440;
 			}
-			if (Serial.Arduino.getBytesReceived()>=6){
+			if (Serial.Arduino.getBytesReceived()>=2){
+				SmartDashboard.putString("OK?", "OK");
 				break;
 			}
 		}
-		byte[] buf = new byte[6];
-		buf = Serial.Arduino.read(6);
+		byte[] buf = new byte[2];
+		buf = Serial.Arduino.read(2);
 		byte[] data = new byte[2];
 		data[0] = buf[1];
 		data[1] = buf[0];
 		double val =  180.0*(Serial.byte2Short(data))/32768.0 + offset;
+		SmartDashboard.putNumber("OFFSET", offset);
 		if (val > 180){
 			val -= 360;
 		}
