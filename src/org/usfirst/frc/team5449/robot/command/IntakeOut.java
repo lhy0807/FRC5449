@@ -16,8 +16,9 @@ public class IntakeOut extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	//TODO set whatever (idk)
-    	Robot.intake.In();//Motor
+    	Robot.intake.In2();//Motor
     	Robot.intake.Open();//Cylinder
+    	Robot.intake.MidStop();
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -53,6 +53,11 @@ public class Intake extends Subsystem{
 		mid_intake.set(ControlMode.PercentOutput, IntakePower/1.5);
 	}
 	
+	public void In2(){
+		left_intake.set(ControlMode.PercentOutput,-IntakePower/2);
+		right_intake.set(ControlMode.PercentOutput,IntakePower/2);
+	}
+	
 	public void Out(){
 		left_intake.set(ControlMode.PercentOutput,IntakePower/2);
 		right_intake.set(ControlMode.PercentOutput,-IntakePower/2);
@@ -62,6 +67,12 @@ public class Intake extends Subsystem{
 	public void Stop(){
 		left_intake.set(ControlMode.PercentOutput,0);
 		right_intake.set(ControlMode.PercentOutput,0);
+		mid_intake.set(ControlMode.PercentOutput,0);
+	}
+	
+	public void MidStop(){
+		//left_intake.set(ControlMode.PercentOutput,0);
+		//right_intake.set(ControlMode.PercentOutput,0);
 		mid_intake.set(ControlMode.PercentOutput,0);
 	}
 	

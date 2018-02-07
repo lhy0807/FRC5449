@@ -9,13 +9,16 @@ import org.usfirst.frc.team5449.robot.command.TurnTo;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class Auto_L_Blockonly extends CommandGroup{
-	public Auto_L_Blockonly(){
+public class Auto_L_Blockonly2 extends CommandGroup{
+	public Auto_L_Blockonly2(){
 		addParallel(new Initialize_block());
-		addSequential(new DriveDistance(0.5));
-		addSequential(new TurnTo(17.06));
-		addSequential(new DriveDistance(3.08));
-		addSequential(new TurnTo(-90));
+		addSequential(new DriveDistance(2.1));
+		addSequential(new Delay(0.5));
 		addSequential(new Switch_Release());
+		addSequential(new DriveDistance(-0.5));
+		addSequential(new TurnTo(90));
+		addSequential(new DriveDistance(1.5));
+		addSequential(new TurnTo(0));
+		addSequential(new DriveDistance(1.5));
 	}
 }

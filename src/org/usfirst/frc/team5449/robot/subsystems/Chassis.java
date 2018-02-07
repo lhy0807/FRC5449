@@ -101,10 +101,27 @@ public class Chassis extends Subsystem {
 		RightMotorB.set(ControlMode.PercentOutput, rightPower);
 		RightMotorC.set(ControlMode.PercentOutput, rightPower);
 	}
+	
+	public void arcade_drive2(double Power, double Rotate){
+		double leftPower,rightPower;
+		Rotate = deadzone(Rotate,0.12);
+		Rotate = Math.signum(Rotate) * Math.pow(Math.abs(Rotate), 0.5);
+		Rotate /= 2.0d;
+		leftPower = range(Power + Rotate,-1,1);
+		rightPower = range(Power - Rotate,-1,1);
+		LeftMotorA.set(ControlMode.PercentOutput, leftPower);
+		LeftMotorB.set(ControlMode.PercentOutput, leftPower);
+		LeftMotorC.set(ControlMode.PercentOutput, leftPower);
+		
+		RightMotorA.set(ControlMode.PercentOutput, rightPower);
+		RightMotorB.set(ControlMode.PercentOutput, rightPower);
+		RightMotorC.set(ControlMode.PercentOutput, rightPower);
+	}
+	
 	public void arcade_drive(double Power, double Rotate,double deadzone){
 		double leftPower,rightPower;
 		Rotate = deadzone(Rotate,deadzone);
-		
+
 		Rotate /= 1.8;
 		
 		leftPower = range(Power + Rotate,-1,1);

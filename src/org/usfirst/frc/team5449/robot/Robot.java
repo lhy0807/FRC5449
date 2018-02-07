@@ -17,6 +17,8 @@ import org.usfirst.frc.team5449.robot.command.RecvGamedata;
 import org.usfirst.frc.team5449.robot.command.Release_Cube;
 import org.usfirst.frc.team5449.robot.command.TurnTo;
 import org.usfirst.frc.team5449.robot.commandGroup.Auto_L_Blockonly;
+import org.usfirst.frc.team5449.robot.commandGroup.Auto_L_Blockonly2;
+import org.usfirst.frc.team5449.robot.commandGroup.Auto_R_Blockonly;
 import org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup;
 import org.usfirst.frc.team5449.robot.commandGroup.Initialize_block;
 import org.usfirst.frc.team5449.robot.subsystems.Camera;
@@ -129,13 +131,14 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
 
-		SmartDashboard.putData(new Auto_L_Blockonly());
+		SmartDashboard.putData(new Auto_R_Blockonly());
+		SmartDashboard.putData(new Auto_L_Blockonly2());
+		SmartDashboard.putData(new Initialize_block());
 		
 
 		
 
 
-        
         SmartDashboard.putData(new CompressorOn());
 		SmartDashboard.putData(new CompressorOff());
 		SmartDashboard.putData(new Initialize_block());

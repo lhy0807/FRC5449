@@ -10,8 +10,10 @@ public class Delay extends Command{
 	}
 	private double waitsec;
 	private Timer timer;
+	
 	@Override
 	protected void initialize(){
+		
 		timer = new Timer();
 		timer.reset();
 		timer.start();

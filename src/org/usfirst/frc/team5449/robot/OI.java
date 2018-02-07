@@ -26,15 +26,17 @@ public class OI {
 
 	
 	public JoystickButton Holder_release = new JoystickButton(stick2,1);
-	public JoystickButton Intake_release = new JoystickButton(stick2,2);
+	public JoystickButton Intake_stop = new JoystickButton(stick2,2);
 
+
+	public JoystickButton SwitchReady = new JoystickButton(stick2,6);
 	public JoystickButton Lifter_UP = new JoystickButton(stick2,7);
 	public JoystickButton Lifter_MID2 = new JoystickButton(stick2,8);
 	public JoystickButton Lifter_MID = new JoystickButton(stick2,10);
 	public JoystickButton Lifter_DOWN = new JoystickButton(stick2,12);
 	public JoystickButton Intake_out = new JoystickButton(stick2,5);
 	public JoystickButton Intake_in = new JoystickButton(stick2,3);
-	public JoystickButton Intake_stop = new JoystickButton(stick2,4);
+	public JoystickButton IntakeReady = new JoystickButton(stick2,4);
 	
 	
 	public OI(){
@@ -45,8 +47,9 @@ public class OI {
 		//joystick2
 		
 		//button2
+		SwitchReady.whenPressed(new org.usfirst.frc.team5449.robot.commandGroup.SwitchReady());
 		Holder_release.whenPressed(new Release_Cube());
-		Intake_release.whenPressed(new Intake_Release());
+		IntakeReady.whenPressed(new org.usfirst.frc.team5449.robot.commandGroup.IntakeReady());
 		Lifter_DOWN.whenPressed(new LifterToDown());
 		Lifter_MID.whenPressed(new LifterToMid());
 		Lifter_MID2.whenPressed(new LifterToMid2());
