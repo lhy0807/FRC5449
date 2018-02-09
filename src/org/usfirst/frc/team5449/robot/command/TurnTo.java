@@ -56,9 +56,9 @@ public class TurnTo extends Command {
     	}
     	double varP = Kp*(currError);
     	double varD = range(-Kd* Math.signum(currError) * Math.abs(currError - lastError),-0.5,0.5);
-    	varP = range2(varP,0.33,1.2);
+    	varP = range2(varP,0.354,1.2);
     	double output = varP + varD;
-    	output = range2(output,0.33,0.7);
+    	output = range2(output,0.354,0.7);
 
     	
     	

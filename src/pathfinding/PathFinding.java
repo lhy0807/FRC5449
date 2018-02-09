@@ -48,7 +48,7 @@ public class PathFinding {
 		MapYLength = (int)(1646/scalingConstant);
 		CourtMap = new int[MapYLength][MapXLength]; //court map size in centimeters 
 		RobotXRadius = (int)(50/scalingConstant);
-		RobotYRadius = (int)(45/scalingConstant);
+		RobotYRadius = (int)(40/scalingConstant);
 		
 		
 		//initiate lists

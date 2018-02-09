@@ -49,6 +49,11 @@ public class LifterToDown extends Command {
     	balance_error[0] = (Robot.lifter.get_position2()[0] - Robot.lifter.get_position2()[1]);
     	balance_output = RobotMap.LIFTER_BALANCE_KP * balance_error[0];
     	balance_output -= RobotMap.LIFTER_BALANCE_KD * (balance_error[0] - balance_error[1]);
+    	if (Robot.lifter.get_position() < 10){
+    		balance_output = 0;
+    	}
+    	
+    	
     	output *= 0.15;
     	Robot.lifter.move(output,balance_output);
     	balance_error[1] = balance_error[0];

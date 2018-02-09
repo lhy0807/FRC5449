@@ -2,6 +2,7 @@ package org.usfirst.frc.team5449.robot.command;
 
 import org.usfirst.frc.team5449.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -21,6 +22,7 @@ public class ClimbStop extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	SmartDashboard.putString("CLIMB", "STOPED");
     	Robot.climber.stop();
     	
     }

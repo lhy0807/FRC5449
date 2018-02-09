@@ -9,16 +9,17 @@ import org.usfirst.frc.team5449.robot.command.TurnTo;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class Auto_L_Blockonly2 extends CommandGroup{
-	public Auto_L_Blockonly2(){
+public class Auto_xR_Scale extends CommandGroup{
+	public Auto_xR_Scale(){
 		addParallel(new Initialize_block());
-		addSequential(new DriveDistance(2.1));
-		addSequential(new Delay(0.5));
-		addSequential(new Switch_Release());
-		addSequential(new DriveDistance(-0.5));
-		addSequential(new TurnTo(90));
-		addSequential(new DriveDistance(1));
+		addSequential(new DriveDistance(0.5));
+		addSequential(new TurnTo(17.06));
+		addSequential(new DriveDistance(3.08));
 		addSequential(new TurnTo(0));
-		addSequential(new DriveDistance(1.5));
+		addSequential(new DriveDistance(1.9));
+		addSequential(new TurnTo(-90));
+		addSequential(new DriveDistance(4.65));
+		addSequential(new TurnTo(10));
+		addSequential(new ScaleRelease(1.4));
 	}
 }

@@ -21,8 +21,11 @@ public class Climb_remote extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//Robot.climber.move(Math.abs(Robot.oi.stick1.getRawAxis(1)));
-    	
+    	if (Robot.oi.Climber_btn.get()){
+    		Robot.climber.move(Math.abs(0.9));
+    	}else{
+    		Robot.climber.stop();
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

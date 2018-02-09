@@ -37,12 +37,12 @@ public class Climber extends Subsystem{
 	public void setPower(double power){
 		this.power = power;
 	}
-	
-	
-	
+
 	@Override
-	protected void initDefaultCommand() {	
-		setDefaultCommand(new Climb_remote());
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		this.setDefaultCommand(new Climb_remote());
 	}
+	
 
 }

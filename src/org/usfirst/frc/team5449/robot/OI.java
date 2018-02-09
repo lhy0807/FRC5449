@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5449.robot;
 
+import org.usfirst.frc.team5449.robot.command.Climb;
+import org.usfirst.frc.team5449.robot.command.ClimbStop;
 import org.usfirst.frc.team5449.robot.command.IntakeIn;
 import org.usfirst.frc.team5449.robot.command.IntakeOut;
 import org.usfirst.frc.team5449.robot.command.IntakeStop;
@@ -24,11 +26,10 @@ public class OI {
 	public Joystick stick1 = new Joystick(0);
 	public Joystick stick2 = new Joystick(1);
 
+	public JoystickButton Climber_btn = new JoystickButton(stick1,7);
 	
 	public JoystickButton Holder_release = new JoystickButton(stick2,1);
 	public JoystickButton Intake_stop = new JoystickButton(stick2,2);
-
-
 	public JoystickButton SwitchReady = new JoystickButton(stick2,6);
 	public JoystickButton Lifter_UP = new JoystickButton(stick2,7);
 	public JoystickButton Lifter_MID2 = new JoystickButton(stick2,8);
@@ -43,6 +44,7 @@ public class OI {
 		
 		//joystick1
 		//
+		
 		//button1
 		//joystick2
 		

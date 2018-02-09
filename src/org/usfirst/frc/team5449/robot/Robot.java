@@ -19,6 +19,8 @@ import org.usfirst.frc.team5449.robot.command.TurnTo;
 import org.usfirst.frc.team5449.robot.commandGroup.Auto_L_Blockonly;
 import org.usfirst.frc.team5449.robot.commandGroup.Auto_L_Blockonly2;
 import org.usfirst.frc.team5449.robot.commandGroup.Auto_R_Blockonly;
+import org.usfirst.frc.team5449.robot.commandGroup.Auto_xL_Scale;
+import org.usfirst.frc.team5449.robot.commandGroup.Auto_xR_Scale;
 import org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup;
 import org.usfirst.frc.team5449.robot.commandGroup.Initialize_block;
 import org.usfirst.frc.team5449.robot.subsystems.Camera;
@@ -75,21 +77,27 @@ public class Robot extends TimedRobot {
 	private static Timer timer = new Timer();
 	private static double last_calibration_time = 0;
 	private static SendableChooser<double[]> Field_pos_chooser = new SendableChooser();
+	private static SendableChooser<int []> Autonomous_target = new SendableChooser();
+	private static int automode = 0;
+	
 	public static boolean[] Game_data = {false,false,false};//false = left
 	//Autonomous 
 	Command AutonomousCommand;
 	//Parameters
 	@Override
 	public void robotInit() {
-		Field_pos_chooser.addDefault("LEFT", new double[]{2300,340});
-		Field_pos_chooser.addObject("MIDDLE", new double[]{4000,340});
+		//Field_pos_chooser.addDefault("LEFT", new double[]{2300,340});
+		//Field_pos_chooser.addObject("MIDDLE", new double[]{4000,340});
+		Autonomous_target.addDefault("Switch", new int[]{0});
+		Autonomous_target.addObject("Scale", new int[]{1});
+		
 		c1.setResolution(960, 540);
 		c1.setFPS(24);
 		server.startAutomaticCapture(c1);
 		oi = new OI();
 		chassis = new Chassis();
 		//command
-		AutonomousCommand = new AutonomousGroup();
+
 		timer.reset();
 		timer.start();
 		Scheduler.getInstance().removeAll();
@@ -97,6 +105,37 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
+		lifter.ResetEncoders();
+		Gyro.reset();
+		while (Gyro.getAngle() == 1440){
+		}
+		
+		Gyro.set_offset(-Gyro.getAngle());
+		
+		new RecvGamedata().start();
+		
+		int[] auto_mode = Autonomous_target.getSelected();
+		switch (auto_mode[0]){
+		case 0:
+			SmartDashboard.putString("CURRENT_MODE", "Switch");
+			if (Game_data[0]){
+				AutonomousCommand = new Auto_R_Blockonly();
+			}else{
+				AutonomousCommand = new Auto_L_Blockonly2();
+			}
+			break;
+		case 1:
+			SmartDashboard.putString("CURRENT_MODE", "Scale");
+			if (Game_data[1]){
+				AutonomousCommand = new Auto_xR_Scale();
+			}else{
+				AutonomousCommand = new Auto_xL_Scale();
+			}
+			break;
+		}
+		if (AutonomousCommand != null){
+		AutonomousCommand.start();
+		}
 	}
 	@Override
 	public void autonomousPeriodic() {
@@ -104,7 +143,8 @@ public class Robot extends TimedRobot {
 	}
 	@Override
 	public void teleopInit() {
-
+		Scheduler.getInstance().removeAll();
+		
 		e1.reset();
 		Gyro.reset();
 		double offset;
@@ -113,12 +153,9 @@ public class Robot extends TimedRobot {
 		
 		Gyro.set_offset(-Gyro.getAngle());
 		e1.reset();
-		e1.setfieldOffset(Field_pos_chooser.getSelected());
+		e1.setfieldOffset(new double[]{2300,40});
 		
 		this.chassis.TargetHeading = 0;
-		new RecvGamedata().start();
-		Scheduler.getInstance().removeAll();
-		AutonomousCommand.cancel();
 		lifter.ResetEncoders();
 		this.chassis.reset();
 		this.cb = new CB_core();
@@ -129,15 +166,11 @@ public class Robot extends TimedRobot {
 	}
 	@Override
 	public void teleopPeriodic() {
-
-
+		SmartDashboard.putData(new Auto_xR_Scale());
+		SmartDashboard.putData(new Auto_xL_Scale());
 		SmartDashboard.putData(new Auto_R_Blockonly());
 		SmartDashboard.putData(new Auto_L_Blockonly2());
 		SmartDashboard.putData(new Initialize_block());
-		
-
-		
-
 
         SmartDashboard.putData(new CompressorOn());
 		SmartDashboard.putData(new CompressorOff());
@@ -190,6 +223,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic(){
 		SmartDashboard.putData(Field_pos_chooser);
+		SmartDashboard.putData(Autonomous_target);
 	}
 	/*
 	 * 

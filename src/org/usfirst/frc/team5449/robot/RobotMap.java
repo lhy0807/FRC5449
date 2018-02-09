@@ -53,8 +53,8 @@ public class RobotMap {
 	//Chassis TODO configure
 	public static final double CHASSIS_TURNING_DEADZONE = 0.05;
 	public static final double CHASSIS_MAX_PASSING_ERROR = 0.1;
-	public static final double CHASSIS_TURNING_P = 0.025;
-	public static final double CHASSIS_TURNING_D = 0.15;
+	public static final double CHASSIS_TURNING_P = 0.028;
+	public static final double CHASSIS_TURNING_D = 0.18;
 	public static final double CHASSIS_TURNING_ALLOWED_ERROR = 0.50;
 	//lifter
 	public static final long LIFTER_UP_POSE = 410;
