@@ -37,6 +37,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -90,7 +91,7 @@ public class Robot extends TimedRobot {
 		//Field_pos_chooser.addObject("MIDDLE", new double[]{4000,340});
 		Autonomous_target.addDefault("Switch", new int[]{0});
 		Autonomous_target.addObject("Scale", new int[]{1});
-		
+		lifter.ResetEncoders();
 		c1.setResolution(960, 540);
 		c1.setFPS(24);
 		server.startAutomaticCapture(c1);
@@ -105,14 +106,18 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
-		lifter.ResetEncoders();
+		//lifter.ResetEncoders();
 		Gyro.reset();
 		while (Gyro.getAngle() == 1440){
 		}
 		
 		Gyro.set_offset(-Gyro.getAngle());
 		
-		new RecvGamedata().start();
+		String gamedata;
+		gamedata = DriverStation.getInstance().getGameSpecificMessage();
+		Robot.Game_data[0] = gamedata.charAt(0) == 'R';
+		Robot.Game_data[1] = gamedata.charAt(1) == 'R';
+		Robot.Game_data[2] = gamedata.charAt(2) == 'R';
 		
 		int[] auto_mode = Autonomous_target.getSelected();
 		switch (auto_mode[0]){
@@ -144,7 +149,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		Scheduler.getInstance().removeAll();
-		
+		lifter.ResetEncoders();
 		e1.reset();
 		Gyro.reset();
 		double offset;
@@ -156,7 +161,7 @@ public class Robot extends TimedRobot {
 		e1.setfieldOffset(new double[]{2300,40});
 		
 		this.chassis.TargetHeading = 0;
-		lifter.ResetEncoders();
+		//lifter.ResetEncoders();
 		this.chassis.reset();
 		this.cb = new CB_core();
 		cb.loadFRCfield();

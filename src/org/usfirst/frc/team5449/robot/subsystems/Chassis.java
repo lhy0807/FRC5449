@@ -104,8 +104,9 @@ public class Chassis extends Subsystem {
 	
 	public void arcade_drive2(double Power, double Rotate){
 		double leftPower,rightPower;
-		Rotate = deadzone(Rotate,0.2);
-		Rotate = Math.signum(Rotate) * Math.pow(Math.abs(Rotate), 0.5);
+		Rotate = deadzone(Rotate,0.12);
+		Rotate = Math.signum(Rotate) * Math.pow(Math.abs(Rotate), 1);
+		
 		Rotate /= 2.0d;
 		leftPower = range(Power + Rotate,-1,1);
 		rightPower = range(Power - Rotate,-1,1);
