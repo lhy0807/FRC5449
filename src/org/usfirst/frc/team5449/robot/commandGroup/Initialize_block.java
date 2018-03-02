@@ -15,9 +15,23 @@ public class Initialize_block extends CommandGroup{
 		addParallel(new Lifterbump());
 		addSequential(new IntakeOut());
         addSequential(new IntakeStop());
-        addSequential(new Delay(0.3));
+        addSequential(new Delay(0.4));
         addSequential(new LifterToDown());
-        addSequential(new Delay(0.2));
+        addSequential(new Delay(0.4));
         addSequential(new IntakeIn2());
 	}
+	
+	public Initialize_block(double time){
+		addParallel(new Lifterbump(time));
+		addSequential(new IntakeOut());
+        addSequential(new IntakeStop());
+        addSequential(new Delay(time));
+        addSequential(new LifterToDown());
+        addSequential(new Delay(time));
+        addSequential(new IntakeIn2());
+	}
+	
+	
+	
+	
 }

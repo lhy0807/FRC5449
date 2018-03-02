@@ -28,6 +28,7 @@ public class DriveDistance extends Command {
 	private double angle_error_last = 0;
 	private double A_output_last = 0;
 	private double timeout = 5;
+	private double maxpower = 0.8;
 	
     public DriveDistance(double distance) {
     	requires(Robot.chassis);
@@ -39,6 +40,14 @@ public class DriveDistance extends Command {
 		this.targetDistance = distance;
 		this.timeout = timeout;
 	}
+    
+    public DriveDistance(double distance,double timeout,double maxpower) {
+    	requires(Robot.chassis);
+		this.targetDistance = distance;
+		this.timeout = timeout;
+		this.maxpower = maxpower;
+	}
+    
 
     // Called just before this Command runs the first time
     protected void initialize() {
@@ -75,7 +84,7 @@ public class DriveDistance extends Command {
     	}
     	
     	double output = varP + varD;
-    	output = range2(output,0.2,0.8);
+    	output = range2(output,0.2,maxpower);
     	SmartDashboard.putNumber("ERROR", currError);
     	SmartDashboard.putNumber("ERROR_DOT", currError - lastError);
     	SmartDashboard.putNumber("Angle_error", angleError);

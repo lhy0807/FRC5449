@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class Auto_L_Blockonly2 extends CommandGroup{
 	public Auto_L_Blockonly2(){
-		addParallel(new Initialize_block());
+		addSequential(new Initialize_block());
 		addSequential(new DriveDistance(2.1));
 		addSequential(new Delay(0.5));
 		addSequential(new Switch_Release());

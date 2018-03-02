@@ -20,8 +20,11 @@ public class Move extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.chassis.arcade_drive2(-Robot.oi.stick1.getRawAxis(1)*0.6, Robot.oi.stick1.getRawAxis(2));
-    	
+    	if (!(Robot.lifter.get_position()>200)){
+    		Robot.chassis.arcade_drive2(-Robot.oi.stick1.getRawAxis(1) * 0.75, Robot.oi.stick1.getRawAxis(2));
+    	}else{
+    		Robot.chassis.arcade_drive2(-Robot.oi.stick1.getRawAxis(1)*0.4, Robot.oi.stick1.getRawAxis(2) * 0.8);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

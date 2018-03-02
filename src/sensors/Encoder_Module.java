@@ -3,11 +3,13 @@ package sensors;
 import org.usfirst.frc.team5449.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Encoder_Module {
 	
 	private Encoder E0,E1,E2;
 	double[] lestenc = {0,0,0};
+	private double[] offset_vector = {0,120.5};
 	double angle_t = 0;
 	double[] Position = {0,0};
 	double X_temp = 0,Y_temp = 0;
@@ -57,10 +59,24 @@ public class Encoder_Module {
 		this.field_offsets = Offsets;
 	}
 	
-	
+	public double[] get(double Theta){
+		double[] val = {0,0};
+		val[0] = Position[0];
+		val[1] = Position[1];
+		
+		double[] rotation_offset = {0,0};
+		
+		rotation_offset[0] = Rotate(this.offset_vector,Theta)[0];
+		rotation_offset[1] = Rotate(this.offset_vector,Theta)[1];
+		
+		val[0] += this.offsets[0] + this.field_offsets[0] + rotation_offset[0];
+		val[1] += this.offsets[1] + this.field_offsets[1] + rotation_offset[1];
+		return val;
+	}
 	
 	
 	public double[] update(){
+
 		double theta = Math.toRadians(Gyro.getAngle());
 		double[] encval = read();
 		double[] temp = {encval[0] - lestenc[0],encval[1] - lestenc[1],encval[2] - lestenc[2]};
@@ -75,25 +91,15 @@ public class Encoder_Module {
 		if (relative_angle2 > Math.PI){
 			relative_angle2 -= 2*Math.PI;
 		}  
-
-		double da = theta - angle_t;
-		if (da < -Math.PI){
-			da += 2*Math.PI;
-		}
-		if (da > Math.PI){
-			da -= 2*Math.PI;
-		}
-		angle_t += da * 0.5;
-		  
+ 
 		double cosine = Math.cos(theta),sine = Math.sin(theta);
 		Position[0] += X_temp * cosine - Y_temp * sine;
 		Position[1] += X_temp * sine + Y_temp * cosine;
-		    
 
 		X_temp = (0.50000 * temp[0] - 1.00000 * temp[1] + 0.50000 * temp[2]);
 		Y_temp = (-0.50000 * temp[0] + 0 * temp[1] + 0.50000 * temp[2]);
-		X_temp = X_temp * Math.PI/500.0f*30*1.00;
-		Y_temp = Y_temp * Math.PI/500.0f*30*1.00;
+		X_temp = X_temp * Math.PI/500.0f*29.00f;
+		Y_temp = Y_temp * Math.PI/500.0f*29.00f;
 		angle_t = theta;
 		lestenc[0] = encval[0];
 		lestenc[1] = encval[1];
@@ -102,10 +108,25 @@ public class Encoder_Module {
 		double[] val = {0,0};
 		val[0] = Position[0];
 		val[1] = Position[1];
-		val[0] += this.offsets[0] + this.field_offsets[0];
-		val[1] += this.offsets[1] + this.field_offsets[1];
+		
+		double[] rotation_offset = {0,0};
+		
+		rotation_offset[0] = Rotate(this.offset_vector,theta)[0];
+		rotation_offset[1] = Rotate(this.offset_vector,theta)[1];
+		
+		val[0] += this.offsets[0] + this.field_offsets[0] + rotation_offset[0];
+		val[1] += this.offsets[1] + this.field_offsets[1] + rotation_offset[1];
 		
 		return val;
+	}
+	public double[] Rotate(double[] Vector,double Radius){
+		//Positive angle means rotating counterclockwise
+		//angle in radius
+		//tested
+		double[] ans = {0,0};
+		ans[0] = Math.cos(Radius) * Vector[0] - Math.sin(Radius) * Vector[1];
+		ans[1] = Math.sin(Radius) * Vector[0] + Math.cos(Radius) * Vector[1];
+		return ans;
 	}
 	
 	

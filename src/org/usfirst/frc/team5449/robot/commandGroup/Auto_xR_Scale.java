@@ -18,7 +18,7 @@ public class Auto_xR_Scale extends CommandGroup{
 		addSequential(new TurnTo(0));
 		addSequential(new DriveDistance(1.9));
 		addSequential(new TurnTo(-90));
-		addSequential(new DriveDistance(4.65));
+		addSequential(new DriveDistance(4.85));
 		addSequential(new TurnTo(10));
 		addSequential(new ScaleRelease(1.4));
 	}

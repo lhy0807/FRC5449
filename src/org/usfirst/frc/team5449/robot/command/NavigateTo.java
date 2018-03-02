@@ -22,9 +22,9 @@ public class NavigateTo extends Command {
 	
 	//PID
 	private double Drive_P = 0.5;
-	private double Drive_D = 0;
-	private double Turn_P = 0.04;
-	private double Turn_D = 0.80;
+	private double Drive_D = 3.5;
+	private double Turn_P = 0.028;
+	private double Turn_D = 0.24;
 	//Simulator 
 	private Simulator simulator;
 	private boolean is_reachable = false;
@@ -36,6 +36,7 @@ public class NavigateTo extends Command {
 	private double currError_distance;
 	private double lastError_angle;
 	private double currError_angle;
+	private double Angle_d;
 	 
 	public NavigateTo(double[] TargetPos) {
     	// Use requires() here to declare subsystem dependencies
@@ -67,6 +68,7 @@ public class NavigateTo extends Command {
     	
     	lastTime = 0;
     	currError_distance = distance;
+    
     	lastError_distance = 0;
     	currError_angle = theta - Gyro.getAngle();
     	if(currError_angle>180){
@@ -88,7 +90,7 @@ public class NavigateTo extends Command {
     	
     	double dt = timer.get() - lastTime;
     	currError_distance = distance;
-    	currError_angle = theta - Gyro.getAngle();
+    	currError_angle = theta - Angle_d;
     	
     	if(currError_angle>=180){
     		currError_angle -= 360;
@@ -106,7 +108,7 @@ public class NavigateTo extends Command {
     	double distance_output = distanceVarP+distanceVarD;
     	double angle_output = angleVarP+angleVarD;
     	
-    	distance_output = range(distance_output,0,0.2);
+    	distance_output = range(distance_output,0,0.4);
     	angle_output = range(angle_output,-0.5,0.5);
     	
 
@@ -125,7 +127,7 @@ public class NavigateTo extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	SmartDashboard.putNumber("dis",  -distance);
-        return (distance <= RobotMap.CHASSIS_MAX_PASSING_ERROR) || timer.get() > 60;
+        return (distance <= RobotMap.CHASSIS_MAX_PASSING_ERROR * 1.5) || timer.get() > 60;
     }
 
     // Called once after isFinished returns true
@@ -145,13 +147,13 @@ public class NavigateTo extends Command {
     }
     
     private void VectorUpdate(){
-    	this.Position[0] = 0 * 0.001;
-    	this.Position[1] = 0 * 0.001;
+    	Angle_d = Gyro.getAngle();
+    	this.Position[0] = Robot.e1.get(Math.toRadians(Angle_d))[0] * 0.001;
+    	this.Position[1] = Robot.e1.get(Math.toRadians(Angle_d))[1] * 0.001;
     	t[0] = TargetPos[0] - Position[0];
     	t[1] = TargetPos[1] - Position[1];
-    	SmartDashboard.putNumber("t[0]", t[0]);
-    	SmartDashboard.putNumber("t[1]", t[1]);
     	distance = Math.hypot(t[0], t[1]);
+    	
     }
 	 private double range(double val,double min,double max){
 	    	if (val < min){

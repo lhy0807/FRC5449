@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class IntakeReady extends CommandGroup{
 	public IntakeReady(){
 		addSequential(new IntakeOut());
+		addSequential(new Delay(0.3));
         addSequential(new LifterToDown());
 	}
 }

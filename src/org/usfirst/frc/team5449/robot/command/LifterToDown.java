@@ -54,7 +54,7 @@ public class LifterToDown extends Command {
     	}
     	
     	
-    	output *= 0.15;
+    	output *= 0.4;
     	Robot.lifter.move(output,balance_output);
     	balance_error[1] = balance_error[0];
     	

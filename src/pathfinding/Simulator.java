@@ -34,6 +34,20 @@ public class Simulator {
 		PFS = new PathFinding((int)(StartPos[0]*100),(int)(StartPos[1]*100),(int)(EndPos[0]*100),(int)(EndPos[1]*100),false,30,8);
 	
 	}
+	public double[][] Simulate2(){
+		
+		PFS.findPath(waypointListX, waypointListY, waypointDirection, false,waypointShortListX,waypointShortListY);
+		
+		int count = waypointShortListX.size();
+		double[][] val = new double[count-1][2];
+		for (int i = 0; i < count - 1; i++){
+			val[i][0] = waypointShortListX.get(i+1) * 0.01d;
+			val[i][1] = waypointShortListY.get(i+1) * 0.01d;			
+		}
+		 
+		return val;
+	}
+	
 	
 	public boolean Simulate(){
 		PFS.findPath(waypointListX, waypointListY, waypointDirection, false,waypointShortListX,waypointShortListY);

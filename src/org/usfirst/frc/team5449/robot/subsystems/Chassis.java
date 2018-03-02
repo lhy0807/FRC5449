@@ -105,7 +105,7 @@ public class Chassis extends Subsystem {
 	public void arcade_drive2(double Power, double Rotate){
 		double leftPower,rightPower;
 		Rotate = deadzone(Rotate,0.12);
-		Rotate = Math.signum(Rotate) * Math.pow(Math.abs(Rotate), 1);
+		Rotate = Math.signum(Rotate) * Math.pow(Math.abs(Rotate), 2.0d);
 		
 		Rotate /= 2.0d;
 		leftPower = range(Power + Rotate,-1,1);
@@ -134,6 +134,15 @@ public class Chassis extends Subsystem {
 		RightMotorA.set(ControlMode.PercentOutput, rightPower);
 		RightMotorB.set(ControlMode.PercentOutput, rightPower);
 		RightMotorC.set(ControlMode.PercentOutput, rightPower);
+	}
+	
+	public double[] getCurrent(){
+		double[] val = {0,0};
+		val[0] = this.LeftMotorA.getOutputCurrent() + this.LeftMotorB.getOutputCurrent() + this.LeftMotorC.getOutputCurrent();
+		val[1] = this.RightMotorA.getOutputCurrent() + this.RightMotorB.getOutputCurrent() + this.RightMotorC.getOutputCurrent();
+		val[0] *= Math.signum(this.LeftMotorA.getMotorOutputPercent());
+		val[1] *= Math.signum(this.RightMotorA.getMotorOutputPercent());
+		return val;
 	}
 	 
 	private double range(double val,double min,double max){

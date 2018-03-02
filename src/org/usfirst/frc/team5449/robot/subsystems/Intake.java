@@ -30,7 +30,7 @@ public class Intake extends Subsystem{
 	}
 	
 	//parameters:
-	private double IntakePower = 1;
+	private double IntakePower = 1.8;
 	
 	
 	@Override

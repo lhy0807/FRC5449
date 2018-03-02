@@ -38,7 +38,7 @@ public class OI {
 	public JoystickButton Intake_out = new JoystickButton(stick2,5);
 	public JoystickButton Intake_in = new JoystickButton(stick2,3);
 	public JoystickButton IntakeReady = new JoystickButton(stick2,4);
-	
+	public JoystickButton Intake_Release_cube = new JoystickButton(stick2,11);
 	
 	public OI(){
 		
@@ -59,6 +59,7 @@ public class OI {
 		Intake_in.whenPressed(new IntakeIn());
 		Intake_out.whenPressed(new IntakeOut());
 		Intake_stop.whenPressed(new IntakeStop());
+		Intake_Release_cube.whenPressed(new Intake_Release());
 	}
 	
 }

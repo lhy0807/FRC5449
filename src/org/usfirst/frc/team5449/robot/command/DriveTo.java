@@ -21,9 +21,9 @@ public class DriveTo extends Command {
 	
 	//PID
 	private double Drive_P = 0.5;
-	private double Drive_D = 0;
-	private double Turn_P = 0.04;
-	private double Turn_D = 0;
+	private double Drive_D = 3.5;
+	private double Turn_P = 0.024;
+	private double Turn_D = 0.24;
 	//private double Turn_Scale = 1;
 	
 	//time & error
@@ -51,7 +51,8 @@ public class DriveTo extends Command {
 	
     // Called just before this Command runs the first time
     protected void initialize() {
-    	VectorUpdate();
+    	double Angle = Gyro.getAngle();
+    	VectorUpdate(Angle);
     	timer = new Timer();
     	timer.reset();
     	timer.start();
@@ -69,10 +70,12 @@ public class DriveTo extends Command {
     
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	VectorUpdate();
+    	
+    	double Angle = Gyro.getAngle();
+    	VectorUpdate(Angle);
     	double dt = timer.get() - lastTime;
     	currError_distance = distance;
-    	currError_angle = theta - Gyro.getAngle();
+    	currError_angle = theta - Angle;
     	
     	if(currError_angle>=180){
     		currError_angle -= 360;
@@ -83,19 +86,24 @@ public class DriveTo extends Command {
     	
     	
     	double distanceVarP = Drive_P*(currError_distance);
-    	double distanceVarD = Drive_D*(currError_distance - lastError_distance)/dt;
+    	double distanceVarD = Drive_D*(currError_distance - lastError_distance);
     	double angleVarP = Turn_P*(currError_angle);
-    	double angleVarD = Turn_D*(currError_angle-lastError_angle)/dt;
+    	
+    	double angleVarD = Turn_D*(currError_angle-lastError_angle);
     	
     	double distance_output = distanceVarP+distanceVarD;
     	double angle_output = angleVarP+angleVarD;
     	
-    	distance_output = range(distance_output,-0.2,0.2);
-    	angle_output = range(angle_output,-0.5,0.5);
+    	distance_output = range(distance_output,-0.7,0.7);
+    	if (!this.Stop){
+    		distance_output = 0.5;
+    	}
+    	
+    	
+    	angle_output = range(angle_output,-0.6,0.6);
     	
     	Robot.chassis.arcade_drive(distance_output, -angle_output);
     	
-    	//Robot.chassis.tankStyle(leftPower, rightPower);
     	SmartDashboard.putNumber("t.X", this.t[0]);
     	SmartDashboard.putNumber("t.Y", this.t[1]);
     	SmartDashboard.putNumber("theta", this.theta);
@@ -114,7 +122,7 @@ public class DriveTo extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (distance <= RobotMap.CHASSIS_MAX_PASSING_ERROR) || timer.get() > 10;
+        return (distance <= RobotMap.CHASSIS_MAX_PASSING_ERROR* 2.0) || timer.get() > 10;
     }
 
     // Called once after isFinished returns true
@@ -132,11 +140,13 @@ public class DriveTo extends Command {
     	//Robot.chassis.stop();
     }
     
-    private void VectorUpdate(){
-    	currX = 0;
-    	currY = 0;
+    private void VectorUpdate(double Angle){
+    	currX = Robot.e1.get(Math.toRadians(Angle))[0] * 0.001;
+    	currY = Robot.e1.get(Math.toRadians(Angle))[1] * 0.001;
+    	
     	t[0] = TargetX - currX;
     	t[1] = TargetY - currY;
+    	
     	theta = Math.toDegrees(-Math.atan2(t[0], t[1]));
     	distance = Math.hypot(t[0], t[1]);
     }

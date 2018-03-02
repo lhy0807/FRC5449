@@ -9,8 +9,17 @@ import edu.wpi.first.wpilibj.command.Command;
 public class Lifterbump extends Command{
 	public Lifterbump(){
 		requires(Robot.lifter);
+		this.time = 0.3;
 	}
+	
+	public Lifterbump(double time){
+		requires(Robot.lifter);
+		this.time = time;
+	}
+	
+	
 	private Timer timer;
+	private double time = 0.3;
 	@Override
 	protected void initialize(){
 		timer = new Timer();
@@ -20,12 +29,13 @@ public class Lifterbump extends Command{
 	
 	@Override
 	protected void execute() {
-		Robot.lifter.move(0.4);
+		Robot.lifter.move(0.40);
+		
 	}
 	
 	@Override
 	protected boolean isFinished() {
-		return timer.get() > 0.20;
+		return timer.get() > this.time;
 	}
 	
 	@Override
