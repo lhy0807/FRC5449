@@ -50,7 +50,7 @@ public class Encoder_Module {
 		field_offsets[1] = 400;	
 	}
 	
-	public void setOffset(double[] Offsets){
+	public void addOffset(double[] Offsets){
 		this.offsets[0] += Offsets[0];
 		this.offsets[1] += Offsets[1];
 	}

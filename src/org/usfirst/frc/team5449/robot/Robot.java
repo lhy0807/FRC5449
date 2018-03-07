@@ -18,6 +18,8 @@ import org.usfirst.frc.team5449.robot.command.NavigateTo;
 import org.usfirst.frc.team5449.robot.command.RecvGamedata;
 import org.usfirst.frc.team5449.robot.command.Release_Cube;
 import org.usfirst.frc.team5449.robot.command.TurnTo;
+import org.usfirst.frc.team5449.robot.command.chassis_stop;
+import org.usfirst.frc.team5449.robot.command.lifter_stop;
 import org.usfirst.frc.team5449.robot.commandGroup.Auto_L_Blockonly;
 import org.usfirst.frc.team5449.robot.commandGroup.Auto_L_Blockonly2;
 import org.usfirst.frc.team5449.robot.commandGroup.Auto_R_Switch_fast;
@@ -80,7 +82,11 @@ public class Robot extends TimedRobot {
 	
 	public static CameraServer server = CameraServer.getInstance();
 	public static UsbCamera c1 = new UsbCamera("USB Camera 0",0);
-	private static AnalogUltraSonic u1 = new AnalogUltraSonic(0);
+	
+	private static AnalogUltraSonic u_left = new AnalogUltraSonic(0);
+	private static AnalogUltraSonic u_back = new AnalogUltraSonic(1);
+	private static AnalogUltraSonic u_right = new AnalogUltraSonic(2);
+	
 	private static CB_core cb = new CB_core();
 	private static Timer timer = new Timer();
 	private static double last_calibration_time = 0;
@@ -107,34 +113,36 @@ public class Robot extends TimedRobot {
 		
 		//command
 
-		timer.reset();
-		timer.start();
+		
 		Scheduler.getInstance().removeAll();
 	}
 	@Override
 	public void autonomousInit() {
-		Scheduler.getInstance().removeAll();
-		//lifter.ResetEncoders();
-		Gyro.reset();
-		while (Gyro.getAngle() == 1440){
-		}
 		
+		Scheduler.getInstance().removeAll();//cancel all commands
+		
+		Gyro.reset();//reset gyro offset
+		while (Gyro.getAngle() == 1440){
+			SmartDashboard.putString("Gyro.calibration", "wait_recv_data");
+		}//wait until the gyro sends a correct data
+			SmartDashboard.putString("Gyro.calibration", "Done");
 		Gyro.set_offset(-Gyro.getAngle());
 		
-
-		e1.reset();
-		e1.setfieldOffset(new double[]{2300,400});
+		
+		e1.reset();//encoder module reset
+		e1.setfieldOffset(new double[]{2300,400});//set start position
 		
 		
-		String gamedata;
+		String gamedata;//get game data, false for left
 		gamedata = DriverStation.getInstance().getGameSpecificMessage();
 		Robot.Game_data[0] = gamedata.charAt(0) == 'R';
 		Robot.Game_data[1] = gamedata.charAt(1) == 'R';
 		Robot.Game_data[2] = gamedata.charAt(2) == 'R';
 		
+		
 		int[] auto_mode = Autonomous_target.getSelected();
 		switch (auto_mode[0]){
-		case 0:
+		case 0://slow auto for switch
 			SmartDashboard.putString("CURRENT_MODE", "Switch");
 			if (Game_data[0]){
 				AutonomousCommand = new Auto_R_Blockonly();
@@ -142,7 +150,7 @@ public class Robot extends TimedRobot {
 				AutonomousCommand = new Auto_L_Blockonly2();
 			}
 			break;
-		case 1:
+		case 1://slow auto for scale
 			SmartDashboard.putString("CURRENT_MODE", "Scale");
 			if (Game_data[1]){
 				AutonomousCommand = new Auto_xR_Scale();
@@ -150,7 +158,7 @@ public class Robot extends TimedRobot {
 				AutonomousCommand = new Auto_xL_Scale();
 			}
 			break;
-		case 2:
+		case 2://fast auto for switch
 			SmartDashboard.putString("CURRENT_MODE", "Switch_Fast");
 			if (Game_data[0]){
 				AutonomousCommand = new Auto_R_Switch_fast();
@@ -158,7 +166,7 @@ public class Robot extends TimedRobot {
 				AutonomousCommand = new Auto_L_Blockonly2();
 			}
 			break;
-		case 3:
+		case 3://fast auto for scale
 			SmartDashboard.putString("CURRENT_MODE", "Scale_Fast");
 			if (Game_data[1]){
 				AutonomousCommand = new Auto_R_Scale_fast();
@@ -167,59 +175,58 @@ public class Robot extends TimedRobot {
 			}
 			break;
 		}
+		
 		if (AutonomousCommand != null){
-		AutonomousCommand.start();
+			AutonomousCommand.start();//start auto command.
 		}
 	}
 	@Override
 	public void autonomousPeriodic() {
 		double[] Pos = {0,0};
-		Pos = e1.update();
+		Pos = e1.update();//update encoder module.
 		SmartDashboard.putNumber("X",Pos[0] * 0.1);
 		SmartDashboard.putNumber("Y",Pos[1] * 0.1);
 		Scheduler.getInstance().run();
 	}
 	@Override
 	public void teleopInit() {
-		Scheduler.getInstance().removeAll();
+		Scheduler.getInstance().removeAll();//remove auto commands.
+		
 		String gamedata;
 		gamedata = DriverStation.getInstance().getGameSpecificMessage();
 		Robot.Game_data[0] = gamedata.charAt(0) == 'R';
 		Robot.Game_data[1] = gamedata.charAt(1) == 'R';
 		Robot.Game_data[2] = gamedata.charAt(2) == 'R';
-		//lifter.ResetEncoders();
-		//TEMP
-		e1.reset();
-		e1.setfieldOffset(new double[]{2300,400});
-		Gyro.reset();
-		while (Gyro.getAngle() == 1440){
-		}
-		
-		Gyro.set_offset(-Gyro.getAngle());
 		
 		this.chassis.TargetHeading = 0;
 		//lifter.ResetEncoders();
 		this.chassis.reset();
-		this.cb = new CB_core();
+		this.cb = new CB_core();//initialize calibration
 		cb.loadFRCfield();
-		last_calibration_time = this.timer.get();
+		double[] Coordinates1 = {0,0};
+		double[] Coordinates2 = {0,0};
+		double[] Coordinates3 = {0,0};
+		
+		cb.add_sensor(Coordinates1, -Math.PI *0.5, this.u_left);
+		cb.add_sensor(Coordinates2, Math.PI, this.u_back);
+		cb.add_sensor(Coordinates3, Math.PI * 0.5, this.u_right);
+		timer.reset();
+		timer.start();
 	}
 	@Override
 	public void teleopPeriodic() {
-
-		/*
-		double[] goal = {4,5.74};//4,5.74
-		double[] p = {0,0};
-		double Angle = Gyro.getAngle();
-    	p[0] = Robot.e1.get(Math.toRadians(Angle))[0] * 0.001;
-    	p[1] = Robot.e1.get(Math.toRadians(Angle))[1] * 0.001;
-    	
-		SmartDashboard.putData(new Drive_To_Left_Scale(1.0d,p));
-		*/
+		
+		
+		
+		
+		
+		
         SmartDashboard.putData(new CompressorOn());
 		SmartDashboard.putData(new CompressorOff());
-		SmartDashboard.putData(new Auto_R_Switch_fast());
+		SmartDashboard.putData(new chassis_stop());
+		SmartDashboard.putData(new lifter_stop());
 		
+
 		//Game data
 		SmartDashboard.putBoolean("SW1-1",this.Game_data[0]);
 		SmartDashboard.putBoolean("SC2-1",this.Game_data[1]);
@@ -228,27 +235,27 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("SC2-2",!this.Game_data[1]);
 		SmartDashboard.putBoolean("SW3-2",!this.Game_data[2]);
 		
-		
-		
-		
-		
-		double[] Pos = {0,0};
+		double[] Pos = {0,0};//update position
+		double Heading = Gyro.getAngle();
 		Pos = e1.update();
 		SmartDashboard.putNumber("X",Pos[0] * 0.1);
 		SmartDashboard.putNumber("Y",Pos[1] * 0.1);
-		SmartDashboard.putNumber("Heading", Gyro.getAngle());
+		SmartDashboard.putNumber("Heading", Heading);
 
+		//calibration position
+		double[] calibration = {0,0};
+		calibration = cb.Update(Pos, -Math.toRadians(Heading), timer.get());
+		double[] temp_cali = {0,0};
+		temp_cali[0] = calibration[0] * 1000.0d;
+		temp_cali[1] = calibration[1] * 1000.0d;
+		e1.addOffset(temp_cali);
 		
-
+		//encoder datas
 		SmartDashboard.putNumber("enc_larm",Robot.lifter.get_position2()[0]);
 		SmartDashboard.putNumber("enc_rarm",Robot.lifter.get_position2()[1]);
 		SmartDashboard.putNumber("enc_l",Robot.chassis.get()[0]);
 		SmartDashboard.putNumber("enc_r",Robot.chassis.get()[1]);
 
-		//Currents
-		SmartDashboard.putNumber("Left Chassis Current",this.chassis.getCurrent()[0]);
-		SmartDashboard.putNumber("Right Chassis Current",this.chassis.getCurrent()[1]);
-		
 		if (this.holder.is_holding_block()){
 			SmartDashboard.putNumber("BLOCK?",100);
 		}else{
@@ -266,9 +273,4 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic(){
 		SmartDashboard.putData(Autonomous_target);
 	}
-	/*
-	 * 
-	private void log(){
-		//TODO TBD
-	}*/
 }

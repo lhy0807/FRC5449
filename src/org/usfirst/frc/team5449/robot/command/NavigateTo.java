@@ -37,13 +37,14 @@ public class NavigateTo extends Command {
 	private double lastError_angle;
 	private double currError_angle;
 	private double Angle_d;
-	 
+	@Deprecated
 	public NavigateTo(double[] TargetPos) {
     	// Use requires() here to declare subsystem dependencies
         requires(Robot.chassis);
 		this.TargetPos = TargetPos;
         this.Stop = true;
     }
+	@Deprecated
 	public NavigateTo(double[] TargetPos,boolean Stop)
 	{
 		requires(Robot.chassis);
