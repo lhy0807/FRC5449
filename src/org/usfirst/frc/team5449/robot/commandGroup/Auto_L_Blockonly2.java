@@ -10,6 +10,7 @@ import org.usfirst.frc.team5449.robot.command.TurnTo;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class Auto_L_Blockonly2 extends CommandGroup{
+	@Deprecated
 	public Auto_L_Blockonly2(){
 		addSequential(new Initialize_block());
 		addSequential(new DriveDistance(2.1));

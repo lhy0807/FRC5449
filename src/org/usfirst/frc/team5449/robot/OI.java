@@ -3,6 +3,7 @@ package org.usfirst.frc.team5449.robot;
 import org.usfirst.frc.team5449.robot.command.Climb;
 import org.usfirst.frc.team5449.robot.command.ClimbStop;
 import org.usfirst.frc.team5449.robot.command.IntakeIn;
+import org.usfirst.frc.team5449.robot.command.IntakeIn_Remote;
 import org.usfirst.frc.team5449.robot.command.IntakeOut;
 import org.usfirst.frc.team5449.robot.command.IntakeStop;
 import org.usfirst.frc.team5449.robot.command.Intake_Release;
@@ -56,7 +57,7 @@ public class OI {
 		Lifter_MID.whenPressed(new LifterToMid());
 		Lifter_MID2.whenPressed(new LifterToMid2());
 		Lifter_UP.whenPressed(new LifterToUp());
-		Intake_in.whenPressed(new IntakeIn());
+		Intake_in.whenPressed(new IntakeIn_Remote());
 		Intake_out.whenPressed(new IntakeOut());
 		Intake_stop.whenPressed(new IntakeStop());
 		Intake_Release_cube.whenPressed(new Intake_Release());

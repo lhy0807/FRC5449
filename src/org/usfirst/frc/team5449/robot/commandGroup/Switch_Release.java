@@ -23,13 +23,8 @@ public class Switch_Release extends CommandGroup{
 		addSequential(new Delay(0.4));
 		addSequential(new IntakeIn2());
         addSequential(new IntakeStop());
-        addSequential(new DriveDistance(1,1));
+        addSequential(new DriveDistance(1,1.5));
         addSequential(new Release_Cube());
-        addSequential(new DriveDistance(-0.5,1));
-        addSequential(new IntakeOut());
-        addSequential(new IntakeStop());
-        addSequential(new Delay(0.6));
-        addSequential(new LifterToDown());
 	}
 	
 	public Switch_Release(double dis){
@@ -40,12 +35,14 @@ public class Switch_Release extends CommandGroup{
 		addSequential(new Delay(0.4));
 		addSequential(new IntakeIn2());
         addSequential(new IntakeStop());
-        addSequential(new DriveDistance(dis,1));
+        addSequential(new DriveDistance(dis,1.5));
         addSequential(new Release_Cube());
+        /*
         addSequential(new DriveDistance(-0.5,1));
         addSequential(new IntakeOut());
         addSequential(new IntakeStop());
         addSequential(new Delay(0.4));
         addSequential(new LifterToDown());
+        */
 	}
 }

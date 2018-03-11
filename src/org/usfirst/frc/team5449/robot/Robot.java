@@ -25,13 +25,18 @@ import org.usfirst.frc.team5449.robot.commandGroup.Auto_L_Blockonly2;
 import org.usfirst.frc.team5449.robot.commandGroup.Auto_R_Switch_fast;
 import org.usfirst.frc.team5449.robot.commandGroup.Auto_R_Blockonly;
 import org.usfirst.frc.team5449.robot.commandGroup.Auto_R_Scale_fast;
-import org.usfirst.frc.team5449.robot.commandGroup.Auto_test_2;
 import org.usfirst.frc.team5449.robot.commandGroup.Auto_xL_Scale;
 import org.usfirst.frc.team5449.robot.commandGroup.Auto_xR_Scale;
 import org.usfirst.frc.team5449.robot.commandGroup.AutonomousGroup;
 import org.usfirst.frc.team5449.robot.commandGroup.Drive_To_Left_Scale;
 import org.usfirst.frc.team5449.robot.commandGroup.Initialize_block;
 import org.usfirst.frc.team5449.robot.commandGroup.NavigateTo_A;
+import org.usfirst.frc.team5449.robot.commandGroup.New_Auto_Pos1_L_SC;
+import org.usfirst.frc.team5449.robot.commandGroup.New_Auto_Pos1_L_SW;
+import org.usfirst.frc.team5449.robot.commandGroup.New_Auto_Pos1_R_SC;
+import org.usfirst.frc.team5449.robot.commandGroup.New_Auto_Pos1_R_SW;
+import org.usfirst.frc.team5449.robot.commandGroup.New_Auto_PosMid_L_SW;
+import org.usfirst.frc.team5449.robot.commandGroup.New_Auto_PosMid_R_SW;
 import org.usfirst.frc.team5449.robot.subsystems.Camera;
 import org.usfirst.frc.team5449.robot.subsystems.Chassis;
 import org.usfirst.frc.team5449.robot.subsystems.Climber;
@@ -84,7 +89,7 @@ public class Robot extends TimedRobot {
 	public static UsbCamera c1 = new UsbCamera("USB Camera 0",0);
 	
 	private static AnalogUltraSonic u_left = new AnalogUltraSonic(0);
-	private static AnalogUltraSonic u_back = new AnalogUltraSonic(1);
+	//private static AnalogUltraSonic u_back = new AnalogUltraSonic(1);
 	private static AnalogUltraSonic u_right = new AnalogUltraSonic(2);
 	
 	private static CB_core cb = new CB_core();
@@ -94,21 +99,30 @@ public class Robot extends TimedRobot {
 	private static SendableChooser<int []> Autonomous_target = new SendableChooser();
 	
 	public static boolean[] Game_data = {false,false,false};//false = left
+	
+	public static double[] offset_temp = {1254,400};
 	//Autonomous 
 	Command AutonomousCommand;
 	//Parameters
 	@Override
+	public void robotPeriodic(){
+		SmartDashboard.putNumber("testing data", 123456);
+	}
+	
+	
+	@Override
 	public void robotInit() {
 		//Field_pos_chooser.addDefault("LEFT", new double[]{2300,340});
 		//Field_pos_chooser.addObject("MIDDLE", new double[]{4000,340});
-		Autonomous_target.addDefault("Switch", new int[]{0});
-		Autonomous_target.addObject("Scale", new int[]{1});
-		Autonomous_target.addDefault("Switch_Fast", new int[]{2});
+		Autonomous_target.addObject("Switch", new int[]{0});
+		Autonomous_target.addDefault("Scale", new int[]{1});
+		Autonomous_target.addObject("Switch_Fast", new int[]{2});
 		Autonomous_target.addObject("Scale_Fast", new int[]{3});
+		Autonomous_target.addObject("Switch_Mid", new int[]{4});
 		lifter.ResetEncoders();
 		e1 = new Encoder_Module();
-		c1.setResolution(960, 540);
-		c1.setFPS(24);
+		//c1.setResolution(960, 540);
+		//c1.setFPS(24);
 		server.startAutomaticCapture(c1);
 		
 		//command
@@ -120,18 +134,9 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		
 		Scheduler.getInstance().removeAll();//cancel all commands
-		
-		Gyro.reset();//reset gyro offset
-		while (Gyro.getAngle() == 1440){
-			SmartDashboard.putString("Gyro.calibration", "wait_recv_data");
-		}//wait until the gyro sends a correct data
-			SmartDashboard.putString("Gyro.calibration", "Done");
-		Gyro.set_offset(-Gyro.getAngle());
-		
-		
+				
 		e1.reset();//encoder module reset
-		e1.setfieldOffset(new double[]{2300,400});//set start position
-		
+		e1.setfieldOffset(new double[]{1254,400});//set start position
 		
 		String gamedata;//get game data, false for left
 		gamedata = DriverStation.getInstance().getGameSpecificMessage();
@@ -145,33 +150,40 @@ public class Robot extends TimedRobot {
 		case 0://slow auto for switch
 			SmartDashboard.putString("CURRENT_MODE", "Switch");
 			if (Game_data[0]){
-				AutonomousCommand = new Auto_R_Blockonly();
+				AutonomousCommand = new New_Auto_Pos1_R_SW();
 			}else{
-				AutonomousCommand = new Auto_L_Blockonly2();
+				AutonomousCommand = new New_Auto_Pos1_L_SW();
 			}
 			break;
 		case 1://slow auto for scale
 			SmartDashboard.putString("CURRENT_MODE", "Scale");
 			if (Game_data[1]){
-				AutonomousCommand = new Auto_xR_Scale();
+				AutonomousCommand = new New_Auto_Pos1_R_SC();
 			}else{
-				AutonomousCommand = new Auto_xL_Scale();
+				AutonomousCommand = new New_Auto_Pos1_L_SC();
 			}
 			break;
 		case 2://fast auto for switch
 			SmartDashboard.putString("CURRENT_MODE", "Switch_Fast");
 			if (Game_data[0]){
-				AutonomousCommand = new Auto_R_Switch_fast();
+				AutonomousCommand = new New_Auto_Pos1_R_SW();
 			}else{
-				AutonomousCommand = new Auto_L_Blockonly2();
+				AutonomousCommand = new New_Auto_Pos1_L_SW();
 			}
 			break;
 		case 3://fast auto for scale
 			SmartDashboard.putString("CURRENT_MODE", "Scale_Fast");
 			if (Game_data[1]){
-				AutonomousCommand = new Auto_R_Scale_fast();
+				AutonomousCommand = new New_Auto_Pos1_R_SC();
 			}else{
-				AutonomousCommand = new Auto_xL_Scale();
+				AutonomousCommand = new New_Auto_Pos1_L_SC();
+			}
+			break;
+		case 4:
+			if (Game_data[0]){
+				AutonomousCommand = new New_Auto_PosMid_R_SW();
+			}else{
+				AutonomousCommand = new New_Auto_PosMid_L_SW();
 			}
 			break;
 		}
@@ -191,7 +203,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		Scheduler.getInstance().removeAll();//remove auto commands.
-		
+		SmartDashboard.putData(new Initialize_block());
 		String gamedata;
 		gamedata = DriverStation.getInstance().getGameSpecificMessage();
 		Robot.Game_data[0] = gamedata.charAt(0) == 'R';
@@ -203,12 +215,12 @@ public class Robot extends TimedRobot {
 		this.chassis.reset();
 		this.cb = new CB_core();//initialize calibration
 		cb.loadFRCfield();
-		double[] Coordinates1 = {0,0};
+		double[] Coordinates1 = {0.16, 0.246};
 		double[] Coordinates2 = {0,0};
-		double[] Coordinates3 = {0,0};
+		double[] Coordinates3 = {0.16,-0.246};
 		
 		cb.add_sensor(Coordinates1, -Math.PI *0.5, this.u_left);
-		cb.add_sensor(Coordinates2, Math.PI, this.u_back);
+		//cb.add_sensor(Coordinates2, Math.PI, this.u_back);
 		cb.add_sensor(Coordinates3, Math.PI * 0.5, this.u_right);
 		timer.reset();
 		timer.start();
@@ -219,14 +231,14 @@ public class Robot extends TimedRobot {
 		
 		
 		
-		
+		SmartDashboard.putNumber("u_left", u_left.get());
+		SmartDashboard.putNumber("u_right", u_right.get());
 		
         SmartDashboard.putData(new CompressorOn());
 		SmartDashboard.putData(new CompressorOff());
 		SmartDashboard.putData(new chassis_stop());
 		SmartDashboard.putData(new lifter_stop());
 		
-
 		//Game data
 		SmartDashboard.putBoolean("SW1-1",this.Game_data[0]);
 		SmartDashboard.putBoolean("SC2-1",this.Game_data[1]);
@@ -240,11 +252,14 @@ public class Robot extends TimedRobot {
 		Pos = e1.update();
 		SmartDashboard.putNumber("X",Pos[0] * 0.1);
 		SmartDashboard.putNumber("Y",Pos[1] * 0.1);
-		SmartDashboard.putNumber("Heading", Heading);
+		SmartDashboard.putNumber("Heading", -Heading);
 
 		//calibration position
+		double[] pos_cali = {0,0};
+		pos_cali[0] = Pos[0] * 0.001f;
+		pos_cali[1] = Pos[1] * 0.001f;
 		double[] calibration = {0,0};
-		calibration = cb.Update(Pos, -Math.toRadians(Heading), timer.get());
+		calibration = cb.Update(pos_cali, -Math.toRadians(Heading), timer.get());
 		double[] temp_cali = {0,0};
 		temp_cali[0] = calibration[0] * 1000.0d;
 		temp_cali[1] = calibration[1] * 1000.0d;

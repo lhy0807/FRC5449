@@ -37,16 +37,18 @@ public class CB_core {
 	public void loadFRCfield(){
 		double[] switch1 = {4.11,4.26};
 		add_obstacle(switch1,1.42,3.89);
+		
 		double[] switch2 = {4.11,12.19};
 		add_obstacle(switch2,1.42,3.89);
 		double[] wall_left = {0,8.22};
-		add_obstacle(wall_left,0.05,16.44);
+		add_obstacle(wall_left,16.44,0.05);
 		double[] wall_right = {8.22,8.22};
-		add_obstacle(wall_right,0.05,16.44);
+		add_obstacle(wall_right,16.44,0.05);
 		double[] wall_down = {4.11,0};
-		add_obstacle(wall_down,8.22,0.05);
+		add_obstacle(wall_down,0.05,8.22);
 		double[] wall_up = {4.11,16.22};
-		add_obstacle(wall_up,8.22,0.05);	
+		add_obstacle(wall_up,0.05,8.22);	
+		
 	}
 	
 	public double[] Update(double[] Position,double Heading,double time){
@@ -84,7 +86,6 @@ public class CB_core {
 				BubbleSort(X_corrections);
 				
 				final_calibration[0] = (X_corrections[1] + X_corrections[2] + X_corrections[3]) * 0.333f;
-
 			}
 		}
 		
@@ -114,8 +115,8 @@ public class CB_core {
 	
 	private void BubbleSort(double [] arr){
 
-	     double temp;//临时变量
-	     for(int i=0; i<arr.length-1; i++){   //表示趟数，一共arr.length-1次。
+	     double temp;
+	     for(int i=0; i<arr.length-1; i++){   
 	         for(int j=arr.length-1; j>i; j--){
 
 	             if(arr[j] < arr[j-1]){

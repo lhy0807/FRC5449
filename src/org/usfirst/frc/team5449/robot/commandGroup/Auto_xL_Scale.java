@@ -10,6 +10,7 @@ import org.usfirst.frc.team5449.robot.command.TurnTo;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class Auto_xL_Scale extends CommandGroup{
+	@Deprecated
 	public Auto_xL_Scale(){
 		addParallel(new Initialize_block());
 		addSequential(new DriveDistance(0.5));

@@ -23,8 +23,9 @@ public class ScaleRelease extends CommandGroup{
         addSequential(new IntakeStop());
         addSequential(new Delay(0.7));
 		addParallel(new LifterToUp());
-        addSequential(new DriveDistance(1,0.6,0.5));
+        addSequential(new DriveDistance(1,1,0.4));
         addSequential(new Delay(0.7));
+        addSequential(new Release_Cube());
         addSequential(new Release_Cube());
         addSequential(new DriveDistance(-0.5,1));   
         addSequential(new LifterToDown());
@@ -35,8 +36,9 @@ public class ScaleRelease extends CommandGroup{
         addSequential(new IntakeStop());
         addSequential(new Delay(0.5));
 		addParallel(new LifterToUp());
-        addSequential(new DriveDistance(dis,1.5,0.5));
+        addSequential(new DriveDistance(dis,1.5,0.4));
         addSequential(new Delay(0.5));
+        addSequential(new Release_Cube());
         addSequential(new Release_Cube());
         addSequential(new DriveDistance(-0.5,1));   
         addSequential(new LifterToDown());

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Auto_R_Switch_fast extends CommandGroup{
+
 	public Auto_R_Switch_fast(){
 		double[] target0 = {5.5,2.5};
 		addParallel(new Initialize_block(0.5));

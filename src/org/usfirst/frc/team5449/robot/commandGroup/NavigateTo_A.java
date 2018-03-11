@@ -28,12 +28,13 @@ public class NavigateTo_A extends CommandGroup {
 	
 	//time & error
 	private Timer timer;
-	 
+	@Deprecated
 	public NavigateTo_A(double[] TargetPos) {
     	// Use requires() here to declare subsystem dependencies
 		this.TargetPos = TargetPos;
         this.Stop = true;
     }
+	@Deprecated
 	public NavigateTo_A(double[] TargetPos,boolean Stop)
 	{
 		this.TargetPos = TargetPos;

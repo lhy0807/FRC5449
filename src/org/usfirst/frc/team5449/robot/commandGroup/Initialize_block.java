@@ -12,23 +12,33 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class Initialize_block extends CommandGroup{
 	public Initialize_block(){
-		addParallel(new Lifterbump());
+		//addParallel(new Lifterbump());
 		addSequential(new IntakeOut());
         addSequential(new IntakeStop());
+        addSequential(new Delay(0.5));//0.4
+        //addSequential(new LifterToDown());
+        //addSequential(new Delay(0.4));
+        addSequential(new IntakeIn());
+        addSequential(new IntakeOut());
         addSequential(new Delay(0.4));
-        addSequential(new LifterToDown());
-        addSequential(new Delay(0.4));
+        addSequential(new IntakeIn());
         addSequential(new IntakeIn2());
+        addSequential(new Delay(0.4));
 	}
 	
 	public Initialize_block(double time){
-		addParallel(new Lifterbump(time));
+		//addParallel(new Lifterbump(time));
 		addSequential(new IntakeOut());
         addSequential(new IntakeStop());
         addSequential(new Delay(time));
-        addSequential(new LifterToDown());
+        //addSequential(new LifterToDown());
+        //addSequential(new Delay(time));
+        addSequential(new IntakeIn());
+        addSequential(new IntakeOut());
         addSequential(new Delay(time));
+        addSequential(new IntakeIn());
         addSequential(new IntakeIn2());
+        addSequential(new Delay(0.4));
 	}
 	
 	

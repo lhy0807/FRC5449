@@ -30,7 +30,7 @@ public class Intake extends Subsystem{
 	}
 	
 	//parameters:
-	private double IntakePower = 1.8;
+	private double IntakePower = 1.4;
 	
 	
 	@Override
@@ -48,8 +48,8 @@ public class Intake extends Subsystem{
 	}
 	
 	public void In(){
-		left_intake.set(ControlMode.PercentOutput,-IntakePower/2);
-		right_intake.set(ControlMode.PercentOutput,IntakePower/2);
+		left_intake.set(ControlMode.PercentOutput,-IntakePower/2.3);
+		right_intake.set(ControlMode.PercentOutput,IntakePower/1.6);
 		mid_intake.set(ControlMode.PercentOutput, IntakePower/1.5);
 	}
 	

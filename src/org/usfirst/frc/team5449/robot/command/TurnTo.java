@@ -21,10 +21,18 @@ public class TurnTo extends Command {
 	private double lastTime;
 	private double angleTarget;
 	private double lastoutput;
+	double timeout = 3;
 	
     public TurnTo(double angleTarget) {
         requires(Robot.chassis);
         this.angleTarget = angleTarget;
+        
+    }
+    
+    public TurnTo(double angleTarget,double timeout) {
+        requires(Robot.chassis);
+        this.angleTarget = angleTarget;
+        this.timeout = timeout;
         
     }
 
@@ -83,7 +91,7 @@ public class TurnTo extends Command {
     	}
     	SmartDashboard.putNumber("error", Math.abs(currError));
     	
-        return (Math.abs(currError)<allowedError && Math.abs(currError - lastError) < 0.1) || (timer.get() > 3);
+        return (Math.abs(currError)<allowedError && Math.abs(currError - lastError) < 0.1) || (timer.get() > this.timeout);
     }
 
     // Called once after isFinished returns true

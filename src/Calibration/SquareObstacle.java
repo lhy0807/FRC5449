@@ -44,27 +44,25 @@ public class SquareObstacle {
 		//SmartDashboard.putNumber("DA", Math.toDegrees(relative_angle(ANGLE_LEFT,heading)));
 		boolean[] val = {false,false,false,false};
 		//SmartDashboard.putNumber("HEADING",Math.toDegrees(heading));
-	
+		
 		if(((Math.abs((relative_angle(ANGLE_UP,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_UP) > Length*0.5) && (Dot(p,VECTOR_UP) < Length*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_RIGHT,p)) < Width * 0.5 - SAFE_DISTANCE))){
 			val[0] = true;//UP
-			//SmartDashboard.putString("CALIBRATION DIR","UP");
 			return val;
 		}else if((Math.abs((relative_angle(ANGLE_DOWN,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_DOWN) > Length*0.5) && (Dot(p,VECTOR_DOWN) < Length*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_RIGHT,p)) < Width * 0.5 - SAFE_DISTANCE)){
 			val[1] = true;//DOWN
-			//SmartDashboard.putString("CALIBRATION DIR","DOWN");
 			return val;
 		}else if((Math.abs((relative_angle(ANGLE_LEFT,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_LEFT) > Width*0.5) && (Dot(p,VECTOR_LEFT) < Width*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_UP,p)) < Length * 0.5 - SAFE_DISTANCE)){
 			val[2] = true;//LEFT
-			//SmartDashboard.putString("CALIBRATION DIR","LEFT");
 			return val;
 		}else if ((Math.abs((relative_angle(ANGLE_RIGHT,heading))) <  MAX_CALIBRATION_ANGLE)&& (Dot(p,VECTOR_RIGHT) > Width*0.5) && (Dot(p,VECTOR_RIGHT) < Width*0.5 + MAX_CALIBRATION_RANGE) && (Math.abs(Dot(VECTOR_UP,p)) < Length * 0.5 - SAFE_DISTANCE)){
 			val[3] = true;//RIGHT
-			//SmartDashboard.putString("CALIBRATION DIR","RIGHT");
 			return val;
 		}else{
 			//SmartDashboard.putString("CALIBRATION DIR","NONE");
+			//System.out.println("None");
 			return val;//NONE
 		}
+		
 	}
 	
 	protected double[] calibrate(double[] Position,double Heading,boolean[] is_calibratable,CB_ultrasonic ultrasonic){
@@ -73,8 +71,7 @@ public class SquareObstacle {
 		double[] us_vector = ultrasonic.getPos();
 		us_vector = Rotate(us_vector,-Heading);
 		
-		
-		double K;	
+		double K = 1;	
 		if (is_calibratable[0]){
 			//UP
 			K = Math.cos(relative_angle(ANGLE_UP,USheading));

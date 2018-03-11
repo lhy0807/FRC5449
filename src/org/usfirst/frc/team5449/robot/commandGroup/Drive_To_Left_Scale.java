@@ -1,6 +1,5 @@
 package org.usfirst.frc.team5449.robot.commandGroup;
 import org.usfirst.frc.team5449.robot.Robot;
-import org.usfirst.frc.team5449.robot.command.Drive;
 import org.usfirst.frc.team5449.robot.command.DriveTo;
 import org.usfirst.frc.team5449.robot.command.TurnTo;
 
@@ -10,6 +9,7 @@ import sensors.Gyro;
 
 
 public class Drive_To_Left_Scale extends CommandGroup{
+	@Deprecated
 	public Drive_To_Left_Scale(double Range,double[] Position){
 		System.out.println(Position[0]);
     	System.out.println(Position[1]);

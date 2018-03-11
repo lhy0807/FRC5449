@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Auto_R_Scale_fast extends CommandGroup{
+	@Deprecated
 	public Auto_R_Scale_fast(){
 		double[] target0 = {1.5,3.5};
 		double[] target1 = {1.5,5.2};

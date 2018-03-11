@@ -52,7 +52,7 @@ public class LifterToMid2 extends Command {
     	balance_error[0] = (Robot.lifter.get_position2()[0] - Robot.lifter.get_position2()[1]);
     	
     	if (is_down){
-    		output *= 0.80;
+    		output *= 0.40;
     	}
     	error[1] = error[0];
     	balance_output = RobotMap.LIFTER_BALANCE_KP * balance_error[0];
