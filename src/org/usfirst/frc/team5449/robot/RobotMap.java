@@ -23,7 +23,7 @@ public class RobotMap {
 	//PCM module
 	public static final int PCM_PORT = 16;
 	//Intake solenoids 
-	public static final int INTAKE_LEFT_SOLENOID_PORT = 0;
+	public static final int INTAKE_LEFT_SOLENOID_PORT =0;
 	public static final int INTAKE_RIGHT_SOLENOID_PORT = 1;
 	//Holder
 	public static final int HOLDER_BLOCK_PUSHER1_PORT = 2;
@@ -65,7 +65,7 @@ public class RobotMap {
 	public static final double LIFTER_MAXIUM_POWER = 0.9;
 	public static final double LIFTER_MINIUM_POWER = 0.1;
 	public static final double LIFTER_KP = 0.012;
-	public static final double LIFTER_KD = 0.0011;
+	public static final double LIFTER_KD = 0;//0.0011
 	public static final double LIFTER_BALANCE_KP = 0.011;
 	public static final double LIFTER_BALANCE_KD = 0;
 	//Holder

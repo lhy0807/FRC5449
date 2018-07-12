@@ -31,7 +31,7 @@ public class IntakeIn_Remote extends Command {
     	time = -1;
     	timer.reset();
     	timer.start();
-    	Robot.intake.In();//Motor
+    	Robot.intake.In2();//Motor
     	Robot.intake.Close();//Cylinder
     }
 

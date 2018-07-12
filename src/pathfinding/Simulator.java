@@ -8,7 +8,7 @@ public class Simulator {
 	private PF_Core pf2;
 	private PathFinding PFS;
 	private double[] Position = {1,0.8};
-	private double step = 100;
+	private double step = 10;
 	private boolean is_simulated = false;
 	
 	private ArrayList<Integer> waypointListX = new ArrayList<Integer>();
@@ -31,7 +31,7 @@ public class Simulator {
 		waypointShortListY = new ArrayList<Integer>();
 		pf = new PF_Core();
 		pf2 = new PF_Core();
-		PFS = new PathFinding((int)(StartPos[0]*100),(int)(StartPos[1]*100),(int)(EndPos[0]*100),(int)(EndPos[1]*100),false,30,8);
+		PFS = new PathFinding((int)(StartPos[0]*100),(int)(StartPos[1]*100),(int)(EndPos[0]*100),(int)(EndPos[1]*100),false,5,1);
 	
 	}
 	public double[][] Simulate2(){
@@ -56,56 +56,44 @@ public class Simulator {
 		double sum = 0;
 		for(int i=1; i<waypointShortListX.size();i++){
 			sum += Math.hypot((waypointShortListX.get(i) - waypointShortListX.get(i-1)),(waypointShortListY.get(i)-waypointShortListY.get(i-1)));
+			double[] val = {waypointShortListX.get(i)*0.01,waypointShortListY.get(i)*0.01};
+			pf.addGoal(val);
+			pf2.addGoal(val);
+			System.out.print(waypointShortListX.get(i));
+			System.out.print('\t');
+			System.out.println(waypointShortListY.get(i));
 		}
-		waypoint_count = (int) Math.ceil((sum / step));
-		double[] waypointX = new double[waypoint_count];
-		double[] waypointY = new double[waypoint_count];
 		
-		interval = (int)Math.floor((waypointListX.size()-1) / (waypoint_count -1));
-		for (int i = 0;i < waypoint_count -1;i++){
-			waypointX[i] = waypointListX.get(i * interval);
-			waypointY[i] = waypointListY.get(i * interval);
-		}
-			waypointX[waypoint_count-1] = waypointShortListX.get(waypointShortListX.size()-1);
-			waypointY[waypoint_count-1] = waypointShortListY.get(waypointShortListY.size()-1);
-		
-			for (int i = 1; i < waypoint_count; i++){
-				waypointX[i] /= 100;
-				waypointY[i] /= 100;
-				double[] val = {waypointX[i],waypointY[i]};
-				pf.addGoal(val);
-				pf2.addGoal(val);
-			}
 		
 		//Switch,Scale,Switch
-		double[] pos1 = {4.11,4.26};
-		double[] pos2 = {4.11,8.22};
-		double[] pos3 = {4.11,12.19};
+		double[] pos1 = {1.20,0.09};
+		double[] pos2 = {0.30,1.20};
+		double[] pos3 = {1.52,1.54};
 		//field frame
-		double[] posleft = {0,8.22};
-		double[] posright = {8.22,8.22};
-		double[] posup = {4.11,16.44};
-		double[] posdown = {4.11,0};
+		double[] posleft = {0,1.2};
+		double[] posright = {1.8,1.2};
+		double[] posup = {0.9,2.4};
+		double[] posdown = {0.9,0};
 
 		//obstacles
-		pf.addObstacle(pos1, 1.42,3.89,0);
-		pf.addObstacle(pos2, 3.17,3.39,0);
-		pf.addObstacle(pos3, 1.42,3.89,0);
+		pf.addObstacle(pos1, 0.18,0.18,0);
+		pf.addObstacle(pos2, 0.12,0.60,0);
+		pf.addObstacle(pos3, 0.18,0.18,0);
 		//frames
-		pf.addObstacle(posleft, 16.44,0.05,0);
-		pf.addObstacle(posright, 16.44,0.05,0);
-		pf.addObstacle(posup, 0.05,8.22,0);
-		pf.addObstacle(posdown, 0.05,8.22,0);
+		pf.addObstacle(posleft, 2.4,0.02,0);
+		pf.addObstacle(posright, 2.4,0.05,0);
+		pf.addObstacle(posup, 0.05,1.8,0);
+		pf.addObstacle(posdown, 0.05,1.8,0);
 		
 		//obstacles
-				pf2.addObstacle(pos1, 1.42,3.89,0);
-				pf2.addObstacle(pos2, 3.17,3.39,0);
-				pf2.addObstacle(pos3, 1.42,3.89,0);
-				//frames
-				pf2.addObstacle(posleft, 16.44,0.05,0);
-				pf2.addObstacle(posright, 16.44,0.05,0);
-				pf2.addObstacle(posup, 0.05,8.22,0);
-				pf2.addObstacle(posdown, 0.05,8.22,0);
+		pf2.addObstacle(pos1, 0.18,0.18,0);
+		pf2.addObstacle(pos2, 0.12,0.60,0);
+		pf2.addObstacle(pos3, 0.18,0.18,0);
+		//frames
+		pf2.addObstacle(posleft, 2.4,0.02,0);
+		pf2.addObstacle(posright, 2.4,0.05,0);
+		pf2.addObstacle(posup, 0.05,1.8,0);
+		pf2.addObstacle(posdown, 0.05,1.8,0);
 				
 		
 		for (int i = 0; i < 500; i++){
@@ -116,9 +104,9 @@ public class Simulator {
 		Position[0] += F[0] / Math.hypot(F[0], F[1]) * 0.05;
 		Position[1] += F[1] / Math.hypot(F[0], F[1]) * 0.05;
 		
-		System.out.print(F[0]);
+		System.out.print(Position[0]);
 		System.out.print("\t");
-		System.out.println(F[1]);
+		System.out.println(Position[1]);
 			if (pf.isReached()){
 				break;
 			}
@@ -126,15 +114,9 @@ public class Simulator {
 		
 		is_simulated = true;
 		boolean reached = pf.isReached();
-		
-		pf.resetGoal();
-		for (int i = 1; i < waypoint_count; i++){
-			waypointX[i] /= 100;
-			waypointY[i] /= 100;
-			double[] val = {waypointX[i],waypointY[i]};
-			pf.addGoal(val);
-		}
 		return reached;
+		
+
 	}
 	
 	public double[] getForce(double[] Position){

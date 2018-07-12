@@ -36,7 +36,6 @@ public class Lifter extends Subsystem{
 		Liftmotor_L.set(ControlMode.PercentOutput,range(Power - delta_power,-RobotMap.LIFTER_MAXIUM_POWER,RobotMap.LIFTER_MAXIUM_POWER));
 		Liftmotor_R.set(ControlMode.PercentOutput,range(Power + delta_power,-RobotMap.LIFTER_MAXIUM_POWER,RobotMap.LIFTER_MAXIUM_POWER));
 		
-		
 	}
 	 private double range(double val,double min,double max){
 	    	if (val < min){
